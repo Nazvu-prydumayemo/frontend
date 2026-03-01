@@ -1,8 +1,8 @@
 [project]
-name = "tui-frontend"
+name = "Tennis-frontend"
 version = "0.1.0"
 description = "Async Textual TUI frontend"
-authors = [{ name = "Your Team" }]
+authors = [{ name = "Nazvu Prydumayemo" }]
 readme = "README.md"
 requires-python = ">=3.11"
 
