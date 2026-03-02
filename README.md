@@ -53,7 +53,7 @@ pip3 install -e ".[dev]"
 ### 2. Linux/MacOS
 
 ```bash
-python3 -m tuiapp.main
+make run
 ```
 
 ## 5. Lint and format
@@ -68,6 +68,6 @@ python3 -m tuiapp.main
 ### 2. Linux/MacOS
 
 ```bash
-ruff check .
-ruff format .
+make lint
+make format
 ```
