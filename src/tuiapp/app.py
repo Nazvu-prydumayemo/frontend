@@ -2,7 +2,8 @@ from pathlib import Path
 from typing import ClassVar
 
 from textual.app import App
-from textual.binding import Binding
+
+from tuiapp.screens.main import MainScreen
 
 
 class TUIApplication(App):
@@ -14,15 +15,18 @@ class TUIApplication(App):
     TITLE = "Tennis App"
     SUB_TITLE = "Tennis App Local Client"
 
-    BINDINGS: ClassVar[list] = [
-        Binding("escape", "pop_screen", "Back"),
-    ]
+    SCREENS: ClassVar[dict] = {
+        "main": MainScreen,
+        # "login": LoginScreen,
+        # "register": RegisterScreen,
+    }
 
     def on_mount(self) -> None:
         """
         - Mounts first page
         """
-        pass
+
+        self.push_screen("main")
 
 
 if __name__ == "__main__":
