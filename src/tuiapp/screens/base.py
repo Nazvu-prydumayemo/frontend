@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import TYPE_CHECKING
 
 from textual.screen import Screen
@@ -15,7 +17,7 @@ class BaseScreen(Screen):
     """
 
     if TYPE_CHECKING:
-        app: "TUIApplication"
+        app: TUIApplication
 
     def toast(self, message: str, duration: float = 3.0) -> None:
         """
