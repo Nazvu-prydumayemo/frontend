@@ -37,10 +37,16 @@ class MainScreen(BaseScreen):
             case "register":
                 self.toast("Register")
             case "status":
-                try:
-                    summary = await self.app.status.status_summary()
-                    self.toast(summary)
-                except APIError as error:
-                    self.toast(f"API unreachable: {error}")
+                self.run_worker(self._fetch_status, exclusive=True)
             case "exit":
                 self.app.exit()
+
+    async def _fetch_status(self) -> None:
+        """
+        - Fetches status without freezing UI
+        """
+        try:
+            summary = await self.app.status.status_summary()
+            self.toast(summary)
+        except APIError as error:
+            self.toast(f"API unreachable: {error}")
