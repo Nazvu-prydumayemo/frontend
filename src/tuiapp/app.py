@@ -1,18 +1,32 @@
+from pathlib import Path
+from typing import ClassVar
+
 from textual.app import App
-from textual.containers import Vertical
-from textual.screen import Screen
-from textual.widgets import Button
+
+from tuiapp.screens.main import MainScreen
 
 
-class TUIApplication(App[Screen]):
-    """Minimal Textual App skeleton for mypy"""
+class TUIApplication(App):
+    """
+    - Root application class
+    """
 
-    def compose(self):
-        """Define the UI layout."""
-        yield Vertical(
-            Button("Login"),
-            Button("Register"),
-        )
+    CSS_PATH = Path("styles") / Path("styles.tcss")
+    TITLE = "Tennis App"
+    SUB_TITLE = "Tennis App Local Client"
+
+    SCREENS: ClassVar[dict] = {
+        "main": MainScreen,
+        # "login": LoginScreen,
+        # "register": RegisterScreen,
+    }
+
+    def on_mount(self) -> None:
+        """
+        - Mounts first page
+        """
+
+        self.push_screen("main")
 
 
 if __name__ == "__main__":
