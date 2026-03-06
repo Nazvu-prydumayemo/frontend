@@ -6,9 +6,6 @@ from textual.screen import Screen
 
 from tuiapp.widgets.toast import Toast
 
-if TYPE_CHECKING:
-    from tuiapp.app import TUIApplication
-
 
 class BaseScreen(Screen):
     """
@@ -17,7 +14,7 @@ class BaseScreen(Screen):
     """
 
     if TYPE_CHECKING:
-        app: TUIApplication
+        app: "TUIApplication"
 
     def toast(self, message: str, duration: float = 3.0) -> None:
         """
