@@ -1,4 +1,11 @@
+from typing import TYPE_CHECKING, cast
+
 from textual.screen import Screen
+
+if TYPE_CHECKING:
+    from tuiapp.app import TUIApplication
+
+from tuiapp.widgets.toast import Toast
 
 
 class BaseScreen(Screen):
@@ -6,6 +13,16 @@ class BaseScreen(Screen):
     - Base Class for all screens
     - All screens should be derived from this
     """
+
+    @property
+    def app(self) -> "TUIApplication":
+        return cast("TUIApplication", super().app)
+
+    def toast(self, message: str, duration: float = 3.0) -> None:
+        """
+        - Creates a toast popup with the given message
+        """
+        self.mount(Toast(message, duration))
 
     def change_screen(self, screen: str) -> None:
         """

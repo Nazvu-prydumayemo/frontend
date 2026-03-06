@@ -1,0 +1,26 @@
+Screen {
+    layers: base notification;
+}
+
+Toast {
+    layer: notification;
+    dock: right;
+    align: right top;
+    offset: 2 1;
+    width: 42;
+    height: auto;
+    border: round $accent;
+    padding: 1 2;
+    color: $text;
+}
+
+Vertical {
+    align: center middle;
+    height: 1fr;
+    width: 100%;
+}
+
+PrimaryButton {
+    width: 32;
+    margin: 1 0;
+}
