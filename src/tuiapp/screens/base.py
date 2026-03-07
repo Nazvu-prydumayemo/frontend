@@ -1,3 +1,7 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from textual.screen import Screen
 
 from tuiapp.widgets.toast import Toast
@@ -8,6 +12,9 @@ class BaseScreen(Screen):
     - Base Class for all screens
     - All screens should be derived from this
     """
+
+    if TYPE_CHECKING:
+        app: "TUIApplication"
 
     def toast(self, message: str, duration: float = 3.0) -> None:
         """

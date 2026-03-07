@@ -3,6 +3,8 @@ from typing import ClassVar
 
 from textual.app import App
 
+from tuiapp.api.client import APIClient
+from tuiapp.api.status import StatusService
 from tuiapp.screens.main import MainScreen
 
 
@@ -10,6 +12,10 @@ class TUIApplication(App):
     """
     - Root application class
     """
+
+    def __init__(self, client: APIClient) -> None:
+        super().__init__()
+        self.status = StatusService(client)
 
     CSS_PATH = Path("styles") / Path("styles.tcss")
     TITLE = "Tennis App"
@@ -27,7 +33,3 @@ class TUIApplication(App):
         """
 
         self.push_screen("main")
-
-
-if __name__ == "__main__":
-    TUIApplication().run()
