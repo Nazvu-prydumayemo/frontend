@@ -6,6 +6,7 @@ from textual.app import App
 from tuiapp.api.client import APIClient
 from tuiapp.api.status import StatusService
 from tuiapp.screens.main import MainScreen
+from tuiapp.screens.login_screen import LoginScreen
 
 
 class TUIApplication(App):
@@ -23,7 +24,7 @@ class TUIApplication(App):
 
     SCREENS: ClassVar[dict] = {
         "main": MainScreen,
-        # "login": LoginScreen,
+        "login": LoginScreen,
         # "register": RegisterScreen,
     }
 
