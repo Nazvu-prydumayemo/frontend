@@ -5,8 +5,9 @@ from textual.app import App
 
 from tuiapp.api.client import APIClient
 from tuiapp.api.status import StatusService
-from tuiapp.screens.main import MainScreen
 from tuiapp.screens.login_screen import LoginScreen
+from tuiapp.screens.main_screen import MainScreen
+from tuiapp.screens.register_screen import RegisterScreen
 
 
 class TUIApplication(App):
@@ -18,14 +19,21 @@ class TUIApplication(App):
         super().__init__()
         self.status = StatusService(client)
 
-    CSS_PATH = Path("styles") / Path("styles.tcss")
+    DEFAULT_CSS_FOLDER = Path("styles")
+    CSS_PATH: ClassVar = [
+        DEFAULT_CSS_FOLDER / "styles.tcss",
+        DEFAULT_CSS_FOLDER / "buttons.tcss",
+        DEFAULT_CSS_FOLDER / "main.tcss",
+        DEFAULT_CSS_FOLDER / "login.tcss",
+        DEFAULT_CSS_FOLDER / "register.tcss",
+    ]
     TITLE = "Tennis App"
     SUB_TITLE = "Tennis App Local Client"
 
     SCREENS: ClassVar[dict] = {
         "main": MainScreen,
         "login": LoginScreen,
-        # "register": RegisterScreen,
+        "register": RegisterScreen,
     }
 
     def on_mount(self) -> None:

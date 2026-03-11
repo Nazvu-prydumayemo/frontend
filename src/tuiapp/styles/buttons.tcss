@@ -1,0 +1,9 @@
+PrimaryButton {
+    width: 32;
+    margin: 1 0;
+}
+
+SecondaryButton {
+    width: 32;
+    margin: 1 0;
+}
