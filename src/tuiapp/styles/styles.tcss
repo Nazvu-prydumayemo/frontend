@@ -24,6 +24,36 @@ PrimaryButton {
     width: 32;
     margin: 1 0;
 }
+
+#card {
+    width: 60;
+    height: auto;
+    padding: 2 4;
+    background: $surface;
+    border: round $accent;
+    align: center middle;
+}
+
+#title {
+    width: 100%;
+    content-align: center middle;
+    text-style: bold;
+    margin-bottom: 1;
+    color: $text;
+}
+
+.label {
+    margin-top: 1;
+    color: $text-muted;
+}
+
+CustomInput, PasswordInput {
+    margin-bottom: 1;
+}
+
+#register_btn, #back_btn {
+    width: 100%;
+    margin-top: 1;
 /* Login Screen */
 
 #login-container {
