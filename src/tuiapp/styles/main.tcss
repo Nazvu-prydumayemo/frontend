@@ -1,0 +1,8 @@
+MainScreen {
+    align: center middle;
+}
+
+MainScreen Vertical {
+    width: auto;
+    height: auto;
+}

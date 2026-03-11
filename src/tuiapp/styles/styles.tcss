@@ -20,56 +20,6 @@ Vertical {
     width: 100%;
 }
 
-PrimaryButton {
-    width: 32;
-    margin: 1 0;
-}
-
-#card {
-    width: 60;
-    height: auto;
-    padding: 2 4;
-    background: $surface;
-    border: round $accent;
-    align: center middle;
-}
-
-#title {
-    width: 100%;
-    content-align: center middle;
-    text-style: bold;
-    margin-bottom: 1;
-    color: $text;
-}
-
-.label {
-    margin-top: 1;
-    color: $text-muted;
-}
-
-CustomInput, PasswordInput {
-    margin-bottom: 1;
-}
-
-#register_btn, #back_btn {
-    width: 100%;
-    margin-top: 1;
-/* Login Screen */
-
-#login-container {
-    width: 70%;
-    height: auto;
-    align: center top;
-}
-
-#login-title {
-    text-align: center;
-    text-style: bold;
-    color: $text;
-    margin-bottom: 1;
-    padding: 1 0;
-}
-
 #form {
     width: 100%;
     height: auto;
@@ -86,6 +36,7 @@ CustomInput, PasswordInput {
     margin-bottom: 0;
     height: auto;
 }
+
 .text-input {
     border: solid #2a2a2a;
     background: #2a2a2a;
@@ -95,27 +46,4 @@ CustomInput, PasswordInput {
 
 .text-input:focus {
     border: solid #2a2a2a;
-}
-LoginScreen {
-    align: center top;
-    padding: 2 0;
-}
-#login-container {
-    height: auto;
-}
-
-#form {
-    height: auto;
-}
-
-LoginFormComponent {
-    height: auto;
-}
-#login-container PrimaryButton {
-    width: 100%;
-    margin-top: 1;
-}
-
-#login-container SecondaryButton {
-    width: 100%;
 }

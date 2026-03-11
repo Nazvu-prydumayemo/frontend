@@ -5,32 +5,40 @@ from textual.app import App
 
 from tuiapp.api.client import APIClient
 from tuiapp.api.status import StatusService
-from tuiapp.screens.main import MainScreen
 from tuiapp.screens.login_screen import LoginScreen
+from tuiapp.screens.main_screen import MainScreen
+from tuiapp.screens.register_screen import RegisterScreen
 
 
 class TUIApplication(App):
-    """
-    - Root application class
-    """
+    """Root application class for the Tennis TUI."""
 
     def __init__(self, client: APIClient) -> None:
+        """Initialize the application with an API client.
+
+        Args:
+            client: The API client for communicating with the backend.
+        """
         super().__init__()
         self.status = StatusService(client)
 
-    CSS_PATH = Path("styles") / Path("styles.tcss")
+    DEFAULT_CSS_FOLDER = Path("styles")
+    CSS_PATH: ClassVar = [
+        DEFAULT_CSS_FOLDER / "styles.tcss",
+        DEFAULT_CSS_FOLDER / "buttons.tcss",
+        DEFAULT_CSS_FOLDER / "main.tcss",
+        DEFAULT_CSS_FOLDER / "login.tcss",
+        DEFAULT_CSS_FOLDER / "register.tcss",
+    ]
     TITLE = "Tennis App"
     SUB_TITLE = "Tennis App Local Client"
 
     SCREENS: ClassVar[dict] = {
         "main": MainScreen,
         "login": LoginScreen,
-        # "register": RegisterScreen,
+        "register": RegisterScreen,
     }
 
     def on_mount(self) -> None:
-        """
-        - Mounts first page
-        """
-
+        """Mount the first screen when the app starts."""
         self.push_screen("main")

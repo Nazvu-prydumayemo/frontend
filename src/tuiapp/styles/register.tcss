@@ -1,0 +1,20 @@
+RegisterScreen {
+    align: center middle;
+}
+
+#register-container {
+    width: auto;
+    height: auto;
+    align: center middle;
+}
+
+#register-title {
+    text-align: center;
+    text-style: bold;
+    color: $text;
+    margin-bottom: 1;
+}
+
+RegisterForm {
+    height: auto;
+}
