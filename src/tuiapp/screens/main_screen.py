@@ -3,7 +3,7 @@ from textual.containers import Vertical
 from textual.widgets import Button, Footer, Header
 
 from tuiapp.api.errors import APIError
-from tuiapp.screens.base import BaseScreen
+from tuiapp.screens.base_screen import BaseScreen
 from tuiapp.widgets.buttons import PrimaryButton
 
 
@@ -35,7 +35,7 @@ class MainScreen(BaseScreen):
             case "login":
                 self.change_screen("login")
             case "register":
-                self.toast("Register")
+                self.change_screen("register")
             case "status":
                 self.run_worker(self._fetch_status, exclusive=True)
             case "exit":

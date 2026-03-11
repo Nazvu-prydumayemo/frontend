@@ -14,7 +14,7 @@ class BaseScreen(Screen):
     """
 
     if TYPE_CHECKING:
-        app: "TUIApplication"
+        app: TUIApplication  # type: ignore # noqa: F821
 
     def toast(self, message: str, duration: float = 3.0) -> None:
         """
