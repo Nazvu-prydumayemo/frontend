@@ -1,10 +1,17 @@
 from textual.widgets import Input
 
-class CustomInput(Input):
-    """Кастомний інпут для тексту"""
-    pass
+
+class TextInput(Input):
+    """Text input component."""
+
+    def __init__(self, placeholder: str, **kwargs):
+        super().__init__(placeholder=placeholder, **kwargs)
+        self.add_class("text-input")
+
 
 class PasswordInput(Input):
-    """Кастомний інпут для паролів"""
-    def __init__(self, **kwargs):
-        super().__init__(password=True, **kwargs)
+    """Password input component."""
+
+    def __init__(self, placeholder: str = "Password", **kwargs):
+        super().__init__(password=True, placeholder=placeholder, **kwargs)
+        self.add_class("text-input")

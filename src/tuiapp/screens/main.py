@@ -33,7 +33,7 @@ class MainScreen(BaseScreen):
 
         match event.button.id:
             case "login":
-                self.toast("Login")
+                self.change_screen("login")
             case "register":
                 self.toast("Register")
             case "status":
