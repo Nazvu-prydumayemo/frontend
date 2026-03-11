@@ -6,11 +6,15 @@ from textual.widgets import Static
 from tuiapp.widgets.inputs import PasswordInput, TextInput
 
 
-class LoginForm(Widget):
-    """Login form component with email and password fields."""
+class RegisterForm(Widget):
+    """Register form component with name, email, password and confirm password fields."""
 
     def compose(self) -> ComposeResult:
         with Vertical(id="form"):
+            with Vertical(classes="field"):
+                yield Static("Name and Lastname", classes="field-label")
+                yield TextInput(placeholder="Name Lastname", id="name")
+
             with Vertical(classes="field"):
                 yield Static("Email", classes="field-label")
                 yield TextInput(placeholder="example@email.com", id="email")
@@ -19,9 +23,15 @@ class LoginForm(Widget):
                 yield Static("Password", classes="field-label")
                 yield PasswordInput(placeholder="Password", id="password")
 
+            with Vertical(classes="field"):
+                yield Static("Confirm Password", classes="field-label")
+                yield PasswordInput(placeholder="Confirm Password", id="confirm")
+
     def get_data(self) -> dict:
-        """Returns email and password from the form."""
+        """Returns name, email, password and confirm-password from the form."""
         return {
+            "name": self.query_one("#name", TextInput).value,
             "email": self.query_one("#email", TextInput).value,
             "password": self.query_one("#password", PasswordInput).value,
+            "confirm": self.query_one("#confirm", PasswordInput).value,
         }
