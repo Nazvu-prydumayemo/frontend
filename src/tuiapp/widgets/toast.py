@@ -9,26 +9,24 @@ if TYPE_CHECKING:
 
 
 class Toast(Widget):
-    """
-    - Popup Toast component for notifications
-    """
+    """Toast notification popup component for displaying temporary messages."""
 
     def __init__(self, message: str, duration: float = 3.0) -> None:
+        """Initialize the toast.
+
+        Args:
+            message: The message to display in the toast.
+            duration: How long to display the toast in seconds.
+        """
         super().__init__()
         self.message = message
         self.duration = duration
         self.timer: Timer | None = None
 
     def compose(self) -> ComposeResult:
-        """
-        - Builds the popup
-        """
-
+        """Compose the toast widget with the message."""
         yield Static(self.message)
 
     def on_mount(self) -> None:
-        """
-        - Removes the popup after some time
-        """
-
+        """Set a timer to remove the toast after the specified duration."""
         self.timer = self.set_timer(self.duration, self.remove)

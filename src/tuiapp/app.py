@@ -11,11 +11,14 @@ from tuiapp.screens.register_screen import RegisterScreen
 
 
 class TUIApplication(App):
-    """
-    - Root application class
-    """
+    """Root application class for the Tennis TUI."""
 
     def __init__(self, client: APIClient) -> None:
+        """Initialize the application with an API client.
+
+        Args:
+            client: The API client for communicating with the backend.
+        """
         super().__init__()
         self.status = StatusService(client)
 
@@ -37,8 +40,5 @@ class TUIApplication(App):
     }
 
     def on_mount(self) -> None:
-        """
-        - Mounts first page
-        """
-
+        """Mount the first screen when the app starts."""
         self.push_screen("main")

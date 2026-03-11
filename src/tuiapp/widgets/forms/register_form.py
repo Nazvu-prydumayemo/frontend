@@ -7,7 +7,7 @@ from tuiapp.widgets.inputs import PasswordInput, TextInput
 
 
 class RegisterForm(Widget):
-    """Register form component with name, email, password and confirm password fields."""
+    """Registration form with name, email, password, and confirmation fields."""
 
     def compose(self) -> ComposeResult:
         with Vertical(id="form"):
@@ -27,8 +27,12 @@ class RegisterForm(Widget):
                 yield Static("Confirm Password", classes="field-label")
                 yield PasswordInput(placeholder="Confirm Password", id="confirm")
 
-    def get_data(self) -> dict:
-        """Returns name, email, password and confirm-password from the form."""
+    def get_data(self) -> dict[str, str]:
+        """Get the form data.
+
+        Returns:
+            A dictionary with name, email, password, and confirm values.
+        """
         return {
             "name": self.query_one("#name", TextInput).value,
             "email": self.query_one("#email", TextInput).value,

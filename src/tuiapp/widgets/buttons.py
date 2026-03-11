@@ -2,24 +2,18 @@ from textual.widgets import Button
 
 
 class PrimaryButton(Button):
-    """
-    - Used for main actions (submit, login, confirm)
-    """
+    """Button for primary actions such as submit, login, or confirm."""
 
     DEFAULT_CLASSES = "btn-primary"
 
 
 class SecondaryButton(Button):
-    """
-    - Used for secondary actions (cancel, back)
-    """
+    """Button for secondary actions such as cancel or back."""
 
     DEFAULT_CLASSES = "btn-secondary"
 
 
 class DangerButton(Button):
-    """
-    - Used for dangerous actions (delete, logout)
-    """
+    """Button for dangerous actions such as delete or logout."""
 
     DEFAULT_CLASSES = "btn-danger"

@@ -8,15 +8,9 @@ from tuiapp.widgets.buttons import PrimaryButton
 
 
 class MainScreen(BaseScreen):
-    """
-    - Main screen that consists of Login, Register and Exit buttons
-    """
+    """Main screen with navigation buttons: Login, Register, Status, and Exit."""
 
     def compose(self) -> ComposeResult:
-        """
-        - Builds the screen
-        """
-
         yield Header()
         yield Vertical(
             PrimaryButton("Login", id="login"),
@@ -27,10 +21,6 @@ class MainScreen(BaseScreen):
         yield Footer()
 
     async def on_button_pressed(self, event: Button.Pressed) -> None:
-        """
-        - Handles button events
-        """
-
         match event.button.id:
             case "login":
                 self.change_screen("login")
@@ -42,9 +32,7 @@ class MainScreen(BaseScreen):
                 self.app.exit()
 
     async def _fetch_status(self) -> None:
-        """
-        - Fetches status without freezing UI
-        """
+        """Fetch and display the API status without freezing the UI."""
         try:
             summary = await self.app.status.status_summary()
             self.toast(summary)

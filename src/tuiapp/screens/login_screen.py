@@ -1,6 +1,6 @@
 from textual.app import ComposeResult
 from textual.containers import Center, Vertical
-from textual.widgets import Footer, Header, Static
+from textual.widgets import Button, Footer, Header, Static
 
 from tuiapp.screens.base_screen import BaseScreen
 from tuiapp.widgets.buttons import PrimaryButton, SecondaryButton
@@ -20,7 +20,7 @@ class LoginScreen(BaseScreen):
                 yield SecondaryButton("Back", id="back")
         yield Footer()
 
-    def on_button_pressed(self, event: PrimaryButton.Pressed) -> None:
+    def on_button_pressed(self, event: Button.Pressed) -> None:
         if event.button.id == "login":
             data = self.query_one(LoginForm).get_data()
 

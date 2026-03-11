@@ -3,6 +3,13 @@ from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
+    """Application settings loaded from environment variables.
+
+    Attributes:
+        api_url: The base URL of the API backend.
+        api_token: The authentication token for the API (optional).
+    """
+
     api_url: AnyHttpUrl
     api_token: str | None = None
 
