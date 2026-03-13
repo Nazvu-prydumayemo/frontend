@@ -33,6 +33,9 @@ class APIClient:
         Raises:
             APIError: If the request fails or returns an error status code.
         """
+        if "json" in kwargs and isinstance(kwargs["json"], BaseModel):
+            kwargs["json"] = kwargs["json"].model_dump()
+
         try:
             response = await self._client.request(method, endpoint, **kwargs)
             response.raise_for_status()
