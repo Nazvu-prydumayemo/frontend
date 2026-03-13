@@ -3,8 +3,9 @@ from typing import ClassVar
 
 from textual.app import App
 
+from tuiapp.api.auth.auth import AuthService
 from tuiapp.api.client import APIClient
-from tuiapp.api.status import StatusService
+from tuiapp.api.status.status import StatusService
 from tuiapp.screens.login_screen import LoginScreen
 from tuiapp.screens.main_screen import MainScreen
 from tuiapp.screens.register_screen import RegisterScreen
@@ -21,6 +22,7 @@ class TUIApplication(App):
         """
         super().__init__()
         self.status = StatusService(client)
+        self.auth = AuthService(client)
 
     DEFAULT_CSS_FOLDER = Path("styles")
     CSS_PATH: ClassVar = [
