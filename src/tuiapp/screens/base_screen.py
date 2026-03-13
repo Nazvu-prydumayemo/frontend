@@ -6,6 +6,11 @@ from textual.screen import Screen
 
 from tuiapp.widgets.toast import Toast
 
+if TYPE_CHECKING:
+    from textual.types import CallbackType
+
+    from tuiapp.widgets.modals.base_modal import BaseModal
+
 
 class BaseScreen(Screen):
     """Base screen class. All screens should inherit from this."""
@@ -29,6 +34,14 @@ class BaseScreen(Screen):
             screen: The name of the screen to navigate to.
         """
         self.app.push_screen(screen)
+
+    def show_modal(self, modal: BaseModal, callback: CallbackType | None = None) -> None:
+        """Shows a modal by pushing it onto the stack.
+
+        Args:
+            modal: The modal to show.
+        """
+        self.app.push_screen(modal, callback)
 
     def go_back(self) -> None:
         """Return to the previous screen by popping the current screen."""
