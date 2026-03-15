@@ -29,3 +29,12 @@ class TokenResult(BaseModel):
     token: Token | None
     message: str
     status: Literal["success", "invalid", "error"]
+
+
+class Me(BaseModel):
+    firstname: str
+    lastname: str
+    email: EmailStr
+    id: int
+    role_id: int
+    is_active: bool

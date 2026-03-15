@@ -1,3 +1,4 @@
+from collections.abc import Awaitable, Callable
 from typing import Any, Self, TypeVar
 
 import httpx
@@ -12,12 +13,13 @@ T = TypeVar("T", bound=BaseModel)
 class APIClient:
     """Client used to communicate with the Backend API."""
 
-    def __init__(self, base_url: AnyHttpUrl, token: str | None = None) -> None:
+    def __init__(self, base_url: AnyHttpUrl) -> None:
         self._client = httpx.AsyncClient(
             base_url=str(base_url),
-            headers={"Authorization": f"Bearer {token}"} if token else {},
+            headers={},
             timeout=httpx.Timeout(10.0),
         )
+        self._on_401: Callable[[], Awaitable[bool]] | None = None
 
     def set_access_token(self, token: str | None) -> None:
         """Update the Authorization header."""
@@ -25,6 +27,9 @@ class APIClient:
             self._client.headers["Authorization"] = f"Bearer {token}"
         else:
             self._client.headers.pop("Authorization", None)
+
+    def set_on_401_callback(self, on_401: Callable[[], Awaitable[bool]] | None = None) -> None:
+        self._on_401 = on_401
 
     async def _request(self, method: str, endpoint: str, **kwargs) -> Any:
         """Send an HTTP request to the API.
@@ -46,10 +51,15 @@ class APIClient:
         try:
             response = await self._client.request(method, endpoint, **kwargs)
             response.raise_for_status()
-
             return response.json()
 
         except httpx.HTTPStatusError as error:
+            if error.response.status_code == 401 and self._on_401:
+                if await self._on_401():
+                    response = await self._client.request(method, endpoint, **kwargs)
+                    response.raise_for_status()
+                    return response.json()
+
             raise APIError(error.response.status_code, str(error)) from error
         except httpx.RequestError as error:
             raise APIError(0, f"Request failed: {error}") from error

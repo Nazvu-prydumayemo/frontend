@@ -16,7 +16,7 @@ from tuiapp.screens.register_screen import RegisterScreen
 class TUIApplication(App):
     """Root application class for the Tennis TUI."""
 
-    def __init__(self, client: APIClient) -> None:
+    def __init__(self, client: APIClient, token_manager: TokenManagerService) -> None:
         """Initialize the application with an API client.
 
         Args:
@@ -24,10 +24,10 @@ class TUIApplication(App):
         """
         super().__init__()
         self.client = client
+        self.token_manager = token_manager
 
         self.status = StatusService(self.client)
         self.auth = AuthService(self.client)
-        self.token_manager = TokenManagerService(self.client)
 
     DEFAULT_CSS_FOLDER = Path("styles")
     CSS_PATH: ClassVar = [
@@ -54,5 +54,4 @@ class TUIApplication(App):
             self.push_screen("main")
             return
 
-        self.client.set_access_token(self.token_manager.access_token)
         self.push_screen("hub")
