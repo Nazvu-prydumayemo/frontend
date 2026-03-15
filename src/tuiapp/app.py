@@ -49,4 +49,10 @@ class TUIApplication(App):
 
     async def on_mount(self) -> None:
         """Mount the first screen when the app starts."""
-        self.push_screen("main")
+        session = await self.token_manager.refresh_access_token()
+        if not session:
+            self.push_screen("main")
+            return
+
+        self.client.set_access_token(self.token_manager.access_token)
+        self.push_screen("hub")

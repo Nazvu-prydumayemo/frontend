@@ -37,10 +37,17 @@ class RegisterScreen(BaseScreen):
         self.go_back()
 
     async def _register(self, data: RegisterRequest) -> None:
+        button = self.query_one("#register", PrimaryButton)
+        button.disabled = True
+
         response: TokenResult = await self.app.auth.register(json=data)
 
         self.toast(response.message)
+        button.disabled = False
 
         if response.status == "success" and response.token is not None:
-            # TODO: Implement token handling
-            return None
+            self.app.token_manager.set_refresh_token(response.token.refresh_token)
+            self.app.token_manager.access_token = response.token.access_token
+            self.app.client.set_access_token(response.token.access_token)
+
+            self.change_screen("hub")
