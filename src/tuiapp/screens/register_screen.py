@@ -1,3 +1,5 @@
+"""Registration screen for creating new user accounts."""
+
 from textual import on
 from textual.app import ComposeResult
 from textual.containers import Center, Vertical
@@ -10,7 +12,11 @@ from tuiapp.widgets.forms.register_form import RegisterForm
 
 
 class RegisterScreen(BaseScreen):
-    """Register screen with register form."""
+    """Registration screen for creating new user accounts.
+
+    Collects user details and registers a new account with the backend.
+    On success, stores tokens and navigates to the hub screen.
+    """
 
     def compose(self) -> ComposeResult:
         yield Header()

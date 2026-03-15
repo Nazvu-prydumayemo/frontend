@@ -1,3 +1,5 @@
+"""Login screen for user authentication."""
+
 from textual import on
 from textual.app import ComposeResult
 from textual.containers import Center, Vertical
@@ -10,7 +12,11 @@ from tuiapp.widgets.forms.login_form import LoginForm
 
 
 class LoginScreen(BaseScreen):
-    """Login screen with email and password form."""
+    """Login screen with email and password form.
+
+    Allows users to authenticate with their email and password credentials.
+    On success, stores tokens and navigates to the hub screen.
+    """
 
     def compose(self) -> ComposeResult:
         yield Header()

@@ -1,3 +1,5 @@
+"""Hub screen - the main authenticated user dashboard."""
+
 from textual import on
 from textual.app import ComposeResult
 from textual.containers import Vertical
@@ -8,6 +10,11 @@ from tuiapp.widgets.buttons import PrimaryButton
 
 
 class HubScreen(BaseScreen):
+    """Main dashboard screen displayed after successful authentication.
+
+    Provides access to user-specific features and information.
+    """
+
     def compose(self) -> ComposeResult:
         yield Header()
         yield Vertical(

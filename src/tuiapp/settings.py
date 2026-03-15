@@ -1,3 +1,5 @@
+"""Application settings loaded from environment variables."""
+
 from pydantic import AnyHttpUrl
 from pydantic_settings import BaseSettings
 
@@ -6,8 +8,9 @@ class Settings(BaseSettings):
     """Application settings loaded from environment variables.
 
     Attributes:
+        service_name: The service name used for keyring storage.
+        key_name: The key name used for storing refresh token in keyring.
         api_url: The base URL of the API backend.
-        api_token: The authentication token for the API (optional).
     """
 
     service_name: str
