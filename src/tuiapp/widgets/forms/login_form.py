@@ -21,17 +21,19 @@ class LoginForm(Widget):
                 yield Static("Password", classes="field-label")
                 yield PasswordInput(placeholder="Password", id="password")
 
-    def get_data(self) -> LoginRequest | None:
+    def get_data(self) -> LoginRequest | str:
         """Get the form data.
 
         Returns:
-            A pydantic model with email and password values or nothing if some fields weren't provided.
+            A pydantic model with email and password values or string error if incorrect data was provided.
         """
+        email = self.query_one("#email", TextInput).value
+        password = self.query_one("#password", PasswordInput).value
+        if not email or not password:
+            return "All fields required"
+
         try:
-            return LoginRequest(
-                email=self.query_one("#email", TextInput).value,
-                password=self.query_one("#password", PasswordInput).value,
-            )
+            return LoginRequest(email=email, password=password)
 
         except ValidationError:
-            return None
+            return "Incorrect email format"

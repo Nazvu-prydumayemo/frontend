@@ -4,7 +4,7 @@ from tuiapp.settings import settings
 
 
 def main() -> None:
-    app = TUIApplication(APIClient(settings.api_url, settings.api_token))
+    app = TUIApplication(APIClient(settings.api_url))
     app.run()
 
 

@@ -3,8 +3,7 @@ from textual.app import ComposeResult
 from textual.containers import Center, Vertical
 from textual.widgets import Button, Footer, Header, Static
 
-from tuiapp.api.auth.schema import LoginRequest, Token
-from tuiapp.api.errors import APIError
+from tuiapp.api.auth.schema import LoginRequest, LoginResult
 from tuiapp.screens.base_screen import BaseScreen
 from tuiapp.widgets.buttons import PrimaryButton, SecondaryButton
 from tuiapp.widgets.forms.login_form import LoginForm
@@ -25,34 +24,23 @@ class LoginScreen(BaseScreen):
 
     @on(Button.Pressed, "#login")
     async def login(self) -> None:
-        data = self.query_one(LoginForm).get_data()
+        result = self.query_one(LoginForm).get_data()
 
-        if data is None:
-            self.toast("All fields required!")
+        if isinstance(result, str):
+            self.toast(result)
             return
 
-        await self._login(data)
+        await self._login(result)
 
     @on(Button.Pressed, "#back")
     def back(self) -> None:
         self.go_back()
 
     async def _login(self, data: LoginRequest) -> None:
-        try:
-            token: Token | None = await self.app.auth.login(json=data)
+        response: LoginResult = await self.app.auth.login(json=data)
 
-        except APIError as e:
-            if e.status_code == 0:
-                self.toast("Network error, please try again!")
+        self.toast(response.message)
 
-            else:
-                self.toast(f"Something went wrong! ({e.status_code})")
-
-            return
-
-        if token is None:
-            self.toast("Incorrect credentials!")
-            return
-
-        self.toast("Successful Login!")
-        # TODO: Manage Tokens
+        if response.status == "success" and response.token is not None:
+            # TODO: Implement token handling
+            return None
