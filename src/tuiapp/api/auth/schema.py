@@ -21,6 +21,10 @@ class RegisterRequest(BaseModel):
     password: str
 
 
+class RefreshRequest(BaseModel):
+    refresh_token: str
+
+
 class TokenResult(BaseModel):
     token: Token | None
     message: str

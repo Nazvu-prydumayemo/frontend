@@ -10,6 +10,8 @@ class Settings(BaseSettings):
         api_token: The authentication token for the API (optional).
     """
 
+    service_name: str
+    key_name: str
     api_url: AnyHttpUrl
 
     model_config = {"env_file": ".env", "env_file_encoding": "utf-8"}

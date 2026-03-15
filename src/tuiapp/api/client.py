@@ -19,6 +19,13 @@ class APIClient:
             timeout=httpx.Timeout(10.0),
         )
 
+    def set_access_token(self, token: str | None) -> None:
+        """Update the Authorization header."""
+        if token:
+            self._client.headers["Authorization"] = f"Bearer {token}"
+        else:
+            self._client.headers.pop("Authorization", None)
+
     async def _request(self, method: str, endpoint: str, **kwargs) -> Any:
         """Send an HTTP request to the API.
 

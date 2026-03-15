@@ -4,8 +4,10 @@ from typing import ClassVar
 from textual.app import App
 
 from tuiapp.api.auth.auth import AuthService
+from tuiapp.api.auth.token_manager import TokenManagerService
 from tuiapp.api.client import APIClient
 from tuiapp.api.status.status import StatusService
+from tuiapp.screens.hub_screen import HubScreen
 from tuiapp.screens.login_screen import LoginScreen
 from tuiapp.screens.main_screen import MainScreen
 from tuiapp.screens.register_screen import RegisterScreen
@@ -21,8 +23,11 @@ class TUIApplication(App):
             client: The API client for communicating with the backend.
         """
         super().__init__()
-        self.status = StatusService(client)
-        self.auth = AuthService(client)
+        self.client = client
+
+        self.status = StatusService(self.client)
+        self.auth = AuthService(self.client)
+        self.token_manager = TokenManagerService(self.client)
 
     DEFAULT_CSS_FOLDER = Path("styles")
     CSS_PATH: ClassVar = [
@@ -39,8 +44,9 @@ class TUIApplication(App):
         "main": MainScreen,
         "login": LoginScreen,
         "register": RegisterScreen,
+        "hub": HubScreen,
     }
 
-    def on_mount(self) -> None:
+    async def on_mount(self) -> None:
         """Mount the first screen when the app starts."""
         self.push_screen("main")
