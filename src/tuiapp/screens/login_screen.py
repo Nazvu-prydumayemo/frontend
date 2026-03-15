@@ -3,7 +3,7 @@ from textual.app import ComposeResult
 from textual.containers import Center, Vertical
 from textual.widgets import Button, Footer, Header, Static
 
-from tuiapp.api.auth.schema import LoginRequest, LoginResult
+from tuiapp.api.auth.schema import LoginRequest, TokenResult
 from tuiapp.screens.base_screen import BaseScreen
 from tuiapp.widgets.buttons import PrimaryButton, SecondaryButton
 from tuiapp.widgets.forms.login_form import LoginForm
@@ -37,7 +37,7 @@ class LoginScreen(BaseScreen):
         self.go_back()
 
     async def _login(self, data: LoginRequest) -> None:
-        response: LoginResult = await self.app.auth.login(json=data)
+        response: TokenResult = await self.app.auth.login(json=data)
 
         self.toast(response.message)
 

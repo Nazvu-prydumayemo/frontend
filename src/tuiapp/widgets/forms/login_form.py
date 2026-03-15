@@ -25,7 +25,7 @@ class LoginForm(Widget):
         """Get the form data.
 
         Returns:
-            A pydantic model with email and password values or string error if incorrect data was provided.
+            A pydantic model with email and password values or string error if invalid data was provided.
         """
         email = self.query_one("#email", TextInput).value
         password = self.query_one("#password", PasswordInput).value
@@ -36,4 +36,4 @@ class LoginForm(Widget):
             return LoginRequest(email=email, password=password)
 
         except ValidationError:
-            return "Incorrect email format"
+            return "Invalid email format"
