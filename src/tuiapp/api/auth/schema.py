@@ -14,7 +14,14 @@ class LoginRequest(BaseModel):
     password: str
 
 
-class LoginResult(BaseModel):
+class RegisterRequest(BaseModel):
+    firstname: str
+    lastname: str
+    email: EmailStr
+    password: str
+
+
+class TokenResult(BaseModel):
     token: Token | None
     message: str
     status: Literal["success", "invalid", "error"]
