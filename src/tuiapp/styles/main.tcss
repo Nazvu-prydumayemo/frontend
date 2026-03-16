@@ -6,3 +6,13 @@ MainScreen Vertical {
     width: auto;
     height: auto;
 }
+
+
+HubScreen {
+    align: center middle;
+}
+
+HubScreen Vertical {
+    width: auto;
+    height: auto;
+}

@@ -1,3 +1,6 @@
+"""API client for communicating with the backend HTTP API."""
+
+from collections.abc import Awaitable, Callable
 from typing import Any, Self, TypeVar
 
 import httpx
@@ -10,14 +13,50 @@ T = TypeVar("T", bound=BaseModel)
 
 
 class APIClient:
-    """Client used to communicate with the Backend API."""
+    """Async HTTP client for communicating with the Backend API.
 
-    def __init__(self, base_url: AnyHttpUrl, token: str | None = None) -> None:
+    Provides methods for making authenticated GET and POST requests with
+    automatic token refresh on 401 responses.
+
+    Attributes:
+        _client: The underlying httpx AsyncClient instance.
+        _on_401: Callback function to invoke on 401 responses.
+    """
+
+    def __init__(self, base_url: AnyHttpUrl) -> None:
+        """Initialize the APIClient.
+
+        Args:
+            base_url: The base URL of the API backend.
+        """
         self._client = httpx.AsyncClient(
             base_url=str(base_url),
-            headers={"Authorization": f"Bearer {token}"} if token else {},
+            headers={},
             timeout=httpx.Timeout(10.0),
         )
+        self._on_401: Callable[[], Awaitable[bool]] | None = None
+
+    def set_access_token(self, token: str | None) -> None:
+        """Update the Authorization header with the access token.
+
+        Args:
+            token: The access token to use, or None to remove the header.
+        """
+        if token:
+            self._client.headers["Authorization"] = f"Bearer {token}"
+        else:
+            self._client.headers.pop("Authorization", None)
+
+    def set_on_401_callback(self, on_401: Callable[[], Awaitable[bool]] | None = None) -> None:
+        """Set a callback to handle 401 Unauthorized responses.
+
+        The callback should attempt to refresh the access token and return
+        True if successful (allowing a retry), or False to propagate the error.
+
+        Args:
+            on_401: Async callback function to invoke on 401 responses.
+        """
+        self._on_401 = on_401
 
     async def _request(self, method: str, endpoint: str, **kwargs) -> Any:
         """Send an HTTP request to the API.
@@ -33,13 +72,21 @@ class APIClient:
         Raises:
             APIError: If the request fails or returns an error status code.
         """
+        if "json" in kwargs and isinstance(kwargs["json"], BaseModel):
+            kwargs["json"] = kwargs["json"].model_dump()
+
         try:
             response = await self._client.request(method, endpoint, **kwargs)
             response.raise_for_status()
-
             return response.json()
 
         except httpx.HTTPStatusError as error:
+            if error.response.status_code == 401 and self._on_401:
+                if await self._on_401():
+                    response = await self._client.request(method, endpoint, **kwargs)
+                    response.raise_for_status()
+                    return response.json()
+
             raise APIError(error.response.status_code, str(error)) from error
         except httpx.RequestError as error:
             raise APIError(0, f"Request failed: {error}") from error
