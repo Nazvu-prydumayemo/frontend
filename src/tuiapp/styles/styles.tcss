@@ -47,3 +47,13 @@ Vertical {
 .text-input:focus {
     border: solid #2a2a2a;
 }
+Tab.-active {
+    color: white;
+    background: transparent;
+}
+TabbedContent {
+    margin-top: 2;
+    width: 90%;
+    height: 50%;
+    margin: 2 4;
+}
