@@ -8,7 +8,7 @@ from tuiapp.api.status import StatusService
 from tuiapp.screens.login_screen import LoginScreen
 from tuiapp.screens.main_screen import MainScreen
 from tuiapp.screens.register_screen import RegisterScreen
-
+from tuiapp.screens.profile_screen import ProfileScreen
 
 class TUIApplication(App):
     """Root application class for the Tennis TUI."""
@@ -38,6 +38,7 @@ class TUIApplication(App):
         "main": MainScreen,
         "login": LoginScreen,
         "register": RegisterScreen,
+        "profile": ProfileScreen,
     }
 
     def on_mount(self) -> None:
