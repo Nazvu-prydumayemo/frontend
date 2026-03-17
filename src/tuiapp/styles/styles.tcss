@@ -47,16 +47,27 @@ Vertical {
 .text-input:focus {
     border: solid #2a2a2a;
 }
+
 Tab.-active {
     color: white;
     background: transparent;
 }
+
 TabbedContent {
     margin-top: 2;
-    width: 90%;
-    height: 50%;
+    width: 100%;
+    height: 100%;
     margin: 2 4;
 }
+
+TabbedContent > TabBar {
+    width: 100%;
+}
+
+TabbedContent > TabBar > Tab {
+    width: 33%;
+}
+
 #login-container {
     width: 50%;
     height: auto;

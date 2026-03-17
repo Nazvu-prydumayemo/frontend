@@ -17,7 +17,7 @@ class StatusResponse(BaseModel):
     timestamp: datetime
 
 
-class StatusService:
+class StatusCheckService:
     """Service for checking the API status."""
 
     def __init__(self, client: APIClient) -> None:

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from textual import on
 from textual.containers import Vertical
 from textual.widgets import Button, Static
 
@@ -30,22 +31,16 @@ class StatusModal(BaseModal):
 
     def compose_modal(self) -> ComposeResult:
         """Build the modal's UI layout with message and action buttons."""
-        with Vertical(id="modal-container"):
+        with Vertical(id="status-modal"):
             yield Static("Are you sure you want to check the status?", id="modal-status-message")
             yield PrimaryButton("Confirm", id="confirm")
             yield SecondaryButton("Cancel", id="cancel")
 
-    def on_button_pressed(self, event: Button.Pressed) -> None:
-        """
-        Handle button press events from the modal's confirm/cancel buttons.
+    @on(Button.Pressed, "#confirm")
+    def confirm(self) -> None:
+        self.on_confirm()
+        self.app.pop_screen()
 
-        Args:
-            event: The button pressed event containing the button reference.
-        """
-        event.stop()
-        match event.button.id:
-            case "confirm":
-                self.on_confirm()
-                self.app.pop_screen()
-            case "cancel":
-                self.app.pop_screen()
+    @on(Button.Pressed, "#cancel")
+    def cancel(self) -> None:
+        self.app.pop_screen()

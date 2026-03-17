@@ -4,11 +4,12 @@ from typing import ClassVar
 from textual.app import App
 
 from tuiapp.api.client import APIClient
-from tuiapp.api.status import StatusService
+from tuiapp.api.status import StatusCheckService
 from tuiapp.screens.login_screen import LoginScreen
 from tuiapp.screens.main_screen import MainScreen
-from tuiapp.screens.register_screen import RegisterScreen
 from tuiapp.screens.profile_screen import ProfileScreen
+from tuiapp.screens.register_screen import RegisterScreen
+
 
 class TUIApplication(App):
     """Root application class for the Tennis TUI."""
@@ -20,7 +21,7 @@ class TUIApplication(App):
             client: The API client for communicating with the backend.
         """
         super().__init__()
-        self.status = StatusService(client)
+        self.status = StatusCheckService(client)
 
     DEFAULT_CSS_FOLDER = Path("styles")
     CSS_PATH: ClassVar = [
@@ -30,6 +31,7 @@ class TUIApplication(App):
         DEFAULT_CSS_FOLDER / "login.tcss",
         DEFAULT_CSS_FOLDER / "register.tcss",
         DEFAULT_CSS_FOLDER / "modals.tcss",
+        DEFAULT_CSS_FOLDER / "views.tcss",
     ]
     TITLE = "Tennis App"
     SUB_TITLE = "Tennis App Local Client"

@@ -7,3 +7,10 @@ SecondaryButton {
     width: 32;
     margin: 1 0;
 }
+
+DangerButton {
+    width: 32;
+    margin: 1 0;
+    color: white;
+    background: $error;
+}
