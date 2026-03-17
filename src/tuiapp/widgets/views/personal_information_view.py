@@ -12,8 +12,7 @@ class PersonalInfoView(BaseView):
 
     def compose_view(self) -> ComposeResult:
         """Compose the view with form inputs and a button to save changes."""
-        
-        # First Name and Last Name horizontally
+
         with Horizontal(classes="name-fields"):
             with Vertical(classes="field"):
                 yield Static("First Name", classes="field-label")
@@ -23,18 +22,16 @@ class PersonalInfoView(BaseView):
                 yield Static("Last Name", classes="field-label")
                 yield TextInput(placeholder="Enter last name", id="last-name")
 
-        # Email field
-        with Vertical(classes="field"):
+        with Vertical(classes="field email-field"):
             yield Static("Email Address", classes="field-label")
             yield TextInput(placeholder="Enter email", id="email", disabled=True)
 
-        # Save button
         yield PrimaryButton("Save Changes", id="save-changes")
 
     def on_button_pressed(self, event: Button.Pressed) -> None:
         """Handle button press events."""
         event.stop()
-        
+
         if event.button.id == "save-changes":
             self.handle_save_changes()
 

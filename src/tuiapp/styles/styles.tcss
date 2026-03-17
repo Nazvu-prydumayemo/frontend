@@ -55,9 +55,17 @@ Tab.-active {
 
 TabbedContent {
     margin-top: 2;
-    width: 90%;
-    height: 50%;
+    width: 100%;
+    height: 100%;
     margin: 2 4;
+}
+
+TabbedContent > TabBar {
+    width: 100%;
+}
+
+TabbedContent > TabBar > Tab {
+    width: 33%;
 }
 
 #login-container {
@@ -100,23 +108,4 @@ PasswordInput {
 .toggle-btn:focus {
     background: #2a2a2a;
     border: none;
-}
-
-/* Horizontal layout for name fields */
-.name-fields {
-    height: auto;
-    width: 100%;
-}
-
-.name-fields .field {
-    width: 1fr;
-    margin: 0 1;
-}
-
-.name-fields .field:first-child {
-    margin-left: 0;
-}
-
-.name-fields .field:last-child {
-    margin-right: 0;
 }

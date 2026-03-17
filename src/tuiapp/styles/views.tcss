@@ -1,0 +1,33 @@
+PersonalInfoView {
+    padding: 2 4;
+    align: left top;
+}
+
+#save-changes {
+    dock: bottom;
+    margin-top: 2;
+}
+
+.name-fields {
+    height: auto;
+    width: 100%;
+    margin-bottom: 2;
+}
+
+.name-fields .field {
+    width: 1fr;
+    margin: 0 2;
+}
+
+.name-fields .field:first-child {
+    margin-left: 0;
+}
+
+.name-fields .field:last-child {
+    margin-right: 0;
+}
+
+.email-field {
+    margin-bottom: 1;
+    width: 50%;
+}
