@@ -1,3 +1,4 @@
+from textual import on
 from textual.app import ComposeResult
 from textual.containers import Horizontal, Vertical
 from textual.widgets import Button, Static
@@ -28,14 +29,8 @@ class PersonalInfoView(BaseView):
 
         yield PrimaryButton("Save Changes", id="save-changes")
 
-    def on_button_pressed(self, event: Button.Pressed) -> None:
-        """Handle button press events."""
-        event.stop()
-
-        if event.button.id == "save-changes":
-            self.handle_save_changes()
-
-    def handle_save_changes(self) -> None:
+    @on(Button.Pressed, "#save-changes")
+    def save_changes(self) -> None:
         """Handles saving the changes made to personal information."""
         first_name = self.query_one("#first-name", TextInput).value
         last_name = self.query_one("#last-name", TextInput).value

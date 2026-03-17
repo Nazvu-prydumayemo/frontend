@@ -31,3 +31,35 @@ PersonalInfoView {
     margin-bottom: 1;
     width: 50%;
 }
+
+SecurityView {
+    padding: 2 4;
+    align: left top;
+}
+
+.password-field {
+    margin-bottom: 1;
+    width: 50%;
+}
+
+.section-title {
+    text-style: bold;
+}
+
+.button-row {
+    dock: bottom;
+    width: 100%;
+    height: auto;
+}
+
+#update-password {
+    width: 30%;
+}
+
+#delete-account {
+    width: 30%;
+}
+
+#span-40 {
+    width: 40%
+}

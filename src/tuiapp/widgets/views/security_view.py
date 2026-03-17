@@ -1,5 +1,6 @@
+from textual import on
 from textual.app import ComposeResult
-from textual.containers import Vertical
+from textual.containers import Horizontal, Vertical
 from textual.widgets import Button, Static
 
 from tuiapp.widgets.buttons import DangerButton, PrimaryButton
@@ -13,41 +14,27 @@ class SecurityView(BaseView):
 
     def compose_view(self) -> ComposeResult:
         """Compose the view with password change section and delete account button."""
-        
-        # Change Password Section
+
         yield Static("Change Password", classes="section-title")
-        
-        with Vertical(classes="field"):
+
+        with Vertical(classes="field password-field"):
             yield Static("Current Password", classes="field-label")
             yield PasswordInput(placeholder="Current Password", id="current-password")
 
-        with Vertical(classes="field"):
+        with Vertical(classes="field password-field"):
             yield Static("New Password", classes="field-label")
             yield PasswordInput(placeholder="New Password", id="new-password")
 
-        with Vertical(classes="field"):
+        with Vertical(classes="field password-field"):
             yield Static("Confirm New Password", classes="field-label")
             yield PasswordInput(placeholder="Confirm New Password", id="confirm-password")
 
-        yield PrimaryButton("Update Password", id="update-password")
+        with Horizontal(classes="button-row"):
+            yield PrimaryButton("Update Password", id="update-password")
+            yield Static(id="span-40")
+            yield DangerButton("Delete Account", id="delete-account")
 
-        # Delete Account Section
-        yield Static("Delete Account", classes="danger-title")
-        yield Static(
-            "Once you delete your account, there is no going back. Please be certain.",
-            classes="danger-warning"
-        )
-        yield DangerButton("Delete Account", id="delete-account")
-
-    def on_button_pressed(self, event: Button.Pressed) -> None:
-        """Handle button press events."""
-        event.stop()
-        
-        if event.button.id == "update-password":
-            self.handle_update_password()
-        elif event.button.id == "delete-account":
-            self.handle_delete_account()
-
+    @on(Button.Pressed, "#update-password")
     def handle_update_password(self) -> None:
         """Handles the password update process by verifying new password confirmation."""
         current_password = self.query_one("#current-password", PasswordInput).value
@@ -76,9 +63,10 @@ class SecurityView(BaseView):
 
         self.screen.toast("WIP")
 
+    @on(Button.Pressed, "#delete-account")
     def handle_delete_account(self) -> None:
         """Opens the Delete Account modal."""
-        self.screen.show_modal(DeleteAccountModal(on_toast=self.screen.toast))
+        self.screen.show_modal(DeleteAccountModal())
 
     def on_view_activated(self) -> None:
         """Called when the view is activated."""
