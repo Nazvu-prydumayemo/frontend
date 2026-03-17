@@ -43,4 +43,4 @@ class TUIApplication(App):
 
     def on_mount(self) -> None:
         """Mount the first screen when the app starts."""
-        self.push_screen("main")
+        self.push_screen("profile")

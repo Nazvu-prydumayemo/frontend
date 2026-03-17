@@ -9,6 +9,7 @@ class BaseModal(ModalScreen):
     """Base class for all modals."""
 
     def compose(self) -> ComposeResult:
+        """Compose the modal with a centered container."""
         with Container(id="modal-container"):
             yield from self.compose_modal()
 

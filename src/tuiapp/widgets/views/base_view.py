@@ -1,15 +1,16 @@
 from abc import abstractmethod
 
 from textual.app import ComposeResult
-from textual.containers import Container
+from textual.containers import VerticalScroll
 
 
-class BaseView(Container):
-    """Base class for all views."""
+class BaseView(VerticalScroll):
+    """Base class for all views with scrolling support."""
+
+    DEFAULT_CLASSES = "view-container"
 
     def compose(self) -> ComposeResult:
-        with Container(classes="view-container"):
-            yield from self.compose_view()
+        yield from self.compose_view()
 
     """Each subclass should handle button events of the view."""
 
