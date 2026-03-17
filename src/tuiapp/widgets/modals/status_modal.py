@@ -30,7 +30,7 @@ class StatusModal(BaseModal):
 
     def compose_modal(self) -> ComposeResult:
         """Build the modal's UI layout with message and action buttons."""
-        with Vertical(id="modal-container"):
+        with Vertical(id="status-modal"):
             yield Static("Are you sure you want to check the status?", id="modal-status-message")
             yield PrimaryButton("Confirm", id="confirm")
             yield SecondaryButton("Cancel", id="cancel")
