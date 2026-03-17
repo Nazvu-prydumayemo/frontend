@@ -5,7 +5,7 @@ from textual.containers import VerticalScroll
 
 
 class BaseView(VerticalScroll):
-    """Base class for all views with scrolling support."""
+    """Base class for all views."""
 
     DEFAULT_CLASSES = "view-container"
 
@@ -28,3 +28,4 @@ class BaseView(VerticalScroll):
     def on_view_closed(self) -> None:
         """Each subclass should define what happens the view is closed."""
         pass
+    

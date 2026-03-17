@@ -1,5 +1,5 @@
 from textual.app import ComposeResult
-from textual.containers import Container, Horizontal, ScrollableContainer, Vertical
+from textual.containers import Vertical
 from textual.widgets import Button, Static
 
 from tuiapp.widgets.buttons import DangerButton, PrimaryButton
@@ -9,21 +9,13 @@ from tuiapp.widgets.views.base_view import BaseView
 
 
 class SecurityView(BaseView):
-    """Security tab view for updating the user's password and managing account.
-    
-    Requirements:
-    1. Should inherit from Base View class ✓
-    2. Use custom made components ✓
-    3. Should check if Passwords match ✓
-    4. Pressing Update Password should do a Toast saying "WIP" ✓
-    5. Pressing Delete Account should make a Delete Account Modal popup ✓
-    """
+    """Security tab view for updating the user's password and managing account."""
 
     def compose_view(self) -> ComposeResult:
         """Compose the view with password change section and delete account button."""
         
-        
-        yield Static("🔒 Change Password", classes="section-title")
+        # Change Password Section
+        yield Static("Change Password", classes="section-title")
         
         with Vertical(classes="field"):
             yield Static("Current Password", classes="field-label")
@@ -39,17 +31,13 @@ class SecurityView(BaseView):
 
         yield PrimaryButton("Update Password", id="update-password")
 
-        
-        yield Static("")
-        yield Static("")
-
-        yield Static("━" * 50, classes="divider")
-        yield Static("⚠️  DELETE ACCOUNT", classes="danger-title")
+        # Delete Account Section
+        yield Static("Delete Account", classes="danger-title")
         yield Static(
             "Once you delete your account, there is no going back. Please be certain.",
             classes="danger-warning"
         )
-        yield DangerButton("Delete Account", id="delete-account", classes="delete-btn")
+        yield DangerButton("Delete Account", id="delete-account")
 
     def on_button_pressed(self, event: Button.Pressed) -> None:
         """Handle button press events."""
@@ -61,16 +49,11 @@ class SecurityView(BaseView):
             self.handle_delete_account()
 
     def handle_update_password(self) -> None:
-        """Handles the password update process by verifying new password confirmation.
-        
-        Requirement 3: Should check if Passwords match
-        Requirement 4: Pressing Update Password should do a Toast saying "WIP"
-        """
+        """Handles the password update process by verifying new password confirmation."""
         current_password = self.query_one("#current-password", PasswordInput).value
         new_password = self.query_one("#new-password", PasswordInput).value
         confirm_password = self.query_one("#confirm-password", PasswordInput).value
 
-    
         if not current_password:
             self.screen.toast("Please enter your current password")
             return
@@ -83,25 +66,19 @@ class SecurityView(BaseView):
             self.screen.toast("Please confirm your new password")
             return
 
-       
         if new_password != confirm_password:
             self.screen.toast("Passwords do not match")
             return
 
-      
         if current_password == new_password:
             self.screen.toast("New password must be different from current password")
             return
 
-
         self.screen.toast("WIP")
 
     def handle_delete_account(self) -> None:
-        """Opens the Delete Account modal.
-        
-        Requirement 5: Pressing Delete Account should make a Delete Account Modal popup
-        """
-        self.screen.show_modal(DeleteAccountModal())
+        """Opens the Delete Account modal."""
+        self.screen.show_modal(DeleteAccountModal(on_toast=self.screen.toast))
 
     def on_view_activated(self) -> None:
         """Called when the view is activated."""

@@ -47,16 +47,19 @@ Vertical {
 .text-input:focus {
     border: solid #2a2a2a;
 }
+
 Tab.-active {
     color: white;
     background: transparent;
 }
+
 TabbedContent {
     margin-top: 2;
     width: 90%;
     height: 50%;
     margin: 2 4;
 }
+
 #login-container {
     width: 50%;
     height: auto;
@@ -99,3 +102,21 @@ PasswordInput {
     border: none;
 }
 
+/* Horizontal layout for name fields */
+.name-fields {
+    height: auto;
+    width: 100%;
+}
+
+.name-fields .field {
+    width: 1fr;
+    margin: 0 1;
+}
+
+.name-fields .field:first-child {
+    margin-left: 0;
+}
+
+.name-fields .field:last-child {
+    margin-right: 0;
+}

@@ -3,12 +3,11 @@ BaseModal {
 }
 
 #modal-container {
-    width: 80;
+    width: auto;
     height: auto;
-    max-height: 90%;
+    align: center middle;
     background: $surface;
-    border: none;
-    padding: 2;
+    padding: 1 2;
 }
 
 #modal-status-message {

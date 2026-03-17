@@ -1,3 +1,7 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Callable
+
 from textual.app import ComposeResult
 from textual.containers import Center, Horizontal, Vertical
 from textual.widgets import Button, Static
@@ -6,32 +10,41 @@ from tuiapp.widgets.buttons import DangerButton, SecondaryButton
 from tuiapp.widgets.inputs import PasswordInput
 from tuiapp.widgets.modals.base_modal import BaseModal
 
+if TYPE_CHECKING:
+    pass
+
 
 class DeleteAccountModal(BaseModal):
-    """Modal for confirming the deletion of the user's account.
-    
-    This modal requires the user to enter and confirm their password
-    before allowing account deletion.
-    """
+    """Modal for confirming the deletion of the user's account."""
+
+    def __init__(self, on_toast: Callable[[str], None], **kwargs):
+        """Initialize the modal with a toast callback.
+        
+        Args:
+            on_toast: Callback function to display toast messages.
+            **kwargs: Additional keyword arguments passed to BaseModal.
+        """
+        super().__init__(**kwargs)
+        self.on_toast = on_toast
 
     def compose_modal(self) -> ComposeResult:
         """Compose the modal with password inputs and buttons to confirm or cancel account deletion."""
         
         with Vertical(id="delete-account-modal"):
-            # Red X icon
+           
             with Center():
                 yield Static("✕", id="delete-icon")
             
-            # Title
+       
             yield Static("Delete Account", id="modal-title")
             
-            # Description
+          
             yield Static(
                 "Are you absolutely sure you wish to delete your account?",
                 classes="modal-description"
             )
             
-            # Password fields
+         
             with Vertical(classes="field"):
                 yield Static("Password", classes="field-label")
                 yield PasswordInput(placeholder="", id="password")
@@ -40,7 +53,7 @@ class DeleteAccountModal(BaseModal):
                 yield Static("Confirm Password", classes="field-label")
                 yield PasswordInput(placeholder="", id="confirm-password")
 
-            # Buttons
+          
             with Horizontal(classes="modal-buttons"):
                 yield SecondaryButton("Cancel", id="cancel")
                 yield DangerButton("Delete Account", id="delete")
@@ -63,20 +76,20 @@ class DeleteAccountModal(BaseModal):
         password = self.query_one("#password", PasswordInput).value
         confirm_password = self.query_one("#confirm-password", PasswordInput).value
 
-        # Validate both fields are filled
+    
         if not password:
-            self.screen.toast("Please enter your password")
+            self.on_toast("Please enter your password")
             return
 
         if not confirm_password:
-            self.screen.toast("Please confirm your password")
+            self.on_toast("Please confirm your password")
             return
 
-        # Check if passwords match
+       
         if password != confirm_password:
-            self.screen.toast("Passwords do not match")
+            self.on_toast("Passwords do not match")
             return
 
-        # All validations passed - proceed with deletion (WIP)
-        self.screen.toast("WIP")
+        
+        self.on_toast("WIP")
         self.app.pop_screen()

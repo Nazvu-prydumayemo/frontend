@@ -1,5 +1,5 @@
 from textual.app import ComposeResult
-from textual.containers import Vertical
+from textual.containers import Horizontal, Vertical
 from textual.widgets import Button, Static
 
 from tuiapp.widgets.buttons import PrimaryButton
@@ -13,18 +13,22 @@ class PersonalInfoView(BaseView):
     def compose_view(self) -> ComposeResult:
         """Compose the view with form inputs and a button to save changes."""
         
-        with Vertical(classes="field"):
-            yield Static("First Name", classes="field-label")
-            yield TextInput(placeholder="Enter first name", id="first-name")
+        # First Name and Last Name horizontally
+        with Horizontal(classes="name-fields"):
+            with Vertical(classes="field"):
+                yield Static("First Name", classes="field-label")
+                yield TextInput(placeholder="Enter first name", id="first-name")
 
-        with Vertical(classes="field"):
-            yield Static("Last Name", classes="field-label")
-            yield TextInput(placeholder="Enter last name", id="last-name")
+            with Vertical(classes="field"):
+                yield Static("Last Name", classes="field-label")
+                yield TextInput(placeholder="Enter last name", id="last-name")
 
+        # Email field
         with Vertical(classes="field"):
             yield Static("Email Address", classes="field-label")
             yield TextInput(placeholder="Enter email", id="email", disabled=True)
 
+        # Save button
         yield PrimaryButton("Save Changes", id="save-changes")
 
     def on_button_pressed(self, event: Button.Pressed) -> None:
