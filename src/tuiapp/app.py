@@ -4,7 +4,7 @@ from typing import ClassVar
 from textual.app import App
 
 from tuiapp.api.client import APIClient
-from tuiapp.api.status import StatusService
+from tuiapp.api.status import StatusCheckService
 from tuiapp.screens.login_screen import LoginScreen
 from tuiapp.screens.main_screen import MainScreen
 from tuiapp.screens.profile_screen import ProfileScreen
@@ -21,7 +21,7 @@ class TUIApplication(App):
             client: The API client for communicating with the backend.
         """
         super().__init__()
-        self.status = StatusService(client)
+        self.status = StatusCheckService(client)
 
     DEFAULT_CSS_FOLDER = Path("styles")
     CSS_PATH: ClassVar = [
@@ -45,4 +45,4 @@ class TUIApplication(App):
 
     def on_mount(self) -> None:
         """Mount the first screen when the app starts."""
-        self.push_screen("profile")
+        self.push_screen("main")
