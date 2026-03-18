@@ -1,14 +1,22 @@
+"""Registration screen for creating new user accounts."""
+
+from textual import on
 from textual.app import ComposeResult
 from textual.containers import Center, Vertical
-from textual.widgets import Footer, Header, Static
+from textual.widgets import Button, Footer, Header, Static
 
+from tuiapp.api.auth.schema import RegisterRequest, TokenResult
 from tuiapp.screens.base_screen import BaseScreen
 from tuiapp.widgets.buttons import PrimaryButton, SecondaryButton
 from tuiapp.widgets.forms.register_form import RegisterForm
 
 
 class RegisterScreen(BaseScreen):
-    """Register screen with register form."""
+    """Registration screen for creating new user accounts.
+
+    Collects user details and registers a new account with the backend.
+    On success, stores tokens and navigates to the hub screen.
+    """
 
     def compose(self) -> ComposeResult:
         yield Header()
@@ -20,19 +28,32 @@ class RegisterScreen(BaseScreen):
                 yield SecondaryButton("Back", id="back")
         yield Footer()
 
-    def on_button_pressed(self, event) -> None:
-        if event.button.id == "register":
-            data = self.query_one(RegisterForm).get_data()
+    @on(Button.Pressed, "#register")
+    async def register(self) -> None:
+        result = self.query_one(RegisterForm).get_data()
 
-            if not all(data.values()):
-                self.toast("All fields required!")
-                return
+        if isinstance(result, str):
+            self.toast(result)
+            return
 
-            if data["password"] != data["confirm"]:
-                self.toast("Passwords don't match!")
-                return
+        await self._register(result)
 
-            self.toast("Successful registration!")
+    @on(Button.Pressed, "#back")
+    def back(self) -> None:
+        self.go_back()
 
-        elif event.button.id == "back":
-            self.go_back()
+    async def _register(self, data: RegisterRequest) -> None:
+        button = self.query_one("#register", PrimaryButton)
+        button.disabled = True
+
+        response: TokenResult = await self.app.auth.register(json=data)
+
+        self.toast(response.message)
+        button.disabled = False
+
+        if response.status == "success" and response.token is not None:
+            self.app.token_manager.set_refresh_token(response.token.refresh_token)
+            self.app.token_manager.access_token = response.token.access_token
+            self.app.client.set_access_token(response.token.access_token)
+
+            self.change_screen("hub")
