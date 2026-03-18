@@ -47,3 +47,65 @@ Vertical {
 .text-input:focus {
     border: solid #2a2a2a;
 }
+
+Tab.-active {
+    color: white;
+    background: transparent;
+}
+
+TabbedContent {
+    margin-top: 2;
+    width: 100%;
+    height: 100%;
+    margin: 2 4;
+}
+
+TabbedContent > TabBar {
+    width: 100%;
+}
+
+TabbedContent > TabBar > Tab {
+    width: 33%;
+}
+
+#login-container {
+    width: 50%;
+    height: auto;
+}
+
+#login-title {
+    text-align: center;
+    text-style: bold;
+    margin-bottom: 1;
+}
+
+PasswordInput {
+    height: 3;
+    width: 100%;
+}
+
+.password-row {
+    height: 3;
+    width: 100%;
+}
+
+.password-row .text-input {
+    width: 1fr;
+}
+
+.toggle-btn {
+    width: 3;
+    min-width: 3;
+    height: 3;
+    border: none;
+    background: #2a2a2a;
+    color: white;
+    margin: 0;
+    padding: 0;
+}
+
+.toggle-btn:hover,
+.toggle-btn:focus {
+    background: #2a2a2a;
+    border: none;
+}

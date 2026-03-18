@@ -6,6 +6,8 @@ RegisterScreen {
     width: auto;
     height: auto;
     align: center middle;
+    background: $surface;
+    padding: 1 4;
 }
 
 #register-title {

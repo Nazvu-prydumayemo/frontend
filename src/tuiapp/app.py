@@ -10,6 +10,7 @@ from tuiapp.api.status.status import StatusService
 from tuiapp.screens.hub_screen import HubScreen
 from tuiapp.screens.login_screen import LoginScreen
 from tuiapp.screens.main_screen import MainScreen
+from tuiapp.screens.profile_screen import ProfileScreen
 from tuiapp.screens.register_screen import RegisterScreen
 
 
@@ -36,6 +37,8 @@ class TUIApplication(App):
         DEFAULT_CSS_FOLDER / "main.tcss",
         DEFAULT_CSS_FOLDER / "login.tcss",
         DEFAULT_CSS_FOLDER / "register.tcss",
+        DEFAULT_CSS_FOLDER / "modals.tcss",
+        DEFAULT_CSS_FOLDER / "views.tcss",
     ]
     TITLE = "Tennis App"
     SUB_TITLE = "Tennis App Local Client"
@@ -44,6 +47,7 @@ class TUIApplication(App):
         "main": MainScreen,
         "login": LoginScreen,
         "register": RegisterScreen,
+        "profile": ProfileScreen,
         "hub": HubScreen,
     }
 

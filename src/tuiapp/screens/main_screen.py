@@ -5,6 +5,7 @@ from textual.widgets import Button, Footer, Header
 from tuiapp.api.errors import APIError
 from tuiapp.screens.base_screen import BaseScreen
 from tuiapp.widgets.buttons import PrimaryButton
+from tuiapp.widgets.modals.status_modal import StatusModal
 
 
 class MainScreen(BaseScreen):
@@ -27,7 +28,11 @@ class MainScreen(BaseScreen):
             case "register":
                 self.change_screen("register")
             case "status":
-                self.run_worker(self._fetch_status, exclusive=True)
+                self.show_modal(
+                    StatusModal(
+                        on_confirm=lambda: self.run_worker(self._fetch_status, exclusive=True)
+                    )
+                )
             case "exit":
                 self.app.exit()
 
