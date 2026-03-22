@@ -26,4 +26,4 @@ class ProfileScreen(BaseScreen):
 
     @on(TabbedContent.TabActivated, "#logout")
     def logout(self) -> None:
-        self.toast("I logout")  # Placeholder for now, because logout can't be used as a button?
+        self.toast("I logout")

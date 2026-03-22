@@ -3,13 +3,12 @@
 from textual import on
 from textual.app import ComposeResult
 from textual.containers import Center, Vertical
-from textual.widgets import Button, Footer, Static
+from textual.widgets import Button, Footer, Header, Static
 
 from tuiapp.api.auth.schema import LoginRequest, TokenResult
 from tuiapp.screens.base_screen import BaseScreen
 from tuiapp.widgets.buttons import PrimaryButton, SecondaryButton
 from tuiapp.widgets.forms.login_form import LoginForm
-from tuiapp.widgets.header import Header
 
 
 class LoginScreen(BaseScreen):
@@ -20,7 +19,7 @@ class LoginScreen(BaseScreen):
     """
 
     def compose(self) -> ComposeResult:
-        yield Header(screen_name="login")
+        yield Header()
         with Center():
             with Vertical(id="login-container"):
                 yield Static("LOGIN", id="login-title")
