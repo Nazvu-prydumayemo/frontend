@@ -11,18 +11,6 @@ class TextInput(Input):
         self.add_class("text-input")
 
 
-class EmailInput(Input):
-    """Email input component that allows @ symbol."""
-
-    def __init__(self, placeholder: str = "Email", **kwargs):
-        super().__init__(
-            placeholder=placeholder,
-            restrict=None,  
-            **kwargs
-        )
-        self.add_class("text-input")
-
-
 class PasswordInput(Widget):
     """Password input component with show/hide toggle."""
 
@@ -35,13 +23,7 @@ class PasswordInput(Widget):
 
     def compose(self):
         with Horizontal(classes="password-row"):
-            yield Input(
-                password=True, 
-                placeholder=self._placeholder, 
-                id="password-field", 
-                classes="text-input",
-                restrict=None 
-            )
+            yield Input(password=True, placeholder=self._placeholder, id="password-field", classes="text-input")
             yield Button(self.SHOW, id="toggle-password", classes="toggle-btn")
 
     def on_button_pressed(self, event: Button.Pressed):
