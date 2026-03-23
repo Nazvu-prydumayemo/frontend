@@ -51,12 +51,17 @@ class Header(Widget):
     @on(PrimaryButton.Pressed, "#home-btn")
     def action_home(self) -> None:
         """Navigate to the hub screen."""
-        self.screen.change_screen("hub")
+       
+       
+        if self.screen_name != "hub":
+            self.screen.change_screen("hub")
 
     @on(PrimaryButton.Pressed, "#profile-btn")
     def action_profile(self) -> None:
         """Navigate to the profile screen."""
-        self.screen.change_screen("profile")
+        
+        if self.screen_name != "profile":
+            self.screen.change_screen("profile")
 
     @on(SecondaryButton.Pressed, "#logout-btn")
     def action_logout(self) -> None:

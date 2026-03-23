@@ -1,11 +1,10 @@
 from textual.app import ComposeResult
 from textual.containers import Vertical
-from textual.widgets import Button, Footer
+from textual.widgets import Button, Footer, Header
 
 from tuiapp.api.errors import APIError
 from tuiapp.screens.base_screen import BaseScreen
 from tuiapp.widgets.buttons import PrimaryButton
-from tuiapp.widgets.header import Header
 from tuiapp.widgets.modals.status_modal import StatusModal
 
 
@@ -13,7 +12,7 @@ class MainScreen(BaseScreen):
     """Main screen with navigation buttons: Login, Register, Status, and Exit."""
 
     def compose(self) -> ComposeResult:
-        yield Header(screen_name="main")
+        yield Header()
         yield Vertical(
             PrimaryButton("Login", id="login"),
             PrimaryButton("Register", id="register"),

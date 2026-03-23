@@ -5,7 +5,7 @@ from textual.widget import Widget
 from textual.widgets import Static
 
 from tuiapp.api.auth.schema import RegisterRequest
-from tuiapp.widgets.inputs import PasswordInput, TextInput
+from tuiapp.widgets.inputs import EmailInput, PasswordInput, TextInput
 
 
 class RegisterForm(Widget):
@@ -23,7 +23,7 @@ class RegisterForm(Widget):
 
             with Vertical(classes="field"):
                 yield Static("Email", classes="field-label")
-                yield TextInput(placeholder="example@email.com", id="email")
+                yield EmailInput(placeholder="example@email.com", id="email")
 
             with Vertical(classes="field"):
                 yield Static("Password", classes="field-label")
@@ -41,7 +41,7 @@ class RegisterForm(Widget):
         """
         firstname = self.query_one("#firstname", TextInput).value
         lastname = self.query_one("#lastname", TextInput).value
-        email = self.query_one("#email", TextInput).value
+        email = self.query_one("#email", EmailInput).value
         password = self.query_one("#password", PasswordInput).value
         confirm = self.query_one("#confirm", PasswordInput).value
 

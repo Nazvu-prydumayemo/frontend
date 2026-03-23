@@ -5,7 +5,7 @@ from textual.widget import Widget
 from textual.widgets import Static
 
 from tuiapp.api.auth.schema import LoginRequest
-from tuiapp.widgets.inputs import PasswordInput, TextInput
+from tuiapp.widgets.inputs import EmailInput, PasswordInput
 
 
 class LoginForm(Widget):
@@ -15,7 +15,7 @@ class LoginForm(Widget):
         with Vertical(id="form"):
             with Vertical(classes="field"):
                 yield Static("Email", classes="field-label")
-                yield TextInput(placeholder="example@email.com", id="email")
+                yield EmailInput(placeholder="example@email.com", id="email")
 
             with Vertical(classes="field"):
                 yield Static("Password", classes="field-label")
@@ -27,7 +27,7 @@ class LoginForm(Widget):
         Returns:
             A pydantic model with email and password values or string error if invalid data was provided.
         """
-        email = self.query_one("#email", TextInput).value
+        email = self.query_one("#email", EmailInput).value
         password = self.query_one("#password", PasswordInput).value
         if not email or not password:
             return "All fields required"

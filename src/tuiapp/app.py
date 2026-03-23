@@ -59,4 +59,4 @@ class TUIApplication(App):
             self.push_screen("main")
             return
 
-        self.push_screen("hub")
+        self.push_screen("profile")
