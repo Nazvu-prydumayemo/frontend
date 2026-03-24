@@ -1,12 +1,10 @@
 """Hub screen - the main authenticated user dashboard."""
 
-from textual import on
 from textual.app import ComposeResult
-from textual.containers import Vertical
-from textual.widgets import Button, Footer, Header, Static
+from textual.widgets import Footer
 
 from tuiapp.screens.base_screen import BaseScreen
-from tuiapp.widgets.buttons import PrimaryButton
+from tuiapp.widgets.header import Header
 
 
 class HubScreen(BaseScreen):
@@ -16,14 +14,5 @@ class HubScreen(BaseScreen):
     """
 
     def compose(self) -> ComposeResult:
-        yield Header()
-        yield Vertical(
-            Static("Hello User!"),
-            PrimaryButton("Me", id="me"),
-        )
+        yield Header(screen_name="hub")
         yield Footer()
-
-    @on(Button.Pressed, "#me")
-    async def me(self) -> None:
-        status: str = await self.app.auth.me()
-        self.toast(status)
