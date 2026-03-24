@@ -1,3 +1,5 @@
+"""Account service for managing user account operations."""
+
 from tuiapp.api.account.schema import (
     Delete,
     DeleteRequest,
@@ -12,10 +14,32 @@ from tuiapp.api.schema import Result
 
 
 class AccountService:
+    """Service for managing user account operations.
+
+    Provides methods for fetching user profile, updating personal information,
+    changing password, and deleting the account.
+
+    Attributes:
+        _client: The API client used for making requests.
+    """
+
     def __init__(self, client: APIClient) -> None:
+        """Initialize the AccountService.
+
+        Args:
+            client: The APIClient instance for making API requests.
+        """
         self._client = client
 
     async def me(self) -> UserResult:
+        """Fetch the current user's profile information.
+
+        Calls the /account/me endpoint to retrieve the authenticated user's
+        details including firstname, lastname, email, and account status.
+
+        Returns:
+            UserResult: Contains the user data on success, or error status and message on failure.
+        """
         try:
             response = await self._client.get("/account/me", User)
             return UserResult(user=response, message="Authenticated", status="success")
@@ -29,6 +53,17 @@ class AccountService:
             )
 
     async def profile(self, json: ProfileRequest) -> UserResult:
+        """Update the user's profile information.
+
+        Sends a PATCH request to /account/profile with the provided firstname
+        and/or lastname to update the user's personal information.
+
+        Args:
+            json: ProfileRequest containing the fields to update.
+
+        Returns:
+            UserResult: Contains updated user data on success, or error status and message on failure.
+        """
         try:
             response = await self._client.patch("/account/profile", json=json, response_model=User)
             return UserResult(
@@ -44,6 +79,17 @@ class AccountService:
             )
 
     async def change_password(self, json: PasswordRequest) -> UserResult:
+        """Change the user's password.
+
+        Sends a POST request to /account/change-password with the current
+        and new password to update the user's password.
+
+        Args:
+            json: PasswordRequest containing current and new password.
+
+        Returns:
+            UserResult: Contains success message on success, or error status and message on failure.
+        """
         try:
             response = await self._client.post(
                 "/account/change-password", json=json, response_model=User
@@ -72,6 +118,17 @@ class AccountService:
             )
 
     async def delete(self, json: DeleteRequest) -> Result:
+        """Delete the user's account.
+
+        Sends a POST request to /account/delete with the user's password
+        to permanently delete the account.
+
+        Args:
+            json: DeleteRequest containing the user's password for verification.
+
+        Returns:
+            Result: Contains success message on success, or error status and message on failure.
+        """
         try:
             await self._client.post("account/delete", json=json, response_model=Delete)
             return Result(message="Account deleted successfully", status="success")
