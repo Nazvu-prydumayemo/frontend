@@ -1,6 +1,6 @@
 """Authentication service for handling login, registration, and user information."""
 
-from tuiapp.api.auth.schema import LoginRequest, Me, RegisterRequest, Token, TokenResult
+from tuiapp.api.auth.schema import LoginRequest, RegisterRequest, Token, TokenResult
 from tuiapp.api.client import APIClient
 from tuiapp.api.errors import APIError
 
@@ -70,21 +70,3 @@ class AuthService:
                 return TokenResult(
                     token=None, message=f"Server error: {error.status_code}", status="error"
                 )
-
-    async def me(self) -> str:
-        """Retrieve the current authenticated user's information.
-
-        Returns:
-            A greeting message with user ID on success, or an error
-            message on failure.
-        """
-        try:
-            response = await self._client.get("/auth/me", response_model=Me)
-            return f"Good Me! {response.id}"
-
-        except APIError as error:
-            if error.status_code in (400, 401, 403):
-                return "Bad Me!"
-
-            else:
-                return "Bad Server Me!"

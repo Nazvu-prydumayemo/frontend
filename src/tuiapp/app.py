@@ -3,6 +3,7 @@ from typing import ClassVar
 
 from textual.app import App
 
+from tuiapp.api.account.account import AccountService
 from tuiapp.api.auth.auth import AuthService
 from tuiapp.api.auth.token_manager import TokenManagerService
 from tuiapp.api.client import APIClient
@@ -29,6 +30,7 @@ class TUIApplication(App):
 
         self.status = StatusService(self.client)
         self.auth = AuthService(self.client)
+        self.account = AccountService(self.client)
 
     DEFAULT_CSS_FOLDER = Path("styles")
     CSS_PATH: ClassVar = [

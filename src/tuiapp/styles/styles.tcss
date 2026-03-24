@@ -2,6 +2,10 @@ Screen {
     layers: base notification;
 }
 
+BaseScreen {
+    background: $surface;
+}
+
 Toast {
     layer: notification;
     dock: right;

@@ -6,8 +6,8 @@ from textual.widgets import Button, Input
 class TextInput(Input):
     """Text input component."""
 
-    def __init__(self, placeholder: str, **kwargs):
-        super().__init__(placeholder=placeholder, **kwargs)
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
         self.add_class("text-input")
 
 
@@ -23,7 +23,12 @@ class PasswordInput(Widget):
 
     def compose(self):
         with Horizontal(classes="password-row"):
-            yield Input(password=True, placeholder=self._placeholder, id="password-field", classes="text-input")
+            yield Input(
+                password=True,
+                placeholder=self._placeholder,
+                id="password-field",
+                classes="text-input",
+            )
             yield Button(self.SHOW, id="toggle-password", classes="toggle-btn")
 
     def on_button_pressed(self, event: Button.Pressed):
