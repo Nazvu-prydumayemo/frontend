@@ -5,12 +5,13 @@ from textual.app import ComposeResult
 from textual.containers import Horizontal, Vertical
 from textual.widgets import Button, Static
 
+from tuiapp.api.account.schema import ProfileRequest
 from tuiapp.widgets.buttons import PrimaryButton
 from tuiapp.widgets.inputs import TextInput
 from tuiapp.widgets.views.base_view import BaseView
 
 if TYPE_CHECKING:
-    from tuiapp.api.account.schema import MeResponse
+    from tuiapp.api.account.schema import User
 
 
 class PersonalInfoView(BaseView):
@@ -18,7 +19,7 @@ class PersonalInfoView(BaseView):
 
     def __init__(self, **kwargs) -> None:
         super().__init__(**kwargs)
-        self.user: MeResponse | None = None
+        self.user: User | None = None
 
     def compose_view(self) -> ComposeResult:
         with Horizontal(classes="name-fields"):
@@ -37,16 +38,26 @@ class PersonalInfoView(BaseView):
         yield PrimaryButton("Save Changes", id="save-changes")
 
     @on(Button.Pressed, "#save-changes")
-    def save_changes(self) -> None:
+    async def save_changes(self) -> None:
         """Handles saving the changes made to personal information."""
-        first_name = self.query_one("#first-name", TextInput).value
-        last_name = self.query_one("#last-name", TextInput).value
+        firstname = self.query_one("#first-name", TextInput).value
+        lastname = self.query_one("#last-name", TextInput).value
 
-        if not first_name or not last_name:
-            self.screen.toast("Please fill in all fields")
+        request = ProfileRequest(
+            firstname=(firstname if firstname != "" else None),
+            lastname=(lastname if lastname != "" else None),
+        )
+
+        result = await self.app.account.profile(request)
+
+        if result.status != "success":
+            self.notify(result.message, title="Profile", severity="error")
             return
 
-        self.screen.toast("WIP")
+        self.notify(result.message, title="Profile")
+
+        self.user = result.user
+        self.on_view_activated()
 
     def on_view_activated(self) -> None:
         if self.user is None:

@@ -1,7 +1,9 @@
+from typing import Literal
+
 from pydantic import BaseModel, EmailStr
 
 
-class MeResponse(BaseModel):
+class User(BaseModel):
     """Response model for current user information.
 
     Attributes:
@@ -19,3 +21,14 @@ class MeResponse(BaseModel):
     id: int
     role_id: int
     is_active: bool
+
+
+class ProfileRequest(BaseModel):
+    firstname: str | None
+    lastname: str | None
+
+
+class MeResult(BaseModel):
+    user: User | None
+    message: str
+    status: Literal["success", "invalid", "error"]

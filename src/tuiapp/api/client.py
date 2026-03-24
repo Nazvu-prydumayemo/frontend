@@ -120,6 +120,21 @@ class APIClient:
         data = await self._request("POST", endpoint, json=json, **kwargs)
         return response_model.model_validate(data)
 
+    async def patch(self, endpoint: str, json: BaseModel, response_model: type[T], **kwargs) -> T:
+        """Send an HTTP PATCH request to the API.
+
+        Args:
+            endpoint: The API endpoint to request.
+            json: The data to send in the request body.
+            response_model: The Pydantic model to validate the response.
+            **kwargs: Additional arguments to pass to the request.
+
+        Returns:
+            The validated response data as the specified model.
+        """
+        data = await self._request("PATCH", endpoint, json=json, **kwargs)
+        return response_model.model_validate(data)
+
     async def __aenter__(self) -> Self:
         return self
 
