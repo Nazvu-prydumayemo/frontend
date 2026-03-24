@@ -1,7 +1,7 @@
 from textual import on
 from textual.events import Mount
 
-from tuiapp.api.account.schema import MeResult, User
+from tuiapp.api.account.schema import User, UserResult
 
 
 class AuthGuard:
@@ -9,7 +9,7 @@ class AuthGuard:
 
     @on(Mount)
     async def _auth_guard(self) -> None:
-        result: MeResult = await self.app.account.me()  # type: ignore
+        result: UserResult = await self.app.account.me()  # type: ignore
         if result.user is None or result.status != "success":
             self.app.pop_screen()  # type: ignore
             self.app.push_screen("main")  # type: ignore

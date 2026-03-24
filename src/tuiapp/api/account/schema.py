@@ -1,6 +1,6 @@
-from typing import Literal
-
 from pydantic import BaseModel, EmailStr
+
+from tuiapp.api.schema import Result
 
 
 class User(BaseModel):
@@ -23,6 +23,10 @@ class User(BaseModel):
     is_active: bool
 
 
+class Delete(BaseModel):
+    message: str
+
+
 class ProfileRequest(BaseModel):
     firstname: str | None
     lastname: str | None
@@ -33,7 +37,9 @@ class PasswordRequest(BaseModel):
     new_password: str
 
 
-class MeResult(BaseModel):
+class DeleteRequest(BaseModel):
+    password: str
+
+
+class UserResult(Result):
     user: User | None
-    message: str
-    status: Literal["success", "invalid", "error"]
