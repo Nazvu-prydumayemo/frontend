@@ -28,6 +28,11 @@ class ProfileRequest(BaseModel):
     lastname: str | None
 
 
+class PasswordRequest(BaseModel):
+    current_password: str
+    new_password: str
+
+
 class MeResult(BaseModel):
     user: User | None
     message: str

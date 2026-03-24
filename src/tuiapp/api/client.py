@@ -83,9 +83,14 @@ class APIClient:
         except httpx.HTTPStatusError as error:
             if error.response.status_code == 401 and self._on_401:
                 if await self._on_401():
-                    response = await self._client.request(method, endpoint, **kwargs)
-                    response.raise_for_status()
-                    return response.json()
+                    try:
+                        response = await self._client.request(method, endpoint, **kwargs)
+                        response.raise_for_status()
+                        return response.json()
+                    except httpx.HTTPStatusError as retry_error:
+                        raise APIError(
+                            retry_error.response.status_code, str(retry_error)
+                        ) from retry_error
 
             raise APIError(error.response.status_code, str(error)) from error
         except httpx.RequestError as error:
