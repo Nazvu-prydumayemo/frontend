@@ -10,7 +10,7 @@ from tuiapp.widgets.views.personal_information_view import PersonalInfoView
 from tuiapp.widgets.views.security_view import SecurityView
 
 
-class ProfileScreen(AuthGuard, BaseScreen):
+class ProfileScreen(AuthGuard, BaseScreen):  # type: ignore
     """Profile screen with tabs for Personal Info, Security, and Logout."""
 
     @on(Mount)

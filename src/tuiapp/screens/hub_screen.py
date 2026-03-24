@@ -8,7 +8,7 @@ from tuiapp.screens.base_screen import BaseScreen
 from tuiapp.widgets.header import Header
 
 
-class HubScreen(AuthGuard, BaseScreen):
+class HubScreen(AuthGuard, BaseScreen):  # type: ignore
     """Main dashboard screen displayed after successful authentication.
 
     Provides access to user-specific features and information.
