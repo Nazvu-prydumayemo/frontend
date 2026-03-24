@@ -1,4 +1,4 @@
-"""Custom header widget with navigation buttons."""
+from typing import TYPE_CHECKING, cast
 
 from textual import on
 from textual.app import ComposeResult
@@ -7,6 +7,9 @@ from textual.widget import Widget
 from textual.widgets import Static
 
 from tuiapp.widgets.buttons import PrimaryButton, SecondaryButton
+
+if TYPE_CHECKING:
+    from tuiapp.screens.base_screen import BaseScreen
 
 
 class Header(Widget):
@@ -45,25 +48,18 @@ class Header(Widget):
 
     @on(SecondaryButton.Pressed, "#back-btn")
     def action_back(self) -> None:
-        """Go back to the previous screen."""
-        self.screen.go_back()
+        cast("BaseScreen", self.screen).go_back()
 
     @on(PrimaryButton.Pressed, "#home-btn")
     def action_home(self) -> None:
-        """Navigate to the hub screen."""
-       
-       
         if self.screen_name != "hub":
-            self.screen.change_screen("hub")
+            cast("BaseScreen", self.screen).change_screen("hub")
 
     @on(PrimaryButton.Pressed, "#profile-btn")
     def action_profile(self) -> None:
-        """Navigate to the profile screen."""
-        
         if self.screen_name != "profile":
-            self.screen.change_screen("profile")
+            cast("BaseScreen", self.screen).change_screen("profile")
 
     @on(SecondaryButton.Pressed, "#logout-btn")
     def action_logout(self) -> None:
-        """Handle logout - shows WIP toast."""
-        self.screen.toast("WIP")
+        cast("BaseScreen", self.screen).toast("WIP")
