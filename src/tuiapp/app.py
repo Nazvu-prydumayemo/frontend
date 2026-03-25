@@ -1,7 +1,9 @@
+from collections.abc import Iterable
 from pathlib import Path
 from typing import ClassVar
 
-from textual.app import App
+from textual.app import App, SystemCommand, get_system_commands_provider
+from textual.screen import Screen
 
 from tuiapp.api.auth.auth import AuthService
 from tuiapp.api.auth.token_manager import TokenManagerService
@@ -51,6 +53,10 @@ class TUIApplication(App):
         "profile": ProfileScreen,
         "hub": HubScreen,
     }
+    COMMANDS: ClassVar = {get_system_commands_provider}
+
+    def get_system_commands(self, screen: Screen) -> Iterable[SystemCommand]:
+        yield from super().get_system_commands(screen)
 
     async def on_mount(self) -> None:
         """Mount the first screen when the app starts."""
