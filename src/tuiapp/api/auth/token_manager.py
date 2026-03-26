@@ -108,6 +108,6 @@ class TokenManagerService:
 
         def do_redirect():
             self._app.pop_screen()  # type: ignore
-            self._app.push_screen("main")  # type: ignore
+            self._app.push_screen("login")  # type: ignore
 
         self._app.call_later(do_redirect)

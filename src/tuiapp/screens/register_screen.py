@@ -7,6 +7,7 @@ from textual.widgets import Button, Footer, Header, Static
 
 from tuiapp.api.auth.schema import RegisterRequest, TokenResult
 from tuiapp.screens.base_screen import BaseScreen
+from tuiapp.screens.hub_screen import HubScreen
 from tuiapp.widgets.buttons import PrimaryButton, SecondaryButton
 from tuiapp.widgets.forms.register_form import RegisterForm
 
@@ -33,7 +34,7 @@ class RegisterScreen(BaseScreen):
         result = self.query_one(RegisterForm).get_data()
 
         if isinstance(result, str):
-            self.toast(result)
+            self.notify(result, title="Register", severity="warning")
             return
 
         await self._register(result)
@@ -48,7 +49,9 @@ class RegisterScreen(BaseScreen):
 
         response: TokenResult = await self.app.auth.register(json=data)
 
-        self.toast(response.message)
+        if response.status != "success":
+            self.notify(response.message, title="Register", severity="error")
+
         button.disabled = False
 
         if response.status == "success" and response.token is not None:
@@ -56,4 +59,4 @@ class RegisterScreen(BaseScreen):
             self.app.token_manager.access_token = response.token.access_token
             self.app.client.set_access_token(response.token.access_token)
 
-            self.change_screen("hub")
+            self.change_screen(HubScreen())
