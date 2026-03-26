@@ -10,7 +10,6 @@ from tuiapp.widgets.inputs import PasswordInput, TextInput
 
 class RegisterForm(Widget):
     """Registration form structured in 3 rows."""
-
     def compose(self) -> ComposeResult:
         with Vertical(id="form"):
             with Horizontal(classes="field-row"):

@@ -3,7 +3,7 @@ RegisterScreen {
 }
 
 #register-container {
-    width: auto;
+    width: 40%;
     height: auto;
     align: center middle;
     background: $surface;
@@ -21,22 +21,37 @@ RegisterForm {
     height: auto;
 }
 
+RegisterForm .field {
+    margin-bottom: 1;
+}
+
+.field-label {
+    margin-bottom: 0;
+    margin-top: 0;
+}
+
 .field-row {
     width: 100%;
-    height: 6;
-    margin-bottom: 1;
+    height: 5;
+    margin-bottom: 0;
 }
 
 .field-row .field {
     width: 1fr;
-    height: 6;
-    align: left top;
+    height: 5;
+    align: left bottom;
+}
+
+.field-row .field:first-child {
+    padding-right: 1;
 }
 
 .field-row Vertical {
-    height: 6;
+    height: 5;
     align: left top;
 }
-.field-row .field:first-child {
-    padding-right: 1;
+
+#register-container PrimaryButton,
+#register-container SecondaryButton {
+    width: 100%;
 }
