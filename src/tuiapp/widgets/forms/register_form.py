@@ -10,6 +10,7 @@ from tuiapp.widgets.inputs import PasswordInput, TextInput
 
 class RegisterForm(Widget):
     """Registration form structured in 3 rows."""
+
     def compose(self) -> ComposeResult:
         with Vertical(id="form"):
             with Horizontal(classes="field-row"):
@@ -24,13 +25,22 @@ class RegisterForm(Widget):
                 yield Static("Email", classes="field-label")
                 yield TextInput(placeholder="example@email.com", id="email")
 
+            yield Static(
+                "• At least 8 characters\n"
+                "• One uppercase letter\n"
+                "• One lowercase letter\n"
+                "• One number\n"
+                "• One special character (@$!%*?&)\n",
+                classes="password-hints",
+            )
+
             with Horizontal(classes="field-row"):
                 with Vertical(classes="field"):
                     yield Static("Password", classes="field-label")
-                    yield PasswordInput(placeholder="Password", id="password")
+                    yield PasswordInput(placeholder="********", id="password")
                 with Vertical(classes="field"):
                     yield Static("Confirm Password", classes="field-label")
-                    yield PasswordInput(placeholder="Confirm Password", id="confirm")
+                    yield PasswordInput(placeholder="********", id="confirm")
 
     def get_data(self) -> RegisterRequest | str:
         """Get the form data.

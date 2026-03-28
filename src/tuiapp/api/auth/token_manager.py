@@ -78,7 +78,7 @@ class TokenManagerService:
         """
         refresh_token = self.get_refresh_token()
         if not refresh_token:
-            self._redirect_to_login()
+            self._redirect_to_main()
             return False
 
         try:
@@ -100,6 +100,17 @@ class TokenManagerService:
 
             self._redirect_to_login()
             return False
+
+    def _redirect_to_main(self) -> None:
+        """Redirect user to main if no token."""
+        if self._app is None:
+            return
+
+        def do_redirect():
+            self._app.pop_screen()  # type: ignore
+            self._app.push_screen("main")  # type: ignore
+
+        self._app.call_later(do_redirect)
 
     def _redirect_to_login(self) -> None:
         """Redirect user to login screen when token refresh fails."""
