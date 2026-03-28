@@ -1,9 +1,15 @@
-from abc import abstractmethod
+from __future__ import annotations
 
-from textual.app import ComposeResult
+from abc import abstractmethod
+from typing import TYPE_CHECKING
+
 from textual.containers import Container
 
-from tuiapp.screens.base_screen import BaseScreen
+if TYPE_CHECKING:
+    from textual.app import ComposeResult
+
+    from tuiapp.app import TUIApplication
+    from tuiapp.screens.base_screen import BaseScreen
 
 
 class BaseView(Container):
@@ -34,3 +40,7 @@ class BaseView(Container):
     @property
     def screen(self) -> BaseScreen:
         return super().screen  # type: ignore
+
+    @property
+    def app(self) -> TUIApplication:
+        return super().app  # type: ignore

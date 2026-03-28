@@ -83,9 +83,14 @@ class APIClient:
         except httpx.HTTPStatusError as error:
             if error.response.status_code == 401 and self._on_401:
                 if await self._on_401():
-                    response = await self._client.request(method, endpoint, **kwargs)
-                    response.raise_for_status()
-                    return response.json()
+                    try:
+                        response = await self._client.request(method, endpoint, **kwargs)
+                        response.raise_for_status()
+                        return response.json()
+                    except httpx.HTTPStatusError as retry_error:
+                        raise APIError(
+                            retry_error.response.status_code, str(retry_error)
+                        ) from retry_error
 
             raise APIError(error.response.status_code, str(error)) from error
         except httpx.RequestError as error:
@@ -118,6 +123,21 @@ class APIClient:
             The validated response data as the specified model.
         """
         data = await self._request("POST", endpoint, json=json, **kwargs)
+        return response_model.model_validate(data)
+
+    async def patch(self, endpoint: str, json: BaseModel, response_model: type[T], **kwargs) -> T:
+        """Send an HTTP PATCH request to the API.
+
+        Args:
+            endpoint: The API endpoint to request.
+            json: The data to send in the request body.
+            response_model: The Pydantic model to validate the response.
+            **kwargs: Additional arguments to pass to the request.
+
+        Returns:
+            The validated response data as the specified model.
+        """
+        data = await self._request("PATCH", endpoint, json=json, **kwargs)
         return response_model.model_validate(data)
 
     async def __aenter__(self) -> Self:

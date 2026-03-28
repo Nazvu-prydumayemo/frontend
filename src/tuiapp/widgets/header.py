@@ -53,13 +53,17 @@ class Header(Widget):
     @on(PrimaryButton.Pressed, "#home-btn")
     def action_home(self) -> None:
         if self.screen_name != "hub":
-            cast("BaseScreen", self.screen).change_screen("hub")
+            from tuiapp.screens.hub_screen import HubScreen
+
+            cast("BaseScreen", self.screen).change_screen(HubScreen())
 
     @on(PrimaryButton.Pressed, "#profile-btn")
     def action_profile(self) -> None:
         if self.screen_name != "profile":
-            cast("BaseScreen", self.screen).change_screen("profile")
+            from tuiapp.screens.profile_screen import ProfileScreen
+
+            cast("BaseScreen", self.screen).change_screen(ProfileScreen())
 
     @on(SecondaryButton.Pressed, "#logout-btn")
     def action_logout(self) -> None:
-        cast("BaseScreen", self.screen).toast("WIP")
+        cast("BaseScreen", self.screen).notify("WIP")
