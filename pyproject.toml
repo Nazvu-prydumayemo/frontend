@@ -12,6 +12,7 @@ dependencies = [
     "pydantic[email]>=2.0",
     "pydantic-settings>=2.0",
     "keyring>=25.7.0",
+    "pyinstaller>=6.19.0",
 ]
 
 [project.optional-dependencies]

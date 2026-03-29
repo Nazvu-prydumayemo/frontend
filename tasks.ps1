@@ -7,5 +7,6 @@ switch ($Task) {
     "fix" { ruff check . --fix }
     "type" { mypy src/ }
     "test" { pytest }
+    "build" { py build.py }
     default { Write-Host "Unknown task" }
 }
