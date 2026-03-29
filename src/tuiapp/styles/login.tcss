@@ -6,7 +6,7 @@ LoginScreen {
     width: auto;
     height: auto;
     align: center middle;
-    background: $surface;
+    background: $panel;
     padding: 1 4;
 }
 

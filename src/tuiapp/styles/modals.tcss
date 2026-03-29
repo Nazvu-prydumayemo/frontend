@@ -6,7 +6,7 @@ BaseModal {
     width: 30%;
     height: auto;
     align: center middle;
-    background: $surface;
+    background: $panel;
     padding: 1 2;
 }
 

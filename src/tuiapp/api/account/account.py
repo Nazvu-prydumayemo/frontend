@@ -113,6 +113,9 @@ class AccountService:
                     status="invalid",
                 )
 
+            elif error.status_code == 422:
+                return UserResult(user=None, message="Weak password", status="error")
+
             return UserResult(
                 user=None, message=f"Server error: {error.status_code}", status="error"
             )

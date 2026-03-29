@@ -6,7 +6,7 @@ RegisterScreen {
     width: 40%;
     height: auto;
     align: center middle;
-    background: $surface;
+    background: $panel;
     padding: 1 4;
 }
 
@@ -54,4 +54,8 @@ RegisterForm .field {
 #register-container PrimaryButton,
 #register-container SecondaryButton {
     width: 100%;
+}
+
+.password-hints {
+
 }

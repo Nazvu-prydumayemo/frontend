@@ -38,7 +38,7 @@ class AuthService:
             return TokenResult(token=token, message="Login successful", status="success")
 
         except APIError as error:
-            if error.status_code in (400, 401, 403):
+            if error.status_code in (400, 401, 403, 422):
                 return TokenResult(
                     token=None, message="Invalid username or password", status="invalid"
                 )
@@ -65,6 +65,9 @@ class AuthService:
         except APIError as error:
             if error.status_code == 400:
                 return TokenResult(token=None, message="User already exists", status="error")
+
+            elif error.status_code == 422:
+                return TokenResult(token=None, message="Weak password", status="error")
 
             else:
                 return TokenResult(
