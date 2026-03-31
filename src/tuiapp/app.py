@@ -1,3 +1,4 @@
+import sys
 from pathlib import Path
 from typing import ClassVar
 
@@ -13,6 +14,14 @@ from tuiapp.screens.login_screen import LoginScreen
 from tuiapp.screens.main_screen import MainScreen
 from tuiapp.screens.profile_screen import ProfileScreen
 from tuiapp.screens.register_screen import RegisterScreen
+
+
+def get_css_folder_path() -> Path:
+    """Get the path to the CSS folder, handling PyInstaller bundling."""
+    if getattr(sys, "frozen", False):
+        return Path(sys._MEIPASS) / "styles"  # type: ignore[attr-defined]
+    else:
+        return Path(__file__).parent / "styles"
 
 
 class TUIApplication(App):
@@ -32,7 +41,7 @@ class TUIApplication(App):
         self.auth = AuthService(self.client)
         self.account = AccountService(self.client)
 
-    DEFAULT_CSS_FOLDER = Path("styles")
+    DEFAULT_CSS_FOLDER = get_css_folder_path()
     CSS_PATH: ClassVar = [
         DEFAULT_CSS_FOLDER / "styles.tcss",
         DEFAULT_CSS_FOLDER / "buttons.tcss",
