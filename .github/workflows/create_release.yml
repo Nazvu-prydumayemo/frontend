@@ -1,0 +1,66 @@
+name: Create Release
+
+on:
+    workflow_dispatch:
+        inputs:
+            version:
+                description: "Release version (e.g. v1.2.0)"
+                required: true
+                default: "v0.0.1"
+
+permissions:
+    contents: write
+
+jobs:
+    build:
+        strategy:
+            matrix:
+                include:
+                    - os: windows-latest
+                      exe_name: NP-Tennis.exe
+                      asset_name: NP-Tennis-windows.exe
+                    - os: ubuntu-latest
+                      exe_name: NP-Tennis
+                      asset_name: NP-Tennis-linux
+                    - os: macos-latest
+                      exe_name: NP-Tennis
+                      asset_name: NP-Tennis-macos
+
+        runs-on: ${{ matrix.os }}
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Set up Python
+              uses: actions/setup-python@v5
+              with:
+                  python-version: "3.14"
+
+            - name: Install dependencies
+              run: pip install pyinstaller && pip install -e .
+
+            - name: Write .env file from secrets
+              shell: bash
+              run: |
+                  cat > .env <<EOF
+                  SERVICE_NAME=${{ secrets.SERVICE_NAME }}
+                  KEY_NAME=${{ secrets.KEY_NAME }}
+                  API_URL=${{ secrets.API_URL }}
+                  EOF
+
+            - name: Build executable
+              run: python build.py
+
+            - name: Rename binary to platform asset name
+              shell: bash
+              run: mv dist/${{ matrix.exe_name }} dist/${{ matrix.asset_name }}
+
+            - name: Create GitHub Release
+              uses: softprops/action-gh-release@v2
+              with:
+                  tag_name: ${{ github.event.inputs.version }}
+                  name: NP-Tennis ${{ github.event.inputs.version }}
+                  files: dist/${{ matrix.asset_name }}
+                  draft: false
+                  prerelease: false
