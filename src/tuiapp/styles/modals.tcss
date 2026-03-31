@@ -6,7 +6,7 @@ BaseModal {
     width: 30%;
     height: auto;
     align: center middle;
-    background: $surface;
+    background: $foreground;
     padding: 1 2;
 }
 
@@ -14,7 +14,10 @@ BaseModal {
     text-align: center;
     padding-bottom: 1;
     padding-top: 1;
+    color: #2b332a;
 }
+
+
 
 #status-modal {
     width: auto;
