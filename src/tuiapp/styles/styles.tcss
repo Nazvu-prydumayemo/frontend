@@ -1,22 +1,10 @@
-Screen {
-    layers: base notification;
+BaseScreen {
+    background: #2b332a;
 }
 
-Toast {
-    layer: notification;
-    dock: right;
-    align: right top;
-    offset: 2 1;
-    width: 42;
-    height: auto;
-    border: round $accent;
-    padding: 1 2;
-    color: $text;
-}
-
-BaseScreen > Vertical {
+Vertical {
     align: center middle;
-    height: 100%;
+    height: 1fr;
     width: 100%;
 }
 
@@ -32,25 +20,28 @@ BaseScreen > Vertical {
 }
 
 .field-label {
-    color: white;
+    color: #EDE8DC;
     margin-bottom: 0;
     height: auto;
+    text-style: bold;
 }
 
 .text-input {
-    border: solid #2a2a2a;
-    background: #2a2a2a;
+    border: solid #2b332a;
+    background: #EDE8DC;
     width: 100%;
     height: 3;
+    color: #EDE8DC;
 }
 
 .text-input:focus {
-    border: solid #2a2a2a;
+    border: solid #963417;
 }
 
 Tab.-active {
-    color: white;
+    color: #EDE8DC;
     background: transparent;
+    text-style: bold;
 }
 
 TabbedContent {
@@ -77,6 +68,7 @@ TabbedContent > TabBar > Tab {
     text-align: center;
     text-style: bold;
     margin-bottom: 1;
+    color: #EDE8DC;
 }
 
 PasswordInput {
@@ -98,14 +90,14 @@ PasswordInput {
     min-width: 3;
     height: 3;
     border: none;
-    background: #2a2a2a;
-    color: white;
+    background: #2b332a;
+    color: #EDE8DC;
     margin: 0;
     padding: 0;
 }
 
 .toggle-btn:hover,
 .toggle-btn:focus {
-    background: #2a2a2a;
+    background: #2b332a;
     border: none;
 }

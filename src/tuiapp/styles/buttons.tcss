@@ -1,16 +1,35 @@
 PrimaryButton {
     width: 32;
     margin: 1 0;
+    background: #3e473a;
+    color: #EDE8DC;
+    text-style: bold;
+    border: tall #EDE8DC;
+}
+
+PrimaryButton:hover {
+    background: #EDE8DC;
+    color: #2b332a;
+    border: tall #3e473a;
 }
 
 SecondaryButton {
     width: 32;
     margin: 1 0;
+    background: transparent;
+    border: tall #963417;
+    color: #EDE8DC;
 }
 
+SecondaryButton:hover {
+    background: #EDE8DC;
+    border: tall #963417;
+    color: #963417;
+}
 DangerButton {
     width: 32;
     margin: 1 0;
-    color: white;
+    color: #EDE8DC;
     background: $error;
+    text-style: bold;
 }

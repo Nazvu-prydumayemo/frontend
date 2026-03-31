@@ -1,8 +1,8 @@
 Header {
     dock: top;
     height: 3;
-    background: $panel;
-    border-bottom: solid $primary;
+    background: #3e473a;
+    border-bottom: solid #EDE8DC;
 }
 
 Header > Horizontal {
@@ -16,6 +16,7 @@ Header #app-name {
     margin-left: 2;
     padding-top: 1;
     text-style: bold;
+    color: #EDE8DC;
 }
 
 Header .spacer {

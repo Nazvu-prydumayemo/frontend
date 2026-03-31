@@ -1,9 +1,9 @@
-from collections.abc import Iterable
+import sys
 from pathlib import Path
 from typing import ClassVar
 
-from textual.app import App, SystemCommand, get_system_commands_provider
-from textual.screen import Screen
+from textual.app import App
+
 
 from tuiapp.api.auth.auth import AuthService
 from tuiapp.api.auth.token_manager import TokenManagerService
@@ -14,25 +14,33 @@ from tuiapp.screens.login_screen import LoginScreen
 from tuiapp.screens.main_screen import MainScreen
 from tuiapp.screens.profile_screen import ProfileScreen
 from tuiapp.screens.register_screen import RegisterScreen
+from tuiapp.theme import tennis_theme
+
+
+def get_css_folder_path() -> Path:
+    """Get the path to the CSS folder, handling PyInstaller bundling."""
+    if getattr(sys, "frozen", False):
+        return Path(sys._MEIPASS) / "styles"  # type: ignore[attr-defined]
+    else:
+        return Path(__file__).parent / "styles"
 
 
 class TUIApplication(App):
     """Root application class for the Tennis TUI."""
 
     def __init__(self, client: APIClient, token_manager: TokenManagerService) -> None:
-        """Initialize the application with an API client.
-
-        Args:
-            client: The API client for communicating with the backend.
-        """
         super().__init__()
         self.client = client
         self.token_manager = token_manager
 
         self.status = StatusService(self.client)
         self.auth = AuthService(self.client)
+       
 
-    DEFAULT_CSS_FOLDER = Path("styles")
+        self.register_theme(tennis_theme)
+        self.theme = "tennis"
+
+    DEFAULT_CSS_FOLDER = get_css_folder_path()
     CSS_PATH: ClassVar = [
         DEFAULT_CSS_FOLDER / "styles.tcss",
         DEFAULT_CSS_FOLDER / "buttons.tcss",
@@ -53,10 +61,6 @@ class TUIApplication(App):
         "profile": ProfileScreen,
         "hub": HubScreen,
     }
-    COMMANDS: ClassVar = {get_system_commands_provider}
-
-    def get_system_commands(self, screen: Screen) -> Iterable[SystemCommand]:
-        yield from super().get_system_commands(screen)
 
     async def on_mount(self) -> None:
         """Mount the first screen when the app starts."""
@@ -65,4 +69,4 @@ class TUIApplication(App):
             self.push_screen("main")
             return
 
-        self.push_screen("hub")
+        self.push_screen(HubScreen())

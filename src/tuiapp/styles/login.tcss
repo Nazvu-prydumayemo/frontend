@@ -6,14 +6,15 @@ LoginScreen {
     width: auto;
     height: auto;
     align: center middle;
-    background: $surface;
+    background: #EDE8DC;
     padding: 1 4;
+    border: tall #2b332a;
 }
 
 #login-title {
     text-align: center;
     text-style: bold;
-    color: $text;
+    color: #3e473a;
     margin-bottom: 1;
     padding: 1 0;
 }
