@@ -81,7 +81,7 @@ class APIClient:
             return response.json()
 
         except httpx.HTTPStatusError as error:
-            if error.response.status_code == 401 and self._on_401:
+            if error.response.status_code == 401 and endpoint != "/auth/login" and self._on_401:
                 if await self._on_401():
                     try:
                         response = await self._client.request(method, endpoint, **kwargs)
