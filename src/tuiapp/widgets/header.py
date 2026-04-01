@@ -12,7 +12,7 @@ if TYPE_CHECKING:
     from tuiapp.screens.base_screen import BaseScreen
 
 
-class Header(Widget):
+class TUIHeader(Widget):
     """Custom header widget with navigation buttons.
 
     The header displays:
@@ -66,4 +66,6 @@ class Header(Widget):
 
     @on(SecondaryButton.Pressed, "#logout-btn")
     def action_logout(self) -> None:
-        cast("BaseScreen", self.screen).notify("WIP")
+        cast("BaseScreen", self.screen).app.token_manager.clear_tokens()
+        cast("BaseScreen", self.screen).app.token_manager._redirect_to_main()
+        cast("BaseScreen", self.screen).notify("Goodbye!", title="Logout")

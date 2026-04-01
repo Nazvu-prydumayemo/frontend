@@ -5,7 +5,7 @@ from textual.widgets import Footer
 
 from tuiapp.api.auth.auth_guard import AuthGuard
 from tuiapp.screens.base_screen import BaseScreen
-from tuiapp.widgets.header import Header
+from tuiapp.widgets.header import TUIHeader
 
 
 class HubScreen(AuthGuard, BaseScreen):  # type: ignore
@@ -15,5 +15,5 @@ class HubScreen(AuthGuard, BaseScreen):  # type: ignore
     """
 
     def compose(self) -> ComposeResult:
-        yield Header(screen_name="hub")
+        yield TUIHeader(screen_name="hub")
         yield Footer()

@@ -4,8 +4,6 @@ from typing import TYPE_CHECKING
 
 from textual.screen import Screen
 
-from tuiapp.widgets.toast import Toast
-
 if TYPE_CHECKING:
     from textual.types import CallbackType
 
@@ -18,15 +16,6 @@ class BaseScreen(Screen):
 
     if TYPE_CHECKING:
         app: TUIApplication  # type: ignore
-
-    def toast(self, message: str, duration: float = 3.0) -> None:
-        """Display a toast notification popup.
-
-        Args:
-            message: The message to display in the toast.
-            duration: How long to display the toast in seconds.
-        """
-        self.mount(Toast(message, duration))
 
     def change_screen(self, screen: str | BaseScreen) -> None:
         """Navigate to a new screen by pushing it onto the stack.

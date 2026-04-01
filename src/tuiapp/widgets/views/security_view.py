@@ -18,17 +18,26 @@ class SecurityView(BaseView):
 
         yield Static("Change Password", classes="section-title")
 
-        with Vertical(classes="field password-field"):
-            yield Static("Current Password", classes="field-label")
-            yield PasswordInput(placeholder="Current Password", id="current-password")
-
-        with Vertical(classes="field password-field"):
-            yield Static("New Password", classes="field-label")
-            yield PasswordInput(placeholder="New Password", id="new-password")
-
-        with Vertical(classes="field password-field"):
-            yield Static("Confirm New Password", classes="field-label")
-            yield PasswordInput(placeholder="Confirm New Password", id="confirm-password")
+        with Horizontal(classes="password-fields-container"):
+            with Vertical(classes="field-column"):
+                with Vertical(classes="field password-field"):
+                    yield Static("Current Password", classes="field-label")
+                    yield PasswordInput(placeholder="Current Password", id="current-password")
+                with Vertical(classes="field password-field"):
+                    yield Static("New Password", classes="field-label")
+                    yield PasswordInput(placeholder="New Password", id="new-password")
+                with Vertical(classes="field password-field"):
+                    yield Static("Confirm New Password", classes="field-label")
+                    yield PasswordInput(placeholder="Confirm New Password", id="confirm-password")
+            with Vertical(classes="hints-column"):
+                yield Static(
+                    "• At least 8 characters\n"
+                    "• One uppercase letter\n"
+                    "• One lowercase letter\n"
+                    "• One number\n"
+                    "• One special character (@$!%*?&)\n",
+                    classes="password-hints",
+                )
 
         with Horizontal(classes="button-row"):
             yield PrimaryButton("Update Password", id="update-password")

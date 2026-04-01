@@ -39,7 +39,7 @@ SecurityView {
 
 .password-field {
     margin-bottom: 1;
-    width: 50%;
+    width: 100%;
 }
 
 .section-title {
@@ -62,4 +62,23 @@ SecurityView {
 
 #span-40 {
     width: 40%
+}
+
+.password-fields-container {
+    layout: horizontal;
+    height: auto;
+}
+
+.field-column {
+    width: 70%;
+}
+
+.hints-column {
+    width: 30%;
+    padding-left: 2;
+    text-style: italic;
+}
+
+.password-hints {
+    text-style: italic;
 }
