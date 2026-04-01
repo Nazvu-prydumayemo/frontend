@@ -3,6 +3,7 @@ from textual.app import ComposeResult
 from textual.containers import Horizontal, Vertical
 from textual.widgets import Button, Static
 
+from tuiapp.api.account.schema import PasswordRequest
 from tuiapp.widgets.buttons import DangerButton, PrimaryButton
 from tuiapp.widgets.inputs import PasswordInput
 from tuiapp.widgets.modals.delete_account_modal import DeleteAccountModal
@@ -35,33 +36,44 @@ class SecurityView(BaseView):
             yield DangerButton("Delete Account", id="delete-account")
 
     @on(Button.Pressed, "#update-password")
-    def handle_update_password(self) -> None:
+    async def handle_update_password(self) -> None:
         """Handles the password update process by verifying new password confirmation."""
         current_password = self.query_one("#current-password", PasswordInput).value
         new_password = self.query_one("#new-password", PasswordInput).value
         confirm_password = self.query_one("#confirm-password", PasswordInput).value
 
         if not current_password:
-            self.screen.toast("Please enter your current password")
+            self.notify("Please enter your current password", title="Security", severity="warning")
             return
 
         if not new_password:
-            self.screen.toast("Please enter a new password")
+            self.notify("Please enter a new password", title="Security", severity="warning")
             return
 
         if not confirm_password:
-            self.screen.toast("Please confirm your new password")
+            self.notify("Please confirm your new password", title="Security", severity="warning")
             return
 
         if new_password != confirm_password:
-            self.screen.toast("Passwords do not match")
+            self.notify("Passwords do not match", title="Security", severity="error")
             return
 
         if current_password == new_password:
-            self.screen.toast("New password must be different from current password")
+            self.notify(
+                "New password must be different from current password",
+                title="Security",
+                severity="error",
+            )
             return
 
-        self.screen.toast("WIP")
+        request = PasswordRequest(current_password=current_password, new_password=new_password)
+        result = await self.app.account.change_password(request)
+
+        if result.status != "success":
+            self.notify(result.message, title="Security", severity="error")
+            return
+
+        self.notify(result.message, title="Security")
 
     @on(Button.Pressed, "#delete-account")
     def handle_delete_account(self) -> None:

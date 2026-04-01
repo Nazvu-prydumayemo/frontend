@@ -1,17 +1,5 @@
-Screen {
-    layers: base notification;
-}
-
-Toast {
-    layer: notification;
-    dock: right;
-    align: right top;
-    offset: 2 1;
-    width: 42;
-    height: auto;
-    border: round $accent;
-    padding: 1 2;
-    color: $text;
+BaseScreen {
+    background: $surface;
 }
 
 BaseScreen > Vertical {

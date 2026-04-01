@@ -7,9 +7,11 @@ from tuiapp.settings import settings
 def main() -> None:
     client = APIClient(settings.api_url)
     token_manager = TokenManagerService(client)
-    client.set_on_401_callback(token_manager.refresh_access_token)
 
     app = TUIApplication(client, token_manager)
+    token_manager._app = app
+    client.set_on_401_callback(token_manager.refresh_access_token)
+
     app.run()
 
 

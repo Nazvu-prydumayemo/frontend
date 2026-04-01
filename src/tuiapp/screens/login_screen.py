@@ -7,6 +7,7 @@ from textual.widgets import Button, Footer, Header, Static
 
 from tuiapp.api.auth.schema import LoginRequest, TokenResult
 from tuiapp.screens.base_screen import BaseScreen
+from tuiapp.screens.hub_screen import HubScreen
 from tuiapp.widgets.buttons import PrimaryButton, SecondaryButton
 from tuiapp.widgets.forms.login_form import LoginForm
 
@@ -33,7 +34,7 @@ class LoginScreen(BaseScreen):
         result = self.query_one(LoginForm).get_data()
 
         if isinstance(result, str):
-            self.toast(result)
+            self.notify(result, title="Login", severity="warning")
             return
 
         await self._login(result)
@@ -48,7 +49,9 @@ class LoginScreen(BaseScreen):
 
         response: TokenResult = await self.app.auth.login(json=data)
 
-        self.toast(response.message)
+        if response.status != "success":
+            self.notify(response.message, title="Login", severity="error")
+
         button.disabled = False
 
         if response.status == "success" and response.token is not None:
@@ -56,4 +59,4 @@ class LoginScreen(BaseScreen):
             self.app.token_manager.access_token = response.token.access_token
             self.app.client.set_access_token(response.token.access_token)
 
-            self.change_screen("hub")
+            self.change_screen(HubScreen())

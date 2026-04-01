@@ -1,7 +1,13 @@
-.PHONY: run lint format fix type test help
+.PHONY: run lint format fix type test build help
+
+ifeq ($(OS),Windows_NT)
+    PYTHON := py
+else
+    PYTHON := $(shell which python3 2>/dev/null || which python 2>/dev/null)
+endif
 
 run:
-	py -m tuiapp.main
+	$(PYTHON) -m tuiapp.main
 
 lint:
 	ruff check .
@@ -18,6 +24,9 @@ type:
 test:
 	pytest
 
+build:
+	$(PYTHON) build.py
+
 help:
 	@echo "Available targets:"
 	@echo "  make run     - Run the TUI app"
@@ -26,3 +35,6 @@ help:
 	@echo "  make fix     - Auto-fix lint issues"
 	@echo "  make type    - Run mypy"
 	@echo "  make test    - Run pytest"
+	@echo "  make build   - Build executable with PyInstaller"
+	@echo ""
+	@echo "Python: $(PYTHON)"

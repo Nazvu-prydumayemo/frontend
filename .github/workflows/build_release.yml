@@ -1,0 +1,56 @@
+name: Build Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Release version (e.g. v1.2.0)"
+        required: true
+        default: "v0.0.1"
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - os: windows-latest
+            exe_name: NP-Tennis.exe
+            asset_name: NP-Tennis-windows.exe
+          - os: ubuntu-latest
+            exe_name: NP-Tennis
+            asset_name: NP-Tennis-linux
+          - os: macos-latest
+            exe_name: NP-Tennis
+            asset_name: NP-Tennis-macos
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+
+      - name: Install dependencies
+        run: pip install pyinstaller && pip install -e .
+
+      - name: Write .env file from secrets
+        shell: bash
+        run: |
+          cat > .env <<EOF
+          SERVICE_NAME=${{ secrets.SERVICE_NAME }}
+          KEY_NAME=${{ secrets.KEY_NAME }}
+          API_URL=${{ secrets.API_URL }}
+          EOF
+
+      - name: Build executable
+        run: python build.py
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.asset_name }}-${{ github.event.inputs.version }}
+          path: dist/${{ matrix.exe_name }}

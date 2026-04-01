@@ -1,6 +1,6 @@
 from pydantic import ValidationError
 from textual.app import ComposeResult
-from textual.containers import Vertical
+from textual.containers import Horizontal, Vertical
 from textual.widget import Widget
 from textual.widgets import Static
 
@@ -9,29 +9,38 @@ from tuiapp.widgets.inputs import PasswordInput, TextInput
 
 
 class RegisterForm(Widget):
-    """Registration form with name, email, password, and confirmation fields."""
+    """Registration form structured in 3 rows."""
 
     def compose(self) -> ComposeResult:
         with Vertical(id="form"):
-            with Vertical(classes="field"):
-                yield Static("Firstname", classes="field-label")
-                yield TextInput(placeholder="Firstname", id="firstname")
-
-            with Vertical(classes="field"):
-                yield Static("Lastname", classes="field-label")
-                yield TextInput(placeholder="Lastname", id="lastname")
+            with Horizontal(classes="field-row"):
+                with Vertical(classes="field"):
+                    yield Static("Firstname", classes="field-label")
+                    yield TextInput(placeholder="Firstname", id="firstname")
+                with Vertical(classes="field"):
+                    yield Static("Lastname", classes="field-label")
+                    yield TextInput(placeholder="Lastname", id="lastname")
 
             with Vertical(classes="field"):
                 yield Static("Email", classes="field-label")
                 yield TextInput(placeholder="example@email.com", id="email")
 
-            with Vertical(classes="field"):
-                yield Static("Password", classes="field-label")
-                yield PasswordInput(placeholder="Password", id="password")
+            yield Static(
+                "• At least 8 characters\n"
+                "• One uppercase letter\n"
+                "• One lowercase letter\n"
+                "• One number\n"
+                "• One special character (@$!%*?&)\n",
+                classes="password-hints",
+            )
 
-            with Vertical(classes="field"):
-                yield Static("Confirm Password", classes="field-label")
-                yield PasswordInput(placeholder="Confirm Password", id="confirm")
+            with Horizontal(classes="field-row"):
+                with Vertical(classes="field"):
+                    yield Static("Password", classes="field-label")
+                    yield PasswordInput(placeholder="********", id="password")
+                with Vertical(classes="field"):
+                    yield Static("Confirm Password", classes="field-label")
+                    yield PasswordInput(placeholder="********", id="confirm")
 
     def get_data(self) -> RegisterRequest | str:
         """Get the form data.

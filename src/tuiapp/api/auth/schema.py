@@ -1,8 +1,8 @@
 """Pydantic schemas for authentication API requests and responses."""
 
-from typing import Literal
-
 from pydantic import BaseModel, EmailStr
+
+from tuiapp.api.schema import Result
 
 
 class Token(BaseModel):
@@ -57,7 +57,7 @@ class RefreshRequest(BaseModel):
     refresh_token: str
 
 
-class TokenResult(BaseModel):
+class TokenResult(Result):
     """Result model for authentication operations.
 
     Attributes:
@@ -67,25 +67,3 @@ class TokenResult(BaseModel):
     """
 
     token: Token | None
-    message: str
-    status: Literal["success", "invalid", "error"]
-
-
-class Me(BaseModel):
-    """Response model for current user information.
-
-    Attributes:
-        firstname: The user's first name.
-        lastname: The user's last name.
-        email: The user's email address.
-        id: The unique identifier of the user.
-        role_id: The user's role identifier.
-        is_active: Whether the user account is active.
-    """
-
-    firstname: str
-    lastname: str
-    email: EmailStr
-    id: int
-    role_id: int
-    is_active: bool
