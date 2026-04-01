@@ -1,7 +1,9 @@
 from textual import on
 from textual.app import ComposeResult
-from textual.containers import Vertical
-from textual.widgets import Button, Footer, Header
+from textual.containers import Container, Vertical
+from textual.css.query import NoMatches
+from textual.reactive import reactive
+from textual.widgets import Button, Footer, Header, Static
 
 from tuiapp.screens.base_screen import BaseScreen
 from tuiapp.widgets.buttons import PrimaryButton, SecondaryButton
@@ -10,14 +12,35 @@ from tuiapp.widgets.buttons import PrimaryButton, SecondaryButton
 class MainScreen(BaseScreen):
     """Main screen with navigation buttons: Login, Register, Status, and Exit."""
 
+    heading = r"""
+███╗   ██╗██████╗    ████████╗███████╗███╗   ██╗███╗   ██╗██╗███████╗
+████╗  ██║██╔══██╗   ╚══██╔══╝██╔════╝████╗  ██║████╗  ██║██║██╔════╝
+██╔██╗ ██║██████╔╝█████╗██║   █████╗  ██╔██╗ ██║██╔██╗ ██║██║███████╗
+██║╚██╗██║██╔═══╝ ╚════╝██║   ██╔══╝  ██║╚██╗██║██║╚██╗██║██║╚════██║
+██║ ╚████║██║           ██║   ███████╗██║ ╚████║██║ ╚████║██║███████║
+╚═╝  ╚═══╝╚═╝           ╚═╝   ╚══════╝╚═╝  ╚═══╝╚═╝  ╚═══╝╚═╝╚══════╝"""
+
+    heading_status: reactive[bool] = reactive(True)
+
     def compose(self) -> ComposeResult:
         yield Header()
-        yield Vertical(
-            PrimaryButton("Login", id="login"),
-            PrimaryButton("Register", id="register"),
-            SecondaryButton("Exit", id="exit"),
-        )
+        with Vertical(id="main-container"):
+            yield Static(self.heading, id="heading")
+            with Container(id="button-container"):
+                yield PrimaryButton("Login", id="login")
+                yield PrimaryButton("Register", id="register")
+                yield SecondaryButton("Exit", id="exit")
         yield Footer()
+
+    def watch_heading_status(self, show_large: bool) -> None:
+        try:
+            self.query_one("#heading", Static).display = show_large
+
+        except NoMatches:
+            pass
+
+    def on_resize(self) -> None:
+        self.heading_status = self.size.width >= 70
 
     @on(Button.Pressed, "#login")
     def login(self) -> None:

@@ -1,5 +1,5 @@
-from collections.abc import Iterable
 import sys
+from collections.abc import Iterable
 from pathlib import Path
 from typing import ClassVar
 
@@ -47,12 +47,7 @@ class TUIApplication(App):
     CSS_PATH: ClassVar = [
         DEFAULT_CSS_FOLDER / "styles.tcss",
         DEFAULT_CSS_FOLDER / "buttons.tcss",
-        DEFAULT_CSS_FOLDER / "main.tcss",
-        DEFAULT_CSS_FOLDER / "login.tcss",
-        DEFAULT_CSS_FOLDER / "register.tcss",
-        DEFAULT_CSS_FOLDER / "modals.tcss",
-        DEFAULT_CSS_FOLDER / "views.tcss",
-        DEFAULT_CSS_FOLDER / "header.tcss",
+        DEFAULT_CSS_FOLDER / "main_screen.tcss",
     ]
     TITLE = "Tennis App"
     SUB_TITLE = "Tennis App Local Client"
