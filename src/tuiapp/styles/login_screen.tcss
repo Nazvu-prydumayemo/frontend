@@ -1,0 +1,46 @@
+LoginScreen {
+    align: center middle;
+    height: 100%;
+    width: 100%;
+}
+
+#login-container {
+    align: center middle;
+    height: auto;
+    width: auto;
+    background: $panel;
+    padding: 2 4;
+
+    #title {
+        text-align: center;
+        text-style: bold;
+        color: $accent;
+        padding: 1;
+        margin-bottom: 1;
+    }
+
+    #login {
+        margin-bottom: 1;
+        margin-top: 1;
+    }
+}
+
+LoginForm {
+    height: auto;
+
+    #login-form {
+        width: 100%;
+        height: auto;
+
+        .field {
+            width: 100%;
+            height: auto;
+            margin-bottom: 1;
+
+            .field-label {
+                height: auto;
+                margin-bottom: 1;
+            }
+        }
+    }
+}

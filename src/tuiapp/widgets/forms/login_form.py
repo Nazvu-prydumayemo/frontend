@@ -12,7 +12,7 @@ class LoginForm(Widget):
     """Login form with email and password input fields."""
 
     def compose(self) -> ComposeResult:
-        with Vertical(id="form"):
+        with Vertical(id="login-form"):
             with Vertical(classes="field"):
                 yield Static("Email", classes="field-label")
                 yield TextInput(placeholder="example@email.com", id="email")

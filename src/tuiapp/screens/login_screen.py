@@ -2,8 +2,8 @@
 
 from textual import on
 from textual.app import ComposeResult
-from textual.containers import Center, Vertical
-from textual.widgets import Button, Footer, Header, Static
+from textual.containers import Vertical
+from textual.widgets import Button, Footer, Header, Input, Static
 
 from tuiapp.api.auth.schema import LoginRequest, TokenResult
 from tuiapp.screens.base_screen import BaseScreen
@@ -21,12 +21,18 @@ class LoginScreen(BaseScreen):
 
     def compose(self) -> ComposeResult:
         yield Header()
-        with Center():
-            with Vertical(id="login-container"):
-                yield Static("LOGIN", id="login-title")
-                yield LoginForm()
-                yield PrimaryButton("Login", id="login")
-                yield SecondaryButton("Back", id="back")
+        with Vertical(id="login-container"):
+            yield Static(
+                r"""
+▄▄    ▄▄▄   ▄▄▄▄ ▄▄ ▄▄  ▄▄
+██   ██▀██ ██ ▄▄ ██ ███▄██
+████ ▀███▀ ▀███▀ ██ ██ ▀██
+""",
+                id="title",
+            )
+            yield LoginForm()
+            yield PrimaryButton("Login", id="login")
+            yield SecondaryButton("Back", id="back")
         yield Footer()
 
     @on(Button.Pressed, "#login")
@@ -38,6 +44,10 @@ class LoginScreen(BaseScreen):
             return
 
         await self._login(result)
+
+    @on(Input.Submitted, "#password-field")
+    async def submit_form(self) -> None:
+        await self.login()
 
     @on(Button.Pressed, "#back")
     def back(self) -> None:
