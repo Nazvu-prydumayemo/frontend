@@ -1,12 +1,21 @@
 from abc import abstractmethod
+from typing import ClassVar
 
 from textual.app import ComposeResult
+from textual.binding import Binding
 from textual.containers import Container
 from textual.screen import ModalScreen
 
 
 class BaseModal(ModalScreen):
     """Base class for all modals."""
+
+    BINDINGS: ClassVar[list] = [
+        Binding(key="ctrl+b", action="close", description="Close", tooltip="Close the modal")
+    ]
+
+    def action_close(self) -> None:
+        self.dismiss()
 
     def compose(self) -> ComposeResult:
         """Compose the modal with a centered container."""
