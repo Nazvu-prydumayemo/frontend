@@ -1,16 +1,16 @@
-LoginScreen {
-    align: center middle;
-    height: 100%;
+RegisterScreen {
     width: 100%;
+    height: 100%;
+    align: center middle;
 }
 
-#login-container {
+#register-container {
     align: center middle;
     height: auto;
     width: auto;
     background: $panel;
-    border: round $accent;
     padding: 2 4;
+    border: round $accent;
 
     #title {
         text-align: center;
@@ -20,27 +20,37 @@ LoginScreen {
         margin-bottom: 1;
     }
 
-    #login {
+    #register {
         margin-top: 1;
+    }
+
+    PrimaryButton, SecondaryButton {
+        width: 56;
     }
 }
 
-LoginForm {
+RegisterForm {
     height: auto;
 
-    #login-form {
+    #register-form {
+        width: 100%;
+        height: auto;
+        layout: grid;
+        grid-size: 2 3;
+        grid-gutter: 1;
+    }
+
+    .field {
         width: 100%;
         height: auto;
 
-        .field {
-            width: 100%;
+        .field-label {
             height: auto;
             margin-bottom: 1;
-
-            .field-label {
-                height: auto;
-                margin-bottom: 1;
-            }
         }
+    }
+
+    .two-cols {
+        column-span: 2;
     }
 }

@@ -49,6 +49,8 @@ class TUIApplication(App):
         DEFAULT_CSS_FOLDER / "buttons.tcss",
         DEFAULT_CSS_FOLDER / "main_screen.tcss",
         DEFAULT_CSS_FOLDER / "login_screen.tcss",
+        DEFAULT_CSS_FOLDER / "register_screen.tcss",
+        DEFAULT_CSS_FOLDER / "modals.tcss",
         DEFAULT_CSS_FOLDER / "header.tcss",
     ]
     TITLE = "Tennis App"

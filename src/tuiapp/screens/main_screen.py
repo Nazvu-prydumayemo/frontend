@@ -28,7 +28,7 @@ class MainScreen(BaseScreen):
             yield Static(self.heading, id="heading")
             with Container(id="button-container"):
                 yield PrimaryButton("Login", id="login")
-                yield PrimaryButton("Register", id="register")
+                yield PrimaryButton("Signup", id="register")
                 yield SecondaryButton("Exit", id="exit")
         yield Footer()
 

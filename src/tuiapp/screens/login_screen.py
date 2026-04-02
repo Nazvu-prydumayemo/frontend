@@ -1,14 +1,17 @@
 """Login screen for user authentication."""
 
+from typing import ClassVar
+
 from textual import on
 from textual.app import ComposeResult
+from textual.binding import Binding
 from textual.containers import Vertical
 from textual.widgets import Button, Footer, Header, Input, Static
 
 from tuiapp.api.auth.schema import LoginRequest, TokenResult
 from tuiapp.screens.base_screen import BaseScreen
 from tuiapp.screens.hub_screen import HubScreen
-from tuiapp.widgets.buttons import PrimaryButton, SecondaryButton
+from tuiapp.widgets.buttons import PrimaryButton
 from tuiapp.widgets.forms.login_form import LoginForm
 
 
@@ -18,6 +21,27 @@ class LoginScreen(BaseScreen):
     Allows users to authenticate with their email and password credentials.
     On success, stores tokens and navigates to the hub screen.
     """
+
+    BINDINGS: ClassVar[list] = [
+        Binding(
+            key="ctrl+b,escape",
+            action="go_back",
+            description="Back",
+            tooltip="Go to the main screen",
+        ),
+        Binding(
+            key="ctrl+r",
+            action="go_register",
+            description="Register",
+            tooltip="Go to the register screen",
+        ),
+    ]
+
+    def action_go_back(self) -> None:
+        self.change_screen("main")
+
+    def action_go_register(self) -> None:
+        self.change_screen("register")
 
     def compose(self) -> ComposeResult:
         yield Header()
@@ -32,9 +56,9 @@ class LoginScreen(BaseScreen):
             )
             yield LoginForm()
             yield PrimaryButton("Login", id="login")
-            yield SecondaryButton("Back", id="back")
         yield Footer()
 
+    @on(Input.Submitted, "#password-field")
     @on(Button.Pressed, "#login")
     async def login(self) -> None:
         result = self.query_one(LoginForm).get_data()
@@ -44,14 +68,6 @@ class LoginScreen(BaseScreen):
             return
 
         await self._login(result)
-
-    @on(Input.Submitted, "#password-field")
-    async def submit_form(self) -> None:
-        await self.login()
-
-    @on(Button.Pressed, "#back")
-    def back(self) -> None:
-        self.go_back()
 
     async def _login(self, data: LoginRequest) -> None:
         button = self.query_one("#login", PrimaryButton)
