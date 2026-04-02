@@ -40,11 +40,11 @@ class TUIHeader(Widget):
 
             with Horizontal(id="nav-buttons"):
                 if self.screen_name != "hub":
-                    yield SecondaryButton("Back", id="back-btn")
+                    yield SecondaryButton("Back", id="back-btn", flat=True)
 
-                yield PrimaryButton("Home", id="home-btn")
-                yield PrimaryButton("Profile", id="profile-btn")
-                yield SecondaryButton("Logout", id="logout-btn")
+                yield PrimaryButton("Home", id="home-btn", flat=True)
+                yield PrimaryButton("Profile", id="profile-btn", flat=True)
+                yield SecondaryButton("Logout", id="logout-btn", flat=True)
 
     @on(SecondaryButton.Pressed, "#back-btn")
     def action_back(self) -> None:

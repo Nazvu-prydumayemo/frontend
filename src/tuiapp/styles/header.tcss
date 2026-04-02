@@ -32,6 +32,15 @@ TUIHeader SecondaryButton {
     width: auto;
     min-width: 8;
     margin: 0 1;
+    background: $panel;
+    border: transparent;
+}
+
+TUIHeader PrimaryButton:focus,
+TUIHeader SecondaryButton:focus {
+    background: $panel;
+    border: transparent;
+    outline: transparent;
 }
 
 TUIHeader PrimaryButton:first-child,
