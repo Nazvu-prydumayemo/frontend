@@ -101,6 +101,11 @@ class TokenManagerService:
             self._redirect_to_login()
             return False
 
+    def logout(self) -> None:
+        """Clears the tokens and logouts the user."""
+        self.clear_tokens()
+        self._redirect_to_main()
+
     def _redirect_to_main(self) -> None:
         """Redirect user to main if no token."""
         if self._app is None:

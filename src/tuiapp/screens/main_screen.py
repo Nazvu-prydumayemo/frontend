@@ -7,6 +7,7 @@ from textual.widgets import Button, Footer, Header, Static
 
 from tuiapp.screens.base_screen import BaseScreen
 from tuiapp.widgets.buttons import PrimaryButton, SecondaryButton
+from tuiapp.widgets.modals.confirmation_modal import ConfirmationModal
 
 
 class MainScreen(BaseScreen):
@@ -50,6 +51,10 @@ class MainScreen(BaseScreen):
     def register(self) -> None:
         self.change_screen("register")
 
+    def _check_quit(self, quit: bool | None) -> None:
+        if quit:
+            self.app.exit()
+
     @on(Button.Pressed, "#exit")
     def exit(self) -> None:
-        self.app.exit()
+        self.show_modal(ConfirmationModal("Exit"), self._check_quit)

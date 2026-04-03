@@ -23,4 +23,4 @@ class PasswordHintsModal(BaseModal):
 
     @on(Button.Pressed, "#close")
     def close(self) -> None:
-        self.dismiss()
+        self.dismiss(False)

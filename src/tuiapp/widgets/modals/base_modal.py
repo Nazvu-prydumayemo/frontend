@@ -7,7 +7,7 @@ from textual.containers import Container
 from textual.screen import ModalScreen
 
 
-class BaseModal(ModalScreen):
+class BaseModal(ModalScreen[bool]):
     """Base class for all modals."""
 
     BINDINGS: ClassVar[list] = [
@@ -15,7 +15,7 @@ class BaseModal(ModalScreen):
     ]
 
     def action_close(self) -> None:
-        self.dismiss()
+        self.dismiss(False)
 
     def compose(self) -> ComposeResult:
         """Compose the modal with a centered container."""

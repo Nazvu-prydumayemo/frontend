@@ -3,12 +3,11 @@
 from textual.app import ComposeResult
 from textual.widgets import Footer
 
-from tuiapp.api.auth.auth_guard import AuthGuard
-from tuiapp.screens.base_screen import BaseScreen
+from tuiapp.screens.base_screen import AuthScreen
 from tuiapp.widgets.header import TUIHeader
 
 
-class HubScreen(AuthGuard, BaseScreen):  # type: ignore
+class HubScreen(AuthScreen):
     """Main dashboard screen displayed after successful authentication.
 
     Provides access to user-specific features and information.

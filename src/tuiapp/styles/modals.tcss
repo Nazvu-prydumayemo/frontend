@@ -11,19 +11,29 @@ BaseModal {
     padding: 2 4;
 }
 
+#modal-title {
+    text-align: center;
+    text-style: bold;
+    color: $accent;
+    margin-bottom: 2;
+}
+
+#close {
+    margin-top: 1;
+}
+
 PasswordHintsModal {
-    #modal-title {
-        text-align: center;
-        text-style: bold;
-        color: $accent;
-        margin-bottom: 1;
-    }
-    
     #modal-body {
         text-style: italic;
     }
 
-    #close {
-        margin-top: 1;
+}
+
+ConfirmationModal {
+    #buttons-container {
+        layout: vertical;
+        width: auto;
+        height: auto;
+        align: center middle;
     }
 }

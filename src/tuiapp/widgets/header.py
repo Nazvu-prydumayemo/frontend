@@ -66,6 +66,5 @@ class TUIHeader(Widget):
 
     @on(SecondaryButton.Pressed, "#logout-btn")
     def action_logout(self) -> None:
-        cast("BaseScreen", self.screen).app.token_manager.clear_tokens()
-        cast("BaseScreen", self.screen).app.token_manager._redirect_to_main()
+        cast("BaseScreen", self.screen).app.token_manager.logout()
         cast("BaseScreen", self.screen).notify("Goodbye!", title="Logout")

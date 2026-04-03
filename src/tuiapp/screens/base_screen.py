@@ -1,8 +1,10 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 from textual.screen import Screen
+
+from tuiapp.api.auth.auth_guard import AuthGuard
 
 if TYPE_CHECKING:
     from textual.types import CallbackType
@@ -25,7 +27,7 @@ class BaseScreen(Screen):
         """
         self.app.push_screen(screen)
 
-    def show_modal(self, modal: BaseModal, callback: CallbackType | None = None) -> None:
+    def show_modal(self, modal: BaseModal, callback: CallbackType | Any | None = None) -> None:
         """Shows a modal by pushing it onto the stack.
 
         Args:
@@ -36,3 +38,7 @@ class BaseScreen(Screen):
     def go_back(self) -> None:
         """Return to the previous screen by popping the current screen."""
         self.app.pop_screen()
+
+
+class AuthScreen(AuthGuard, BaseScreen):  # type: ignore
+    ...
