@@ -1,6 +1,6 @@
 from textual import on
 from textual.app import ComposeResult
-from textual.containers import Horizontal
+from textual.containers import Container
 from textual.widgets import Button, Static
 
 from tuiapp.widgets.buttons import PrimaryButton, SecondaryButton
@@ -14,8 +14,8 @@ class ConfirmationModal(BaseModal):
 
     def compose_modal(self) -> ComposeResult:
         yield Static(f"Are you sure you want to {self._action}?", id="modal-title")
-        with Horizontal(id="buttons-container"):
-            yield PrimaryButton("Confirm", id="action")
+        with Container(id="buttons-container"):
+            yield PrimaryButton("Confirm", variant="warning", id="action")
             yield SecondaryButton("Cancel", id="close")
 
     @on(Button.Pressed, "#close")

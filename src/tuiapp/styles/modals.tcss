@@ -37,3 +37,44 @@ ConfirmationModal {
         align: center middle;
     }
 }
+
+DeleteAccountModal {
+    #modal-container {
+        border: round $error;
+        layout: vertical; 
+
+        #delete-icon {
+            width: 100%;
+            height: 3;
+            text-align: center;
+            content-align: center middle;
+            color: white;
+            margin: 0 0 2 0;
+            background: $error;
+            text-style: bold;
+        }
+
+        #modal-title {
+            color: $error;
+            text-align: center;
+        }
+
+        .field {
+            width: 100%;
+            height: auto;
+            margin: 1 0;
+
+            .field-label {
+                margin-bottom: 1;
+            }
+        }
+
+        #buttons-container {
+            layout: vertical;
+            width: auto;
+            height: auto;
+            align: center middle;
+            margin-top: 2;
+        }
+    }
+}

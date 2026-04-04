@@ -8,7 +8,7 @@ PersonalInfoView {
     height: auto;
     padding: 2 4;
     background: $panel;
-    border: solid $accent;
+    border: round $accent;
 
     #personal-info-container {
         layout: grid;
@@ -34,7 +34,7 @@ SecurityView {
     height: auto;
     padding: 2 4;
     background: $panel;
-    border: solid $accent;
+    border: round $accent;
 
     #security-container {
         layout: grid;
