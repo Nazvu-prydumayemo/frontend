@@ -41,13 +41,7 @@ RegisterForm {
     }
 
     .field {
-        width: 100%;
         height: auto;
-
-        .field-label {
-            height: auto;
-            margin-bottom: 1;
-        }
     }
 
     .two-cols {

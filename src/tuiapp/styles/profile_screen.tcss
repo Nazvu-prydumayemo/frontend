@@ -3,3 +3,29 @@ ProfileScreen {
         padding: 1 2;
     }
 }
+
+PersonalInfoView {
+    height: auto;
+    padding: 2 4;
+    border: solid $accent;
+
+    #personal-info-container {
+        layout: grid;
+        grid-size: 2 3;
+        width: 100%;
+        height: auto;
+        grid-gutter: 2;
+
+        
+        #email-field {
+            column-span: 2;
+        }
+
+        #save-changes {
+            column-span: 2;
+            dock: bottom;
+            margin-top: 1;
+            width: 32;
+        }
+    }
+}

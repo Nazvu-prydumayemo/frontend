@@ -7,6 +7,15 @@ BaseScreen {
     height: 3;
 }
 
+.field {
+    width: 100%;
+
+    .field-label {
+        height: auto;
+        margin-bottom: 1;
+    }
+}
+
 PasswordInput {
     height: auto;
     
