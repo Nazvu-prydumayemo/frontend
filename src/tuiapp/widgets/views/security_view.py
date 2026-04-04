@@ -1,11 +1,13 @@
 from textual import on
 from textual.app import ComposeResult
-from textual.containers import Horizontal, Vertical
-from textual.widgets import Button, Static
+from textual.containers import Container, Vertical
+from textual.css.query import NoMatches
+from textual.reactive import reactive
+from textual.widgets import Button, Input, Static
 
 from tuiapp.api.account.schema import PasswordRequest
 from tuiapp.widgets.buttons import DangerButton, PrimaryButton
-from tuiapp.widgets.inputs import PasswordInput
+from tuiapp.widgets.inputs import PasswordInput, PasswordValidator
 from tuiapp.widgets.modals.delete_account_modal import DeleteAccountModal
 from tuiapp.widgets.views.base_view import BaseView
 
@@ -13,37 +15,56 @@ from tuiapp.widgets.views.base_view import BaseView
 class SecurityView(BaseView):
     """Security tab view for updating the user's password and managing account."""
 
+    small: reactive[bool] = reactive(False)
+
     def compose_view(self) -> ComposeResult:
         """Compose the view with password change section and delete account button."""
 
-        yield Static("Change Password", classes="section-title")
+        with Container(id="security-container"):
+            yield Static("Change Password", id="title")
 
-        with Horizontal(classes="password-fields-container"):
-            with Vertical(classes="field-column"):
-                with Vertical(classes="field password-field"):
-                    yield Static("Current Password", classes="field-label")
-                    yield PasswordInput(placeholder="Current Password", id="current-password")
-                with Vertical(classes="field password-field"):
-                    yield Static("New Password", classes="field-label")
-                    yield PasswordInput(placeholder="New Password", id="new-password")
-                with Vertical(classes="field password-field"):
-                    yield Static("Confirm New Password", classes="field-label")
-                    yield PasswordInput(placeholder="Confirm New Password", id="confirm-password")
-            with Vertical(classes="hints-column"):
-                yield Static(
-                    "• At least 8 characters\n"
-                    "• One uppercase letter\n"
-                    "• One lowercase letter\n"
-                    "• One number\n"
-                    "• One special character (@$!%*?&)\n",
-                    classes="password-hints",
+            with Vertical(classes="field password-field"):
+                yield Static("Current Password", classes="field-label")
+                yield PasswordInput(placeholder="Current Password", id="current-password")
+
+            with Vertical(classes="field password-field"):
+                yield Static("New Password", classes="field-label")
+                yield PasswordInput(placeholder="New Password", id="new-password")
+
+            with Vertical(classes="field password-field"):
+                yield Static("Confirm New Password", classes="field-label")
+                yield PasswordInput(placeholder="Confirm New Password", id="confirm-password")
+
+            with Container(id="buttons-container"):
+                yield PrimaryButton(
+                    "Update Password", id="update-password", classes="action-button"
+                )
+                yield Static(id="span")
+                yield DangerButton(
+                    "Delete Account",
+                    variant="error",
+                    id="delete-account",
+                    classes="action-button",
                 )
 
-        with Horizontal(classes="button-row"):
-            yield PrimaryButton("Update Password", id="update-password")
-            yield Static(id="span-40")
-            yield DangerButton("Delete Account", id="delete-account")
+    def watch_small(self, is_small: bool) -> None:
+        try:
+            buttons_container = self.query_one("#buttons-container", Container)
+            buttons_container.styles.layout = "vertical" if is_small else "horizontal"
+            self.query_one("#update-password", PrimaryButton).styles.width = (
+                "100%" if is_small else 32
+            )
+            self.query_one("#delete-account", DangerButton).styles.width = (
+                "100%" if is_small else 32
+            )
 
+        except NoMatches:
+            pass
+
+    def on_resize(self) -> None:
+        self.small = self.size.width <= 64
+
+    @on(Input.Submitted, "#confirm-password > .password-row > #password-field")
     @on(Button.Pressed, "#update-password")
     async def handle_update_password(self) -> None:
         """Handles the password update process by verifying new password confirmation."""
@@ -61,6 +82,11 @@ class SecurityView(BaseView):
 
         if not confirm_password:
             self.notify("Please confirm your new password", title="Security", severity="warning")
+            return
+
+        result = PasswordValidator().validate(confirm_password)
+        if not result.is_valid:
+            self.notify(result.failure_descriptions[0], title="Security", severity="warning")
             return
 
         if new_password != confirm_password:
