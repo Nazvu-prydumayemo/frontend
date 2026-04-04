@@ -45,11 +45,11 @@ class MainScreen(BaseScreen):
 
     @on(Button.Pressed, "#login")
     def login(self) -> None:
-        self.change_screen("login")
+        self.app.switch_screen("login")
 
     @on(Button.Pressed, "#register")
     def register(self) -> None:
-        self.change_screen("register")
+        self.app.switch_screen("register")
 
     def _check_quit(self, quit: bool | None) -> None:
         if quit:

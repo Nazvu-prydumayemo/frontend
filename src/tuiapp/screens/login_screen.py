@@ -31,17 +31,17 @@ class LoginScreen(BaseScreen):
         ),
         Binding(
             key="ctrl+r",
-            action="go_register",
-            description="Register",
-            tooltip="Go to the register screen",
+            action="go_signup",
+            description="Signup",
+            tooltip="Go to the signup screen",
         ),
     ]
 
     def action_go_back(self) -> None:
-        self.change_screen("main")
+        self.app.switch_screen("main")
 
-    def action_go_register(self) -> None:
-        self.change_screen("register")
+    def action_go_signup(self) -> None:
+        self.app.switch_screen("register")
 
     def compose(self) -> ComposeResult:
         yield Header()
@@ -85,4 +85,4 @@ class LoginScreen(BaseScreen):
             self.app.token_manager.access_token = response.token.access_token
             self.app.client.set_access_token(response.token.access_token)
 
-            self.change_screen(HubScreen())
+            self.app.switch_screen(HubScreen())

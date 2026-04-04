@@ -1,10 +1,9 @@
 """Hub screen - the main authenticated user dashboard."""
 
 from textual.app import ComposeResult
-from textual.widgets import Footer
+from textual.widgets import Footer, Header
 
 from tuiapp.screens.base_screen import AuthScreen
-from tuiapp.widgets.header import TUIHeader
 
 
 class HubScreen(AuthScreen):
@@ -14,5 +13,5 @@ class HubScreen(AuthScreen):
     """
 
     def compose(self) -> ComposeResult:
-        yield TUIHeader(screen_name="hub")
+        yield Header()
         yield Footer()

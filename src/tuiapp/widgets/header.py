@@ -55,14 +55,14 @@ class TUIHeader(Widget):
         if self.screen_name != "hub":
             from tuiapp.screens.hub_screen import HubScreen
 
-            cast("BaseScreen", self.screen).change_screen(HubScreen())
+            cast("BaseScreen", self.screen).app.switch_screen(HubScreen())
 
     @on(PrimaryButton.Pressed, "#profile-btn")
     def action_profile(self) -> None:
         if self.screen_name != "profile":
             from tuiapp.screens.profile_screen import ProfileScreen
 
-            cast("BaseScreen", self.screen).change_screen(ProfileScreen())
+            cast("BaseScreen", self.screen).app.switch_screen(ProfileScreen())
 
     @on(SecondaryButton.Pressed, "#logout-btn")
     def action_logout(self) -> None:

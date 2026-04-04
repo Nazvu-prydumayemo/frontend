@@ -47,10 +47,10 @@ class RegisterScreen(BaseScreen):
     ]
 
     def action_go_back(self) -> None:
-        self.change_screen("main")
+        self.app.switch_screen("main")
 
     def action_go_login(self) -> None:
-        self.change_screen("login")
+        self.app.switch_screen("login")
 
     def action_push_hints(self) -> None:
         self.show_modal(PasswordHintsModal())
@@ -113,4 +113,4 @@ class RegisterScreen(BaseScreen):
             self.app.token_manager.access_token = response.token.access_token
             self.app.client.set_access_token(response.token.access_token)
 
-            self.change_screen(HubScreen())
+            self.app.switch_screen(HubScreen())

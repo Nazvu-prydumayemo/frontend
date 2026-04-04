@@ -1,0 +1,5 @@
+ProfileScreen {
+    #tabs {
+        padding: 1 2;
+    }
+}

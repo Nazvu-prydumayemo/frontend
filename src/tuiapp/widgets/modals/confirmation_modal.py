@@ -15,7 +15,7 @@ class ConfirmationModal(BaseModal):
     def compose_modal(self) -> ComposeResult:
         yield Static(f"Are you sure you want to {self._action}?", id="modal-title")
         with Horizontal(id="buttons-container"):
-            yield PrimaryButton(f"{self._action}", id="action")
+            yield PrimaryButton("Confirm", id="action")
             yield SecondaryButton("Cancel", id="close")
 
     @on(Button.Pressed, "#close")
