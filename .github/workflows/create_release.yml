@@ -7,6 +7,15 @@ on:
         description: "Release version (e.g. v1.2.0)"
         required: true
         default: "v0.0.1"
+      description:
+        description: "Release description / changelog"
+        required: true
+        default: |
+          ## Changes
+          - 
+
+          ## Notes
+          -
 
 permissions:
   contents: write
@@ -61,6 +70,7 @@ jobs:
         with:
           tag_name: ${{ github.event.inputs.version }}
           name: NP-Tennis ${{ github.event.inputs.version }}
+          body: ${{ github.event.inputs.description }}
           files: dist/${{ matrix.asset_name }}
           draft: false
           prerelease: false
