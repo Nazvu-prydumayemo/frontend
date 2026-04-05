@@ -3,7 +3,7 @@ from collections.abc import Iterable
 from pathlib import Path
 from typing import ClassVar
 
-from textual.app import App, SystemCommand, get_system_commands_provider
+from textual.app import App, SystemCommand
 from textual.screen import Screen
 
 from tuiapp.api.account.account import AccountService
@@ -16,6 +16,7 @@ from tuiapp.screens.login_screen import LoginScreen
 from tuiapp.screens.main_screen import MainScreen
 from tuiapp.screens.profile_screen import ProfileScreen
 from tuiapp.screens.register_screen import RegisterScreen
+from tuiapp.themes import tennis_theme, tennis_theme_alpha, tennis_theme_minimal
 
 
 def get_css_folder_path() -> Path:
@@ -43,6 +44,11 @@ class TUIApplication(App):
         self.auth = AuthService(self.client)
         self.account = AccountService(self.client)
 
+        self.register_theme(tennis_theme)
+        self.register_theme(tennis_theme_minimal)
+        self.register_theme(tennis_theme_alpha)
+        self.theme = "np-tennis"
+
     DEFAULT_CSS_FOLDER = get_css_folder_path()
     CSS_PATH: ClassVar = [
         DEFAULT_CSS_FOLDER / "styles.tcss",
@@ -63,10 +69,15 @@ class TUIApplication(App):
         "profile": ProfileScreen,
         "hub": HubScreen,
     }
-    COMMANDS: ClassVar = {get_system_commands_provider}
+
+    def go_minimal(self) -> None:
+        self.theme = "np-tennis-minimal"
 
     def get_system_commands(self, screen: Screen) -> Iterable[SystemCommand]:
         yield from super().get_system_commands(screen)
+        yield SystemCommand(
+            "Minimal", "Activate the, objectively, better theme and go minimal", self.go_minimal
+        )
 
     async def on_mount(self) -> None:
         """Mount the first screen when the app starts."""
