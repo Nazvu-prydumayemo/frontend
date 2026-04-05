@@ -1,0 +1,64 @@
+ProfileScreen {
+    #tabs {
+        padding: 1 2;
+    }
+}
+
+PersonalInfoView {
+    height: auto;
+    padding: 2 4;
+    background: $panel;
+    border: round $accent;
+
+    #personal-info-container {
+        layout: grid;
+        grid-size: 2 3;
+        width: 100%;
+        height: auto;
+        grid-gutter: 2;
+        
+        #email-field {
+            column-span: 2;
+        }
+
+        #save-changes {
+            column-span: 2;
+            dock: bottom;
+            margin-top: 2;
+            width: 32;
+        }
+    }
+}
+
+SecurityView {
+    height: auto;
+    padding: 2 4;
+    background: $panel;
+    border: round $accent;
+
+    #security-container {
+        layout: grid;
+        grid-size: 1 5;
+        width: 100%;
+        height: auto;
+        grid-gutter: 2;
+
+        #title {
+            text-style: bold;
+            color: $accent;
+        }
+
+        #buttons-container {
+            layout: horizontal;
+            width: 100%;
+            margin-top: 2;
+            height: auto;
+            dock: bottom;
+
+            #span {
+                width: 1fr;
+                height: 1;
+            }
+        }
+    }
+}

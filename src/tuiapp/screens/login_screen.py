@@ -1,14 +1,17 @@
 """Login screen for user authentication."""
 
+from typing import ClassVar
+
 from textual import on
 from textual.app import ComposeResult
-from textual.containers import Center, Vertical
-from textual.widgets import Button, Footer, Header, Static
+from textual.binding import Binding
+from textual.containers import Vertical
+from textual.widgets import Button, Footer, Header, Input, Static
 
 from tuiapp.api.auth.schema import LoginRequest, TokenResult
 from tuiapp.screens.base_screen import BaseScreen
 from tuiapp.screens.hub_screen import HubScreen
-from tuiapp.widgets.buttons import PrimaryButton, SecondaryButton
+from tuiapp.widgets.buttons import PrimaryButton
 from tuiapp.widgets.forms.login_form import LoginForm
 
 
@@ -19,16 +22,43 @@ class LoginScreen(BaseScreen):
     On success, stores tokens and navigates to the hub screen.
     """
 
+    BINDINGS: ClassVar[list] = [
+        Binding(
+            key="ctrl+b,escape",
+            action="go_back",
+            description="Back",
+            tooltip="Go to the main screen",
+        ),
+        Binding(
+            key="ctrl+r",
+            action="go_signup",
+            description="Signup",
+            tooltip="Go to the signup screen",
+        ),
+    ]
+
+    def action_go_back(self) -> None:
+        self.app.switch_screen("main")
+
+    def action_go_signup(self) -> None:
+        self.app.switch_screen("register")
+
     def compose(self) -> ComposeResult:
         yield Header()
-        with Center():
-            with Vertical(id="login-container"):
-                yield Static("LOGIN", id="login-title")
-                yield LoginForm()
-                yield PrimaryButton("Login", id="login")
-                yield SecondaryButton("Back", id="back")
+        with Vertical(id="login-container"):
+            yield Static(
+                r"""
+▄▄    ▄▄▄   ▄▄▄▄ ▄▄ ▄▄  ▄▄
+██   ██▀██ ██ ▄▄ ██ ███▄██
+████ ▀███▀ ▀███▀ ██ ██ ▀██
+""",
+                id="title",
+            )
+            yield LoginForm()
+            yield PrimaryButton("Login", id="login")
         yield Footer()
 
+    @on(Input.Submitted, "#password-field")
     @on(Button.Pressed, "#login")
     async def login(self) -> None:
         result = self.query_one(LoginForm).get_data()
@@ -38,10 +68,6 @@ class LoginScreen(BaseScreen):
             return
 
         await self._login(result)
-
-    @on(Button.Pressed, "#back")
-    def back(self) -> None:
-        self.go_back()
 
     async def _login(self, data: LoginRequest) -> None:
         button = self.query_one("#login", PrimaryButton)
@@ -59,4 +85,4 @@ class LoginScreen(BaseScreen):
             self.app.token_manager.access_token = response.token.access_token
             self.app.client.set_access_token(response.token.access_token)
 
-            self.change_screen(HubScreen())
+            self.app.switch_screen(HubScreen())

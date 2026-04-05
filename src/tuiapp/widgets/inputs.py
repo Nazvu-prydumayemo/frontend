@@ -1,6 +1,35 @@
+import re
+
 from textual.containers import Horizontal
+from textual.validation import ValidationResult, Validator
 from textual.widget import Widget
 from textual.widgets import Button, Input
+
+
+class PasswordValidator(Validator):
+    RE_MIN_LENGTH = r".{8,}"
+    RE_LOWERCASE = r"[a-z]"
+    RE_UPPERCASE = r"[A-Z]"
+    RE_DIGIT = r"\d"
+    RE_SPECIAL = r"[@$!%*?&]"
+
+    def validate(self, value: str) -> ValidationResult:
+        if not re.search(self.RE_MIN_LENGTH, value):
+            return self.failure("At least 8 characters")
+
+        if not re.search(self.RE_UPPERCASE, value):
+            return self.failure("At least one uppercase letter")
+
+        if not re.search(self.RE_LOWERCASE, value):
+            return self.failure("At least one lowercase letter")
+
+        if not re.search(self.RE_DIGIT, value):
+            return self.failure("At least one number")
+
+        if not re.search(self.RE_SPECIAL, value):
+            return self.failure("At least one special character")
+
+        return self.success()
 
 
 class TextInput(Input):
@@ -28,6 +57,7 @@ class PasswordInput(Widget):
                 placeholder=self._placeholder,
                 id="password-field",
                 classes="text-input",
+                validators=(PasswordValidator()),
             )
             yield Button(self.SHOW, id="toggle-password", classes="toggle-btn")
 
@@ -39,3 +69,8 @@ class PasswordInput(Widget):
     @property
     def value(self):
         return self.query_one("#password-field", Input).value
+
+    @property
+    def is_valid(self) -> bool:
+        field = self.query_one("#password-field", Input)
+        return field.is_valid

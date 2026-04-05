@@ -1,0 +1,25 @@
+MainScreen {
+    align: center middle;
+}
+
+#main-container {
+    width: 100%;
+    height: auto;
+    align: center middle;
+    
+    #button-container {
+        layout: grid;
+        grid-size: 1 3;
+        grid-gutter: 1;
+        width: 100%;
+        height: auto;
+        align: center middle;
+    }
+
+    #heading {
+        width: 100%;
+        text-align: center;
+        color: $accent;
+        margin-bottom: 5;
+    }
+}

@@ -2,7 +2,9 @@ from typing import TYPE_CHECKING
 
 from textual import on
 from textual.app import ComposeResult
-from textual.containers import Horizontal, Vertical
+from textual.containers import ScrollableContainer, Vertical
+from textual.css.query import NoMatches
+from textual.reactive import reactive
 from textual.widgets import Button, Static
 
 from tuiapp.api.account.schema import ProfileRequest
@@ -21,8 +23,10 @@ class PersonalInfoView(BaseView):
         super().__init__(**kwargs)
         self.user: User | None = None
 
+    small: reactive[bool] = reactive(False)
+
     def compose_view(self) -> ComposeResult:
-        with Horizontal(classes="name-fields"):
+        with ScrollableContainer(id="personal-info-container"):
             with Vertical(classes="field"):
                 yield Static("First Name", classes="field-label")
                 yield TextInput(id="first-name")
@@ -31,11 +35,24 @@ class PersonalInfoView(BaseView):
                 yield Static("Last Name", classes="field-label")
                 yield TextInput(id="last-name")
 
-        with Vertical(classes="field email-field"):
-            yield Static("Email Address", classes="field-label")
-            yield TextInput(id="email", disabled=True)
+            with Vertical(classes="field", id="email-field"):
+                yield Static("Email Address", classes="field-label")
+                yield TextInput(id="email", disabled=True)
 
-        yield PrimaryButton("Save Changes", id="save-changes")
+            yield PrimaryButton("Save Changes", id="save-changes")
+
+    def watch_small(self, is_small: bool) -> None:
+        try:
+            form = self.query_one("#personal-info-container", ScrollableContainer)
+            form.styles.grid_size_columns = 1 if is_small else 2
+            form.styles.grid_size_rows = 4 if is_small else 3
+            self.query_one("#save-changes", PrimaryButton).styles.width = "100%" if is_small else 32
+
+        except NoMatches:
+            pass
+
+    def on_resize(self) -> None:
+        self.small = self.size.width <= 64
 
     @on(Button.Pressed, "#save-changes")
     async def save_changes(self) -> None:

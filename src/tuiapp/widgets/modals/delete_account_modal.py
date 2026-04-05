@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from textual import on
-from textual.containers import Center, Horizontal, Vertical
+from textual.containers import Container, Vertical
 from textual.widgets import Button, Static
 
 from tuiapp.api.account.schema import DeleteRequest, UserResult
@@ -21,29 +21,22 @@ class DeleteAccountModal(BaseModal):
     def compose_modal(self) -> ComposeResult:
         """Compose the modal with password inputs and buttons to confirm or cancel account deletion."""
 
-        with Vertical(id="delete-account-modal"):
-            with Center():
-                yield Static("✕", id="delete-icon")
+        yield Static("✕", id="delete-icon")
+        yield Static("Are you absolutely sure you wish to delete your account?", id="modal-title")
 
-            yield Static("Delete Account", id="modal-title")
-            yield Static(
-                "Are you absolutely sure you wish to delete your account?",
-                classes="modal-description",
-            )
+        with Vertical(classes="field"):
+            yield Static("Password", classes="field-label")
+            yield PasswordInput(placeholder="", id="password")
 
-            with Vertical(classes="field"):
-                yield Static("Password", classes="field-label")
-                yield PasswordInput(placeholder="", id="password")
+        with Vertical(classes="field"):
+            yield Static("Confirm Password", classes="field-label")
+            yield PasswordInput(placeholder="", id="confirm-password")
 
-            with Vertical(classes="field"):
-                yield Static("Confirm Password", classes="field-label")
-                yield PasswordInput(placeholder="", id="confirm-password")
+        with Container(id="buttons-container"):
+            yield DangerButton("Delete Account", variant="error", id="delete")
+            yield SecondaryButton("Cancel", id="close")
 
-            with Horizontal(classes="modal-buttons"):
-                yield SecondaryButton("Cancel", id="cancel")
-                yield DangerButton("Delete Account", id="delete")
-
-    @on(Button.Pressed, "#cancel")
+    @on(Button.Pressed, "#close")
     def cancel(self) -> None:
         """Closes the modal when the 'Cancel' button is clicked."""
         self.app.pop_screen()
@@ -74,6 +67,4 @@ class DeleteAccountModal(BaseModal):
             return
 
         self.notify(result.message, title="Security")
-        self.app.token_manager.clear_tokens()  # type: ignore
-        self.app.pop_screen()
-        self.app.push_screen("main")
+        self.app.token_manager.logout()  # type: ignore

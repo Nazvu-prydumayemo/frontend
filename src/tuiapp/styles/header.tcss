@@ -3,43 +3,48 @@ TUIHeader {
     height: 3;
     background: $panel;
     border-bottom: solid $primary;
-}
 
-TUIHeader > Horizontal {
-    width: 100%;
-    height: 100%;
-    align: center middle;
-}
+    Horizontal {
+        width: 100%;
+        height: 100%;
+        align: center middle;
+    }
 
-TUIHeader #app-name {
-    width: auto;
-    margin-left: 2;
-    padding-top: 1;
-    text-style: bold;
-}
+    #app-name {
+        width: auto;
+        margin-left: 2;
+        padding-top: 1;
+        text-style: bold;
+    }
 
-TUIHeader .spacer {
-    width: 1fr;
-}
+    .spacer {
+        width: 1fr;
+    }
 
-TUIHeader #nav-buttons {
-    width: auto;
-    margin-right: 2;
-}
+    #nav-buttons {
+        width: auto;
+        margin-right: 2;
+    }
 
-TUIHeader PrimaryButton,
-TUIHeader SecondaryButton {
-    width: auto;
-    min-width: 8;
-    margin: 0 1;
-}
+    PrimaryButton, SecondaryButton {
+        width: auto;
+        min-width: 8;
+        margin: 0 1;
+        background: $panel;
+        border: transparent;
+    }
 
-TUIHeader PrimaryButton:first-child,
-TUIHeader SecondaryButton:first-child {
-    margin-left: 0;
-}
+    PrimaryButton:focus, SecondaryButton:focus {
+        background: $panel;
+        border: transparent;
+        outline: transparent;
+    }
 
-TUIHeader PrimaryButton:last-child,
-TUIHeader SecondaryButton:last-child {
-    margin-right: 0;
+    PrimaryButton:first-child, SecondaryButton:first-child {
+        margin-left: 0;
+    }
+
+    PrimaryButton:last-child, SecondaryButton:last-child {
+        margin-right: 0;
+    }
 }

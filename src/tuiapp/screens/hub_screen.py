@@ -1,19 +1,17 @@
 """Hub screen - the main authenticated user dashboard."""
 
 from textual.app import ComposeResult
-from textual.widgets import Footer
+from textual.widgets import Footer, Header
 
-from tuiapp.api.auth.auth_guard import AuthGuard
-from tuiapp.screens.base_screen import BaseScreen
-from tuiapp.widgets.header import TUIHeader
+from tuiapp.screens.base_screen import AuthScreen
 
 
-class HubScreen(AuthGuard, BaseScreen):  # type: ignore
+class HubScreen(AuthScreen):
     """Main dashboard screen displayed after successful authentication.
 
     Provides access to user-specific features and information.
     """
 
     def compose(self) -> ComposeResult:
-        yield TUIHeader(screen_name="hub")
+        yield Header()
         yield Footer()
