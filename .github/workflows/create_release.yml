@@ -62,5 +62,5 @@ jobs:
           tag_name: ${{ github.event.inputs.version }}
           name: NP-Tennis ${{ github.event.inputs.version }}
           files: dist/${{ matrix.asset_name }}
-          draft: false
+          draft: true # Release as draft, so that users can properly add and format the description
           prerelease: false
