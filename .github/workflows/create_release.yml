@@ -38,7 +38,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
-          python-version: "3.14"
+          python-version: "3.13"
 
       - name: Install dependencies
         run: pip install pyinstaller && pip install -e .
@@ -59,11 +59,28 @@ jobs:
         shell: bash
         run: mv dist/${{ matrix.exe_name }} dist/${{ matrix.asset_name }}
 
+      - name: Upload artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: ${{ matrix.asset_name }}
+          path: dist/${{ matrix.asset_name }}
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v6
+        with:
+          path: dist/
+          merge-multiple: true
+
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2.3.0
+        uses: softprops/action-gh-release@v2.6.0
         with:
           tag_name: ${{ github.event.inputs.version }}
           name: NP-Tennis ${{ github.event.inputs.version }}
-          files: dist/${{ matrix.asset_name }}
-          draft: true # Release as draft, so that users can properly add and format the description
+          files: dist/*
+          draft: true
           prerelease: false
