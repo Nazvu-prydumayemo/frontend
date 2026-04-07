@@ -11,7 +11,7 @@ class PasswordValidator(Validator):
     RE_LOWERCASE = r"[a-z]"
     RE_UPPERCASE = r"[A-Z]"
     RE_DIGIT = r"\d"
-    RE_SPECIAL = r"[@$!%*?&]"
+    RE_SPECIAL = r"[^A-Za-z0-9]"
 
     def validate(self, value: str) -> ValidationResult:
         if not re.search(self.RE_MIN_LENGTH, value):
