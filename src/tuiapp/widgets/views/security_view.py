@@ -37,7 +37,10 @@ class SecurityView(BaseView):
 
             with Container(id="buttons-container"):
                 yield PrimaryButton(
-                    "Update Password", id="update-password", classes="action-button"
+                    "Update Password",
+                    variant="primary",
+                    id="update-password",
+                    classes="action-button",
                 )
                 yield Static(id="span")
                 yield DangerButton(

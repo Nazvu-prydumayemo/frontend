@@ -55,7 +55,7 @@ class LoginScreen(BaseScreen):
                 id="title",
             )
             yield LoginForm()
-            yield PrimaryButton("Login", id="login")
+            yield PrimaryButton("Login", variant="primary", id="login")
         yield Footer()
 
     @on(Input.Submitted, "#password-field")

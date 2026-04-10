@@ -34,7 +34,7 @@ class DeleteAccountModal(BaseModal):
 
         with Container(id="buttons-container"):
             yield DangerButton("Delete Account", variant="error", id="delete")
-            yield SecondaryButton("Cancel", id="close")
+            yield SecondaryButton("Cancel", variant="warning", id="close")
 
     @on(Button.Pressed, "#close")
     def cancel(self) -> None:

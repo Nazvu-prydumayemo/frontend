@@ -47,7 +47,7 @@ class TUIApplication(App):
         self.register_theme(tennis_theme)
         self.register_theme(tennis_theme_minimal)
         self.register_theme(tennis_theme_alpha)
-        self.theme = "np-tennis"
+        # self.theme = "np-tennis" # Disabled for now
 
     DEFAULT_CSS_FOLDER = get_css_folder_path()
     CSS_PATH: ClassVar = [
@@ -59,7 +59,7 @@ class TUIApplication(App):
         DEFAULT_CSS_FOLDER / "profile_screen.tcss",
         DEFAULT_CSS_FOLDER / "modals.tcss",
     ]
-    TITLE = "Tennis App"
+    TITLE = "NP-Tennis"
     SUB_TITLE = "Tennis App Local Client"
 
     SCREENS: ClassVar[dict] = {

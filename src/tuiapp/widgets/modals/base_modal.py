@@ -16,8 +16,11 @@ class BaseModal(ModalScreen[bool]):
         Binding(key="ctrl+b", action="close", description="Close", tooltip="Close the modal")
     ]
 
+    def action_close(self) -> None:
+        self.dismiss(False)
+
     @on(Key)
-    def action_close(self, event: Key) -> None:
+    def on_key(self, event: Key) -> None:
         if event.key == "escape":
             event.stop()
             self.dismiss(False)

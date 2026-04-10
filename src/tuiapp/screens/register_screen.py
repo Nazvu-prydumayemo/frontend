@@ -69,7 +69,7 @@ class RegisterScreen(BaseScreen):
                 id="title",
             )
             yield RegisterForm()
-            yield PrimaryButton("Signup", id="register")
+            yield PrimaryButton("Signup", variant="primary", id="register")
         yield Footer()
 
     def watch_small(self, is_small: bool) -> None:
