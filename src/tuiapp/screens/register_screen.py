@@ -113,4 +113,5 @@ class RegisterScreen(BaseScreen):
             self.app.token_manager.access_token = response.token.access_token
             self.app.client.set_access_token(response.token.access_token)
 
+            self.notify("Thanks for signing up!\nPlease, check your email inbox", title="Signup")
             self.app.switch_screen(HubScreen())
