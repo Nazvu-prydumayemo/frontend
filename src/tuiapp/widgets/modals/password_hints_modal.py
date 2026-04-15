@@ -19,7 +19,7 @@ class PasswordHintsModal(BaseModal):
             "• One special character (@$!%*?&)",
             id="modal-body",
         )
-        yield SecondaryButton("Close", id="close")
+        yield SecondaryButton("Close", variant="warning", id="close")
 
     @on(Button.Pressed, "#close")
     def close(self) -> None:

@@ -39,7 +39,7 @@ class PersonalInfoView(BaseView):
                 yield Static("Email Address", classes="field-label")
                 yield TextInput(id="email", disabled=True)
 
-            yield PrimaryButton("Save Changes", id="save-changes")
+            yield PrimaryButton("Save Changes", variant="primary", id="save-changes")
 
     def watch_small(self, is_small: bool) -> None:
         try:

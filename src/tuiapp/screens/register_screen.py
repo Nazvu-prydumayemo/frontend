@@ -69,7 +69,7 @@ class RegisterScreen(BaseScreen):
                 id="title",
             )
             yield RegisterForm()
-            yield PrimaryButton("Signup", id="register")
+            yield PrimaryButton("Signup", variant="primary", id="register")
         yield Footer()
 
     def watch_small(self, is_small: bool) -> None:
@@ -113,4 +113,5 @@ class RegisterScreen(BaseScreen):
             self.app.token_manager.access_token = response.token.access_token
             self.app.client.set_access_token(response.token.access_token)
 
+            self.notify("Thanks for signing up!\nPlease, check your email inbox", title="Signup")
             self.app.switch_screen(HubScreen())

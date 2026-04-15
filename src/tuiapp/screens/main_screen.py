@@ -1,17 +1,24 @@
+from typing import ClassVar
+
 from textual import on
 from textual.app import ComposeResult
+from textual.binding import Binding
 from textual.containers import Container, Vertical
 from textual.css.query import NoMatches
 from textual.reactive import reactive
 from textual.widgets import Button, Footer, Header, Static
 
 from tuiapp.screens.base_screen import BaseScreen
-from tuiapp.widgets.buttons import PrimaryButton, SecondaryButton
+from tuiapp.widgets.buttons import PrimaryButton
 from tuiapp.widgets.modals.confirmation_modal import ConfirmationModal
 
 
 class MainScreen(BaseScreen):
     """Main screen with navigation buttons: Login, Register, Status, and Exit."""
+
+    BINDINGS: ClassVar[list[Binding]] = [
+        Binding("ctrl+b,esc", "exit", "Exit", tooltip="Close the application")
+    ]
 
     heading = r"""
 ███╗   ██╗██████╗    ████████╗███████╗███╗   ██╗███╗   ██╗██╗███████╗
@@ -28,9 +35,8 @@ class MainScreen(BaseScreen):
         with Vertical(id="main-container"):
             yield Static(self.heading, id="heading")
             with Container(id="button-container"):
-                yield PrimaryButton("Login", id="login")
-                yield PrimaryButton("Signup", id="register")
-                yield SecondaryButton("Exit", id="exit")
+                yield PrimaryButton("Login", variant="primary", id="login")
+                yield PrimaryButton("Signup", variant="primary", id="register")
         yield Footer()
 
     def watch_heading_status(self, show_large: bool) -> None:
@@ -55,6 +61,5 @@ class MainScreen(BaseScreen):
         if quit:
             self.app.exit()
 
-    @on(Button.Pressed, "#exit")
-    def exit(self) -> None:
+    def action_exit(self) -> None:
         self.show_modal(ConfirmationModal("Exit"), self._check_quit)

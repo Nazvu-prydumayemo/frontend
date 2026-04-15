@@ -1,9 +1,11 @@
 from abc import abstractmethod
 from typing import ClassVar
 
+from textual import on
 from textual.app import ComposeResult
 from textual.binding import Binding
 from textual.containers import Container
+from textual.events import Key
 from textual.screen import ModalScreen
 
 
@@ -16,6 +18,12 @@ class BaseModal(ModalScreen[bool]):
 
     def action_close(self) -> None:
         self.dismiss(False)
+
+    @on(Key)
+    def on_key(self, event: Key) -> None:
+        if event.key == "escape":
+            event.stop()
+            self.dismiss(False)
 
     def compose(self) -> ComposeResult:
         """Compose the modal with a centered container."""
