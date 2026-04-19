@@ -80,9 +80,13 @@ class PersonalInfoView(BaseView):
         if self.user is None:
             return
 
-        self.query_one("#first-name", TextInput).value = self.user.firstname
-        self.query_one("#last-name", TextInput).value = self.user.lastname
-        self.query_one("#email", TextInput).value = self.user.email
+        try:
+            self.query_one("#first-name", TextInput).value = self.user.firstname
+            self.query_one("#last-name", TextInput).value = self.user.lastname
+            self.query_one("#email", TextInput).value = self.user.email
+
+        except NoMatches:
+            pass
 
     def on_view_closed(self) -> None:
         """Called when the view is closed."""
