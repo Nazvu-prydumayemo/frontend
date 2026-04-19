@@ -86,7 +86,8 @@ class PersonalInfoView(BaseView):
             self.query_one("#email", TextInput).value = self.user.email
 
         except NoMatches:
-            pass
+            # Widgets may not be mounted yet; skip populating until the next activation.
+            return
 
     def on_view_closed(self) -> None:
         """Called when the view is closed."""
