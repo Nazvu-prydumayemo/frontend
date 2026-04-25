@@ -80,9 +80,14 @@ class PersonalInfoView(BaseView):
         if self.user is None:
             return
 
-        self.query_one("#first-name", TextInput).value = self.user.firstname
-        self.query_one("#last-name", TextInput).value = self.user.lastname
-        self.query_one("#email", TextInput).value = self.user.email
+        try:
+            self.query_one("#first-name", TextInput).value = self.user.firstname
+            self.query_one("#last-name", TextInput).value = self.user.lastname
+            self.query_one("#email", TextInput).value = self.user.email
+
+        except NoMatches:
+            # Widgets may not be mounted yet; skip populating until the next activation.
+            return
 
     def on_view_closed(self) -> None:
         """Called when the view is closed."""
