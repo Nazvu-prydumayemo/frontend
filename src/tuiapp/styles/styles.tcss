@@ -2,6 +2,26 @@ BaseScreen {
     background: $surface;
 }
 
+.digit-input {
+    width: 8;
+    height: 3;
+    border: tall $panel-lighten-2;
+    background: $panel;
+    text-align: center;
+    content-align: center middle;
+}
+
+.digit-input.-filled {
+    color: $accent 40%;
+    border: tall $accent 40%; 
+}
+
+.digit-input:focus {
+    border: tall $accent;
+    background: $surface;
+    color: $accent;
+}
+
 .text-input {
     width: 100%;
     height: 3;

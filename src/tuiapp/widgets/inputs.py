@@ -3,7 +3,7 @@ import re
 from textual.containers import Horizontal
 from textual.validation import ValidationResult, Validator
 from textual.widget import Widget
-from textual.widgets import Button, Input
+from textual.widgets import Button, Input, MaskedInput
 
 
 class PasswordValidator(Validator):
@@ -30,6 +30,12 @@ class PasswordValidator(Validator):
             return self.failure("At least one special character")
 
         return self.success()
+
+
+class DigitInput(MaskedInput):
+    def __init__(self, **kwargs):
+        super().__init__(template="9", placeholder="0", **kwargs)
+        self.add_class("digit-input")
 
 
 class TextInput(Input):
