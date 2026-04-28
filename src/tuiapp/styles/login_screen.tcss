@@ -22,6 +22,25 @@ LoginScreen {
 
     #login {
         margin-top: 1;
+        margin-bottom: 1;
+    }
+
+    #forgot-password {
+        background: transparent;
+        border: none;
+        color: $accent;
+        height: auto;
+        min-width: 0;
+        padding: 0;
+        height: auto;
+        width: 100%;
+        text-align: center;
+    }
+
+    #forgot-password:focus {
+        background: $accent;
+        color: $background;
+        text-style: bold;
     }
 }
 

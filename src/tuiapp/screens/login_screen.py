@@ -56,7 +56,12 @@ class LoginScreen(BaseScreen):
             )
             yield LoginForm()
             yield PrimaryButton("Login", variant="primary", id="login")
+            yield PrimaryButton("Forgot Password?", id="forgot-password")
         yield Footer()
+
+    @on(Button.Pressed, "#forgot-password")
+    def forgot_password(self) -> None:
+        self.app.switch_screen("forgot-password")
 
     @on(Input.Submitted, "#password-field")
     @on(Button.Pressed, "#login")
