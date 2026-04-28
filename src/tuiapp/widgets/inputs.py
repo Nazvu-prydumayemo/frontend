@@ -1,6 +1,10 @@
 import re
 
+from textual import on
+from textual.app import ComposeResult
 from textual.containers import Horizontal
+from textual.events import Key
+from textual.reactive import reactive
 from textual.validation import ValidationResult, Validator
 from textual.widget import Widget
 from textual.widgets import Button, Input, MaskedInput
@@ -36,6 +40,86 @@ class DigitInput(MaskedInput):
     def __init__(self, **kwargs):
         super().__init__(template="9", placeholder="0", **kwargs)
         self.add_class("digit-input")
+
+
+class CodeInput(Widget):
+    is_complete: reactive[bool] = reactive(False)
+
+    def __init__(self, length: int, **kwargs) -> None:
+        super().__init__(**kwargs)
+        self.length = length
+        self.add_class("code-input")
+
+    def compose(self) -> ComposeResult:
+        with Horizontal():
+            for i in range(self.length):
+                yield DigitInput(id=f"digit-{i}")
+
+    def on_mount(self) -> None:
+        self.query(DigitInput).first().focus()
+
+    def _get_digit(self, index: int) -> DigitInput | None:
+        return self.query_one(f"#digit-{index}", DigitInput)
+
+    def _focus_next(self, current_index: int) -> None:
+        if current_index < self.length - 1:
+            self._get_digit(current_index + 1).focus()  # type: ignore
+
+    def _focus_prev(self, current_index: int) -> None:
+        if current_index > 0:
+            self._get_digit(current_index - 1).focus()  # type: ignore
+
+    @on(MaskedInput.Changed)
+    def on_digit_changed(self, event: MaskedInput.Changed) -> None:
+        event.stop()
+        index = int(event.input.id.split("-")[1])  # type: ignore
+
+        if event.value:
+            event.input.add_class("-filled")
+            self._focus_next(index)
+        else:
+            event.input.remove_class("-filled")
+
+        self.is_complete = self._check_complete()
+
+    def on_key(self, event: Key) -> None:
+        focused = self.app.focused
+        if not isinstance(focused, DigitInput):
+            return
+
+        index = int(focused.id.split("-")[1])  # type: ignore
+
+        if event.key == "backspace":
+            event.stop()
+            if focused.value:
+                focused.value = ""
+            else:
+                self._focus_prev(index)
+
+        elif event.key == "left":
+            event.stop()
+            self._focus_prev(index)
+
+        elif event.key == "right":
+            event.stop()
+            self._focus_next(index)
+
+    def _check_complete(self) -> bool:
+        return all(inp.value for inp in self.query(DigitInput))
+
+    def get_data(self) -> str | None:
+        inputs = self.query(DigitInput)
+        if not all(inp.value for inp in inputs):
+            return None
+        return "".join(inp.value for inp in inputs)
+
+    def clear(self) -> None:
+        for inp in self.query(DigitInput):
+            inp.value = ""
+            inp.remove_class("-filled")
+
+        self.query(DigitInput).first().focus()
+        self.is_complete = False
 
 
 class TextInput(Input):

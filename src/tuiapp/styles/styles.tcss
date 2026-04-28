@@ -22,6 +22,18 @@ BaseScreen {
     color: $accent;
 }
 
+.code-input {
+    width: auto;
+    height: auto;
+    align: center middle;
+}
+
+.code-input Horizontal {
+    width: auto;
+    height: auto;
+    align: center middle;
+}
+
 .text-input {
     width: 100%;
     height: 3;
