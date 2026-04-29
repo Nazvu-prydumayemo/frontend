@@ -10,7 +10,7 @@ from tuiapp.widgets.inputs import TextInput
 
 class ForgotPasswordForm(Widget):
     def compose(self) -> ComposeResult:
-        with Vertical(id="login-form"):
+        with Vertical(classes="form-container"):
             with Vertical(classes="field"):
                 yield Static("Email", classes="field-label")
                 yield TextInput(placeholder="example@email.com", id="email")
