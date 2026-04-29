@@ -10,6 +10,7 @@ from textual.widgets import Button, Footer, Header, Input, Static
 
 from tuiapp.api.auth.schema import LoginRequest, TokenResult
 from tuiapp.screens.base_screen import BaseScreen
+from tuiapp.screens.forgot_password_screen import ForgotPasswordScreen
 from tuiapp.screens.hub_screen import HubScreen
 from tuiapp.widgets.buttons import PrimaryButton
 from tuiapp.widgets.forms.login_form import LoginForm
@@ -61,7 +62,7 @@ class LoginScreen(BaseScreen):
 
     @on(Button.Pressed, "#forgot-password")
     def forgot_password(self) -> None:
-        self.app.switch_screen("forgot-password")
+        self.app.switch_screen(ForgotPasswordScreen())
 
     @on(Input.Submitted, "#password-field")
     @on(Button.Pressed, "#login")
