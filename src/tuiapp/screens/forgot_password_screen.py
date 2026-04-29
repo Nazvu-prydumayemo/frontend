@@ -14,6 +14,7 @@ from tuiapp.widgets.buttons import PrimaryButton
 from tuiapp.widgets.forms.forgot_password_form import ForgotPasswordForm
 from tuiapp.widgets.forms.new_password_form import NewPasswordForm
 from tuiapp.widgets.inputs import CodeInput
+from tuiapp.widgets.modals.password_hints_modal import PasswordHintsModal
 
 
 class ForgotPasswordScreen(BaseScreen):
@@ -38,10 +39,19 @@ class ForgotPasswordScreen(BaseScreen):
             description="Back",
             tooltip="Go to the login screen",
         ),
+        Binding(
+            key="ctrl+g",
+            action="push_hints",
+            description="Password Requirements",
+            tooltip="Password Requirements",
+        ),
     ]
 
     def action_go_back(self) -> None:
         self.app.switch_screen("login")
+
+    def action_push_hints(self) -> None:
+        self.show_modal(PasswordHintsModal())
 
     def compose(self) -> ComposeResult:
         yield Header()
