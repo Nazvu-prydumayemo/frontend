@@ -1,6 +1,6 @@
 from typing import ClassVar
 
-from pydantic import EmailStr, TypeAdapter, ValidationError
+from pydantic import EmailStr
 from textual import on
 from textual.app import ComposeResult
 from textual.binding import Binding
@@ -12,7 +12,7 @@ from tuiapp.screens.base_screen import BaseScreen
 from tuiapp.widgets.buttons import PrimaryButton
 from tuiapp.widgets.forms.forgot_password_form import ForgotPasswordForm
 from tuiapp.widgets.forms.new_password_form import NewPasswordForm
-from tuiapp.widgets.inputs import CodeInput, TextInput
+from tuiapp.widgets.inputs import CodeInput
 
 
 class ForgotPasswordScreen(BaseScreen):
@@ -82,17 +82,19 @@ class ForgotPasswordScreen(BaseScreen):
     @on(Input.Submitted, "ForgotPasswordForm > .form-container > .field > #email")
     @on(Button.Pressed, "#send-reset-code")
     async def send_reset_code(self) -> None:
-        try:
-            self.email = TypeAdapter(EmailStr).validate_python(self.query_one(TextInput).value)
-
-        except ValidationError:
-            self.notify("Incorrect email format provided", title="Password Reset", severity="error")
+        data = self.query_one(ForgotPasswordForm).get_data()
+        if isinstance(data, str):
+            self.notify(data, title="Forgot Password", severity="error")
             return
 
-        self.notify(self.email)
-        self.sent_code = True
+        response = await self.app.auth.forgot_password(data)
+        if response.status != "success":
+            self.notify(response.message, title="Forgot Password", severity="error")
+            return
 
-        # TODO: Add logic here
+        self.notify(response.message, title="Forgot Password", severity="information")
+        self.email = data.email
+        self.sent_code = True
 
     @on(Button.Pressed, "#verify-code")
     def verify_code(self) -> None:

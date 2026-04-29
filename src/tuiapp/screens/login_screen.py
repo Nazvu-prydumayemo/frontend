@@ -70,7 +70,7 @@ class LoginScreen(BaseScreen):
         result = self.query_one(LoginForm).get_data()
 
         if isinstance(result, str):
-            self.notify(result, title="Login", severity="warning")
+            self.notify(result, title="Login", severity="error")
             return
 
         await self._login(result)
