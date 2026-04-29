@@ -73,7 +73,7 @@ class NewPassword(BaseModel):
 class ResetPasswordRequest(BaseModel):
     email: EmailStr
     code: str
-    new_password: NewPassword
+    new_password: str
 
 
 class TokenResult(Result):

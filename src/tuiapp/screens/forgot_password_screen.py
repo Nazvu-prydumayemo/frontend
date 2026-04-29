@@ -1,6 +1,6 @@
 from typing import ClassVar
 
-from pydantic import EmailStr, TypeAdapter, ValidationError
+from pydantic import EmailStr
 from textual import on
 from textual.app import ComposeResult
 from textual.binding import Binding
@@ -8,11 +8,13 @@ from textual.containers import Vertical
 from textual.reactive import reactive
 from textual.widgets import Button, Footer, Header, Input, Static
 
+from tuiapp.api.auth.schema import ResetPasswordRequest, VerifyResetCodeRequest
 from tuiapp.screens.base_screen import BaseScreen
 from tuiapp.widgets.buttons import PrimaryButton
 from tuiapp.widgets.forms.forgot_password_form import ForgotPasswordForm
 from tuiapp.widgets.forms.new_password_form import NewPasswordForm
-from tuiapp.widgets.inputs import CodeInput, TextInput
+from tuiapp.widgets.inputs import CodeInput
+from tuiapp.widgets.modals.password_hints_modal import PasswordHintsModal
 
 
 class ForgotPasswordScreen(BaseScreen):
@@ -37,10 +39,19 @@ class ForgotPasswordScreen(BaseScreen):
             description="Back",
             tooltip="Go to the login screen",
         ),
+        Binding(
+            key="ctrl+g",
+            action="push_hints",
+            description="Password Requirements",
+            tooltip="Password Requirements",
+        ),
     ]
 
     def action_go_back(self) -> None:
         self.app.switch_screen("login")
+
+    def action_push_hints(self) -> None:
+        self.show_modal(PasswordHintsModal())
 
     def compose(self) -> ComposeResult:
         yield Header()
@@ -82,36 +93,67 @@ class ForgotPasswordScreen(BaseScreen):
     @on(Input.Submitted, "ForgotPasswordForm > .form-container > .field > #email")
     @on(Button.Pressed, "#send-reset-code")
     async def send_reset_code(self) -> None:
-        try:
-            self.email = TypeAdapter(EmailStr).validate_python(self.query_one(TextInput).value)
-
-        except ValidationError:
-            self.notify("Incorrect email format provided", title="Password Reset", severity="error")
+        data = self.query_one(ForgotPasswordForm).get_data()
+        if isinstance(data, str):
+            self.notify(data, title="Forgot Password", severity="error")
             return
 
-        self.notify(self.email)
+        response = await self.app.auth.forgot_password(data)
+        if response.status != "success":
+            self.notify(response.message, title="Forgot Password", severity="error")
+            return
+
+        self.notify(response.message, title="Forgot Password", severity="information")
+        self.email = data.email
         self.sent_code = True
 
-        # TODO: Add logic here
-
     @on(Button.Pressed, "#verify-code")
-    def verify_code(self) -> None:
+    async def verify_code(self) -> None:
         code = self.query_one(CodeInput).get_data()
         if not code:
-            self.notify("Please input your code")
+            self.notify("Please input your code", title="Verify Code", severity="error")
             return
 
-        self.notify(f"Your code is {code}")
+        response = await self.app.auth.verify_reset_code(
+            VerifyResetCodeRequest(email=self.email, code=code)
+        )
+        if response.status != "success":
+            self.notify(response.message, title="Verify Code", severity="error")
+            return
+
+        self.notify(
+            "Reset Code is valid, Thank you\nCreate a new password",
+            title="Verify Code",
+            severity="information",
+        )
         self.code = code
-        # TODO: Add logic here
 
     @on(Input.Submitted, "NewPasswordForm > .form-container > #confirm-field > #confirm")
     @on(Button.Pressed, "#set-new-password")
-    def set_new_password(self) -> None:
+    async def set_new_password(self) -> None:
         password_data = self.query_one(NewPasswordForm).get_data()
         if isinstance(password_data, str):
-            self.notify(password_data)
+            self.notify(password_data, title="New Password", severity="error")
             return
 
-        # TODO: Add logic here
+        if not self.code:
+            self.notify(
+                "Something unexpected has happened\n Please, try again later",
+                title="New Password",
+                severity="error",
+            )
+            return
+
+        request = ResetPasswordRequest(
+            email=self.email, code=self.code, new_password=password_data.new_password
+        )
+        response = await self.app.auth.reset_password(request)
+        if response.status != "success":
+            self.notify(response.message, title="New Password", severity="error")
+
+        self.notify(
+            "Your password was changed\nPlease, Login now",
+            title="New Password",
+            severity="information",
+        )
         self.app.switch_screen("login")
