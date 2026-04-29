@@ -83,7 +83,15 @@ class APIClient:
         except httpx.HTTPStatusError as error:
             if (
                 error.response.status_code == 401
-                and (endpoint not in {"/auth/login", "/auth/refresh"})
+                and (
+                    endpoint
+                    not in {
+                        "/auth/login",
+                        "/auth/refresh",
+                        "/auth/verify-reset-code",
+                        "/auth/reset-password",
+                    }
+                )
                 and self._on_401
             ):
                 if await self._on_401():

@@ -8,6 +8,7 @@ from textual.containers import Vertical
 from textual.reactive import reactive
 from textual.widgets import Button, Footer, Header, Input, Static
 
+from tuiapp.api.auth.schema import VerifyResetCodeRequest
 from tuiapp.screens.base_screen import BaseScreen
 from tuiapp.widgets.buttons import PrimaryButton
 from tuiapp.widgets.forms.forgot_password_form import ForgotPasswordForm
@@ -97,15 +98,25 @@ class ForgotPasswordScreen(BaseScreen):
         self.sent_code = True
 
     @on(Button.Pressed, "#verify-code")
-    def verify_code(self) -> None:
+    async def verify_code(self) -> None:
         code = self.query_one(CodeInput).get_data()
         if not code:
-            self.notify("Please input your code")
+            self.notify("Please input your code", title="Verify Code", severity="error")
             return
 
-        self.notify(f"Your code is {code}")
+        response = await self.app.auth.verify_reset_code(
+            VerifyResetCodeRequest(email=self.email, code=code)
+        )
+        if response.status != "success":
+            self.notify(response.message, title="Verify Code", severity="error")
+            return
+
+        self.notify(
+            "Reset Code is valid, Thank you\nCreate a new password",
+            title="Verify Code",
+            severity="information",
+        )
         self.code = code
-        # TODO: Add logic here
 
     @on(Input.Submitted, "NewPasswordForm > .form-container > #confirm-field > #confirm")
     @on(Button.Pressed, "#set-new-password")

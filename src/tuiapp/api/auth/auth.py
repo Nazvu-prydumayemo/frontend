@@ -6,6 +6,7 @@ from tuiapp.api.auth.schema import (
     RegisterRequest,
     Token,
     TokenResult,
+    VerifyResetCodeRequest,
 )
 from tuiapp.api.client import APIClient
 from tuiapp.api.errors import APIError
@@ -89,6 +90,25 @@ class AuthService:
             return Result(message=response.message, status="success")
 
         except APIError as error:
+            if error.status_code == 422:
+                return Result(message=error.message, status="error")
+
+            return Result(message=f"Server error: {error.status_code}", status="error")
+
+    async def verify_reset_code(self, json: VerifyResetCodeRequest) -> Result:
+        try:
+            response = await self._client.post(
+                "/auth/verify-reset-code", json=json, response_model=Message
+            )
+            return Result(message=response.message, status="success")
+
+        except APIError as error:
+            if error.status_code == 401:
+                return Result(message="Invalid or expired Reset Code", status="invalid")
+
+            if error.status_code == 404:
+                return Result(message="The given user does not exist", status="error")
+
             if error.status_code == 422:
                 return Result(message=error.message, status="error")
 
