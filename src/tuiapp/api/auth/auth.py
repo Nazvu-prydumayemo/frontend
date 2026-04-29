@@ -4,6 +4,7 @@ from tuiapp.api.auth.schema import (
     ForgotPasswordRequest,
     LoginRequest,
     RegisterRequest,
+    ResetPasswordRequest,
     Token,
     TokenResult,
     VerifyResetCodeRequest,
@@ -99,6 +100,25 @@ class AuthService:
         try:
             response = await self._client.post(
                 "/auth/verify-reset-code", json=json, response_model=Message
+            )
+            return Result(message=response.message, status="success")
+
+        except APIError as error:
+            if error.status_code == 401:
+                return Result(message="Invalid or expired Reset Code", status="invalid")
+
+            if error.status_code == 404:
+                return Result(message="The given user does not exist", status="error")
+
+            if error.status_code == 422:
+                return Result(message=error.message, status="error")
+
+            return Result(message=f"Server error: {error.status_code}", status="error")
+
+    async def reset_password(self, json: ResetPasswordRequest) -> Result:
+        try:
+            response = await self._client.post(
+                "/auth/reset-password", json=json, response_model=Message
             )
             return Result(message=response.message, status="success")
 

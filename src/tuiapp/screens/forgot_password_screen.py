@@ -8,7 +8,7 @@ from textual.containers import Vertical
 from textual.reactive import reactive
 from textual.widgets import Button, Footer, Header, Input, Static
 
-from tuiapp.api.auth.schema import VerifyResetCodeRequest
+from tuiapp.api.auth.schema import ResetPasswordRequest, VerifyResetCodeRequest
 from tuiapp.screens.base_screen import BaseScreen
 from tuiapp.widgets.buttons import PrimaryButton
 from tuiapp.widgets.forms.forgot_password_form import ForgotPasswordForm
@@ -120,11 +120,30 @@ class ForgotPasswordScreen(BaseScreen):
 
     @on(Input.Submitted, "NewPasswordForm > .form-container > #confirm-field > #confirm")
     @on(Button.Pressed, "#set-new-password")
-    def set_new_password(self) -> None:
+    async def set_new_password(self) -> None:
         password_data = self.query_one(NewPasswordForm).get_data()
         if isinstance(password_data, str):
-            self.notify(password_data)
+            self.notify(password_data, title="New Password", severity="error")
             return
 
-        # TODO: Add logic here
+        if not self.code:
+            self.notify(
+                "Something unexpected has happened\n Please, try again later",
+                title="New Password",
+                severity="error",
+            )
+            return
+
+        request = ResetPasswordRequest(
+            email=self.email, code=self.code, new_password=password_data.new_password
+        )
+        response = await self.app.auth.reset_password(request)
+        if response.status != "success":
+            self.notify(response.message, title="New Password", severity="error")
+
+        self.notify(
+            "Your password was changed\nPlease, Login now",
+            title="New Password",
+            severity="information",
+        )
         self.app.switch_screen("login")
