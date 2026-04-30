@@ -10,6 +10,7 @@ from tuiapp.api.account.account import AccountService
 from tuiapp.api.auth.auth import AuthService
 from tuiapp.api.auth.token_manager import TokenManagerService
 from tuiapp.api.client import APIClient
+from tuiapp.api.court.court import CourtService
 from tuiapp.api.status.status import StatusService
 from tuiapp.screens.forgot_password_screen import ForgotPasswordScreen
 from tuiapp.screens.hub_screen import HubScreen
@@ -44,6 +45,7 @@ class TUIApplication(App):
         self.status = StatusService(self.client)
         self.auth = AuthService(self.client)
         self.account = AccountService(self.client)
+        self.court = CourtService(self.client)
 
         self.register_theme(tennis_theme)
         self.register_theme(tennis_theme_minimal)

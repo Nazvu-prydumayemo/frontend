@@ -4,12 +4,12 @@ from collections.abc import Awaitable, Callable
 from typing import Any, Self, TypeVar
 
 import httpx
-from pydantic import BaseModel
+from pydantic import BaseModel, TypeAdapter
 from pydantic.networks import AnyHttpUrl
 
 from tuiapp.api.errors import APIError
 
-T = TypeVar("T", bound=BaseModel)
+T = TypeVar("T")
 
 
 class APIClient:
@@ -121,7 +121,7 @@ class APIClient:
             The validated response data as the specified model.
         """
         data = await self._request("GET", endpoint, **kwargs)
-        return response_model.model_validate(data)
+        return TypeAdapter(response_model).validate_python(data)
 
     async def post(self, endpoint: str, json: BaseModel, response_model: type[T], **kwargs) -> T:
         """Send an HTTP POST request to the API.
@@ -136,7 +136,7 @@ class APIClient:
             The validated response data as the specified model.
         """
         data = await self._request("POST", endpoint, json=json, **kwargs)
-        return response_model.model_validate(data)
+        return TypeAdapter(response_model).validate_python(data)
 
     async def patch(self, endpoint: str, json: BaseModel, response_model: type[T], **kwargs) -> T:
         """Send an HTTP PATCH request to the API.
@@ -151,7 +151,7 @@ class APIClient:
             The validated response data as the specified model.
         """
         data = await self._request("PATCH", endpoint, json=json, **kwargs)
-        return response_model.model_validate(data)
+        return TypeAdapter(response_model).validate_python(data)
 
     async def __aenter__(self) -> Self:
         return self
