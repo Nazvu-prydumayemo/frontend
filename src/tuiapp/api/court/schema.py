@@ -20,3 +20,7 @@ class Court(BaseModel):
 
 class CourtResult(Result):
     court: Court | None
+
+
+class CourtsAllResult(Result):
+    courts: list[Court] | None

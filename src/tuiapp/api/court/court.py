@@ -1,5 +1,5 @@
 from tuiapp.api.client import APIClient
-from tuiapp.api.court.schema import Court, CourtResult
+from tuiapp.api.court.schema import Court, CourtResult, CourtsAllResult
 from tuiapp.api.errors import APIError
 
 
@@ -24,4 +24,17 @@ class CourtService:
 
             return CourtResult(
                 message=f"Server Error: {error.status_code}", status="error", court=None
+            )
+
+    async def get_all_courts(self) -> CourtsAllResult:
+        try:
+            response = await self._client.get("/courts/", response_model=list[Court])
+            return CourtsAllResult(message="Loaded all courts", status="success", courts=response)
+
+        except APIError as error:
+            if error.status_code == 401:
+                return CourtsAllResult(message="Not authenticated", status="invalid", courts=None)
+
+            return CourtsAllResult(
+                message=f"Server Error: {error.status_code}", status="error", courts=None
             )
