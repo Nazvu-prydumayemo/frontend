@@ -7,10 +7,7 @@ from tuiapp.screens.base_screen import AuthScreen
 
 
 class HubScreen(AuthScreen):
-    """Main dashboard screen displayed after successful authentication.
-
-    Provides access to user-specific features and information.
-    """
+    """Main dashboard screen displayed after successful authentication."""
 
     def compose(self) -> ComposeResult:
         yield Header()

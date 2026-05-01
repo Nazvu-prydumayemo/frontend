@@ -1,0 +1,96 @@
+.view-container {
+    height: 1fr;
+    width: 100%;
+}
+
+#court-scroll {
+    height: 100%;
+    width: 100%;
+}
+
+#court-header {
+    height: 12;
+    width: 100%;
+    background: $success;
+    layout: horizontal;
+    padding: 2 4;
+    align: left middle;
+}
+
+#court-header-info {
+    width: 1fr;
+    height: 100%;
+    padding: 1 2;
+}
+
+#court-title {
+    text-style: bold;
+    color: white;
+}
+
+#court-subtitle {
+    color: white 80%;
+}
+
+#court-diagram {
+    width: 40;
+    color: white;
+    text-style: bold;
+}
+
+#court-body {
+    height: auto;
+    width: 100%;
+    padding: 2;
+}
+
+#court-info-card {
+    width: 2fr;
+    height: auto;
+    background: $panel;
+    border: round $panel-lighten-2;
+    padding: 2 3;
+    margin-right: 1;
+}
+
+#court-info-title {
+    text-style: bold;
+    color: $success;
+    margin-bottom: 1;
+}
+
+.card-divider {
+    height: 1;
+    border-bottom: solid $panel-lighten-2;
+    margin-bottom: 1;
+}
+
+.info-label {
+    color: $foreground 50%;
+    margin-top: 1;
+}
+
+.info-value {
+    color: $foreground;
+    text-style: bold;
+}
+
+.price-value {
+    color: $success;
+}
+
+#court-orders-card {
+    width: 1fr;
+    height: auto;
+    background: $panel;
+    border: round $panel-lighten-2;
+    padding: 2 3;
+    content-align: center middle;
+}
+
+#wip-orders {
+    text-style: bold;
+    color: $foreground;
+    width: 100%;
+    content-align: center middle;
+}
