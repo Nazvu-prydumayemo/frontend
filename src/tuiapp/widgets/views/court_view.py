@@ -1,10 +1,11 @@
+from typing import Any
+
 from textual.app import ComposeResult
 from textual.containers import Horizontal, ScrollableContainer, Vertical
 from textual.css.query import NoMatches
 from textual.reactive import reactive
 from textual.widgets import Static
 
-from tuiapp.api.schema import Court
 from tuiapp.widgets.views.base_view import BaseView
 
 
@@ -13,7 +14,7 @@ class CourtView(BaseView):
 
     DEFAULT_CLASSES = "view-container"
 
-    court: reactive[Court | None] = reactive(None)
+    court: reactive[Any] = reactive(None)
 
     def compose_view(self) -> ComposeResult:
         with ScrollableContainer(id="court-scroll"):
@@ -47,7 +48,7 @@ class CourtView(BaseView):
         except NoMatches:
             pass
 
-    def watch_court(self, court: Court | None) -> None:
+    def watch_court(self, court: Any) -> None:
         self.on_view_activated()
 
     def on_view_activated(self) -> None:

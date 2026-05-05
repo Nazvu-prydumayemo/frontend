@@ -47,3 +47,14 @@ PasswordInput {
         border: none;
     }
 }
+
+#hub-container {
+    height: 1fr;
+    width: 100%;
+}
+
+#court-list {
+    width: 30;
+    height: 100%;
+    border-right: solid $panel-lighten-2;
+}
