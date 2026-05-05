@@ -34,6 +34,7 @@ class CourtCard(Widget):
         self._price = truncate(price)
         self._court_type = truncate(court_type)
 
+
     def compose(self) -> ComposeResult:
         with Vertical(classes="court-card-body"):
             yield Static(self._name, classes="court-card-name")
