@@ -20,6 +20,7 @@ class HubScreen(AuthScreen):
     def compose(self) -> ComposeResult:
         yield Header()
         with Horizontal(id="hub-container"):
+            # TODO: REPLACE WITH THE ACTUAL COURT LIST
             yield ScrollableContainer(id="court-list")
             yield CourtView()
         yield Footer()

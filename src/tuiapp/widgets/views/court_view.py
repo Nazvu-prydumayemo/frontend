@@ -14,31 +14,41 @@ class CourtView(BaseView):
 
     DEFAULT_CLASSES = "view-container"
 
+    # TODO: REPLACE WITH THE COURT MODEL API
     court: reactive[Any] = reactive(None)
 
     def compose_view(self) -> ComposeResult:
         with ScrollableContainer(id="court-scroll"):
             with Vertical(id="court-header"):
                 with Vertical(id="court-header-info"):
-                    yield Static("", id="court-title")
-                    yield Static("", id="court-subtitle")
-                yield Static("", id="court-diagram")
+                    yield Static("TITLE", id="court-title")
+                    yield Static("SUBTITLE", id="court-subtitle")
+
+                # TODO: ADD ASCII DIAGRAM
+                yield Static("ASCII", id="court-diagram")
+
             with Horizontal(id="court-body"):
                 with Vertical(id="court-info-card"):
-                    yield Static("Court Information", id="court-info-title")
-                    yield Static("", classes="card-divider")
+                    yield Static("COURT INFORMATION", id="court-info-title")
+
                     yield Static("Court Name", classes="info-label")
                     yield Static("", id="court-name", classes="info-value")
+
                     yield Static("Location", classes="info-label")
                     yield Static("", id="court-location", classes="info-value")
+
                     yield Static("Surface Type", classes="info-label")
                     yield Static("", id="court-surface", classes="info-value")
+
                     yield Static("Price", classes="info-label")
                     yield Static("", id="court-price", classes="info-value price-value")
+
                     yield Static("Facility Type", classes="info-label")
                     yield Static("", id="court-facility", classes="info-value")
+
                     yield Static("Operating Hours", classes="info-label")
                     yield Static("", id="court-hours", classes="info-value")
+
                 with Vertical(id="court-orders-card"):
                     yield Static("WIP ORDERS", id="wip-orders")
 

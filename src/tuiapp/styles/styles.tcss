@@ -48,11 +48,13 @@ PasswordInput {
     }
 }
 
+/*TODO: MOVE TO THE RELATED FILE */
 #hub-container {
     height: 1fr;
     width: 100%;
 }
 
+/*TODO: REPLACE WITH AN ACTUAL CARD LIST */
 #court-list {
     width: 30;
     height: 100%;
