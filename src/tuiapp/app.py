@@ -58,6 +58,7 @@ class TUIApplication(App):
         DEFAULT_CSS_FOLDER / "register_screen.tcss",
         DEFAULT_CSS_FOLDER / "profile_screen.tcss",
         DEFAULT_CSS_FOLDER / "modals.tcss",
+        DEFAULT_CSS_FOLDER / "courts.tcss",
     ]
     TITLE = "NP-Tennis"
     SUB_TITLE = "Tennis App Local Client"
