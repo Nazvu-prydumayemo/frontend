@@ -11,6 +11,7 @@ CourtView {
 
     #court-header {
         width: 100%;
+        min-height: 8;
         background: $primary;
         layout: horizontal;
         margin: 1 2;
