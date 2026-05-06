@@ -63,10 +63,6 @@ CourtView {
         text-style: bold;
     }
 
-    .price-value {
-        color: $success;
-    }
-
     #court-orders-card {
         width: 1fr;
         height: auto;

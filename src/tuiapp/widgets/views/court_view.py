@@ -64,7 +64,7 @@ class CourtView(BaseView):
             return
 
         self._set("court-title", court.name)
-        self._set("court-subtitle", f"📍 {court.location or 'N/A'}")
+        self._set("court-subtitle", f"📍{court.location or 'N/A'}")
         self._set("court-name", court.name)
         self._set("court-location", court.location or "N/A")
         self._set("court-surface", court.surface_type)

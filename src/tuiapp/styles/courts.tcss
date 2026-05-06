@@ -40,4 +40,5 @@ CardContainer {
     border-right: solid $accent;
     align: left top;
     height: 100%;
+    margin-top: 1;
 }
