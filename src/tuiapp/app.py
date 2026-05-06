@@ -10,7 +10,9 @@ from tuiapp.api.account.account import AccountService
 from tuiapp.api.auth.auth import AuthService
 from tuiapp.api.auth.token_manager import TokenManagerService
 from tuiapp.api.client import APIClient
+from tuiapp.api.court.court import CourtService
 from tuiapp.api.status.status import StatusService
+from tuiapp.screens.forgot_password_screen import ForgotPasswordScreen
 from tuiapp.screens.hub_screen import HubScreen
 from tuiapp.screens.login_screen import LoginScreen
 from tuiapp.screens.main_screen import MainScreen
@@ -43,6 +45,7 @@ class TUIApplication(App):
         self.status = StatusService(self.client)
         self.auth = AuthService(self.client)
         self.account = AccountService(self.client)
+        self.court = CourtService(self.client)
 
         self.register_theme(tennis_theme)
         self.register_theme(tennis_theme_minimal)
@@ -60,6 +63,7 @@ class TUIApplication(App):
         DEFAULT_CSS_FOLDER / "modals.tcss",
         DEFAULT_CSS_FOLDER / "courts.tcss",
         DEFAULT_CSS_FOLDER / "court_screen.tcss",
+        DEFAULT_CSS_FOLDER / "forgot_password_screen.tcss",
     ]
     TITLE = "NP-Tennis"
     SUB_TITLE = "Tennis App Local Client"
@@ -70,6 +74,7 @@ class TUIApplication(App):
         "register": RegisterScreen,
         "profile": ProfileScreen,
         "hub": HubScreen,
+        "forgot-password": ForgotPasswordScreen,
     }
 
     def go_minimal(self) -> None:

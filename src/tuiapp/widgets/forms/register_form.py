@@ -26,10 +26,10 @@ class RegisterForm(Widget):
 
             with Vertical(classes="field"):
                 yield Static("Password", classes="field-label")
-                yield PasswordInput(placeholder="********", id="password")
+                yield PasswordInput(placeholder="Password", id="password")
             with Vertical(classes="field"):
                 yield Static("Confirm Password", classes="field-label")
-                yield PasswordInput(placeholder="********", id="confirm")
+                yield PasswordInput(placeholder="Confirm Password", id="confirm")
 
     def get_data(self) -> RegisterRequest | str:
         """Get the form data.

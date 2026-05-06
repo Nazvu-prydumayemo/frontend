@@ -17,6 +17,10 @@ class HubScreen(AuthScreen):
     async def _auth_guard(self) -> None:
         await super()._auth_guard()
 
+    @on(Mount)
+    async def _auth_guard(self) -> None:
+        await super()._auth_guard()
+
     def compose(self) -> ComposeResult:
         yield Header()
         with Horizontal(id="hub-container"):

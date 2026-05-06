@@ -18,3 +18,7 @@ class Result(BaseModel):
 
     message: str
     status: Literal["success", "invalid", "error"]
+
+
+class Message(BaseModel):
+    message: str

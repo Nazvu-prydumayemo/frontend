@@ -34,7 +34,7 @@ class ProfileScreen(AuthScreen):
         if self.user is not None:
             view = self.query_one(PersonalInfoView)
             view.user = self.user
-            view.on_view_activated()
+            self.call_after_refresh(view.on_view_activated)
 
     def compose(self) -> ComposeResult:
         yield Header()

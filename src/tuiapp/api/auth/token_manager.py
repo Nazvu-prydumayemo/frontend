@@ -35,6 +35,7 @@ class TokenManagerService:
         self._client = client
         self._app = app
         self.access_token: str | None = None
+        self._redirecting = False
 
     def set_refresh_token(self, refresh_token: str) -> None:
         """Store the refresh token securely in the system keyring.
@@ -91,7 +92,7 @@ class TokenManagerService:
             self.access_token = token.access_token
             self._client.set_access_token(token.access_token)
             self.set_refresh_token(token.refresh_token)
-
+            self._redirecting = False
             return True
 
         except APIError as error:
@@ -108,10 +109,12 @@ class TokenManagerService:
 
     def _redirect_to_main(self) -> None:
         """Redirect user to main if no token."""
-        if self._app is None:
+        if self._app is None or self._redirecting:
             return
+        self._redirecting = True
 
         def do_redirect():
+            self._redirecting = False
             self._app.pop_screen()  # type: ignore
             self._app.push_screen("main")  # type: ignore
 
@@ -119,10 +122,12 @@ class TokenManagerService:
 
     def _redirect_to_login(self) -> None:
         """Redirect user to login screen when token refresh fails."""
-        if self._app is None:
+        if self._app is None or self._redirecting:
             return
+        self._redirecting = True
 
         def do_redirect():
+            self._redirecting = False
             self._app.pop_screen()  # type: ignore
             self._app.push_screen("login")  # type: ignore
 
