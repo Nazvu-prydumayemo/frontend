@@ -1,0 +1,45 @@
+CourtCard {
+    height: auto;
+    max-height: 8;
+    margin: 0 0 1 0;
+    padding: 1 2;
+    border: round $accent;
+    background: $panel;
+
+    .court-card-name {
+        text-style: bold;
+        color: $text;
+    }
+
+    .court-card-location {
+        color: $text-disabled;
+    }
+
+    .court-card-price {
+        text-style: bold;
+        color: $success;
+    }
+
+    .court-card-type {
+        color: $text-disabled;
+    }
+
+    .court-card-body {
+        height: auto;
+    }
+}
+
+CourtCard:hover {
+    background: $surface;
+}
+
+CardContainer {
+    dock: left;
+    width: 39;
+    height: 100%;
+    overflow-y: auto;
+    border-right: solid $accent;
+    padding: 1;
+    align: left top;
+    height: 100%;
+}

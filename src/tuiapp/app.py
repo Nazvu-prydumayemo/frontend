@@ -61,6 +61,8 @@ class TUIApplication(App):
         DEFAULT_CSS_FOLDER / "register_screen.tcss",
         DEFAULT_CSS_FOLDER / "profile_screen.tcss",
         DEFAULT_CSS_FOLDER / "modals.tcss",
+        DEFAULT_CSS_FOLDER / "courts.tcss",
+        DEFAULT_CSS_FOLDER / "court_screen.tcss",
         DEFAULT_CSS_FOLDER / "forgot_password_screen.tcss",
     ]
     TITLE = "NP-Tennis"
