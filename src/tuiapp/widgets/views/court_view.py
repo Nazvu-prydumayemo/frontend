@@ -6,6 +6,7 @@ from textual.css.query import NoMatches
 from textual.reactive import reactive
 from textual.widgets import Static
 
+from tuiapp.api.court.schema import Court
 from tuiapp.widgets.views.base_view import BaseView
 
 
@@ -14,8 +15,7 @@ class CourtView(BaseView):
 
     DEFAULT_CLASSES = "view-container"
 
-    # TODO: REPLACE WITH THE COURT MODEL API
-    court: reactive[Any] = reactive(None)
+    court: reactive[Court | None] = reactive(None)
 
     def compose_view(self) -> ComposeResult:
         with ScrollableContainer(id="court-scroll"):
@@ -23,9 +23,6 @@ class CourtView(BaseView):
                 with Vertical(id="court-header-info"):
                     yield Static("TITLE", id="court-title")
                     yield Static("SUBTITLE", id="court-subtitle")
-
-                # TODO: ADD ASCII DIAGRAM
-                yield Static("ASCII", id="court-diagram")
 
             with Horizontal(id="court-body"):
                 with Vertical(id="court-info-card"):

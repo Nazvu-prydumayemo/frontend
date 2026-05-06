@@ -1,3 +1,8 @@
+#hub-container {
+    height: 1fr;
+    width: 100%;
+}
+
 CourtView {
     #court-scroll {
         height: 100%;
@@ -5,7 +10,6 @@ CourtView {
     }
 
     #court-header {
-        height: 8;
         width: 100%;
         background: $primary;
         layout: horizontal;
@@ -27,12 +31,6 @@ CourtView {
 
     #court-subtitle {
         color: $foreground 80%;
-    }
-
-    #court-diagram {
-        width: 40;
-        color: $foreground;
-        text-style: bold;
     }
 
     #court-body {
