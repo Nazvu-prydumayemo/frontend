@@ -37,14 +37,7 @@ class HubScreen(AuthScreen):
             return
 
         for court in self.courts:
-            await container.mount(
-                CourtCard(
-                    name=court.name,
-                    location=court.location if court.location else "N/A",
-                    price=f"{court.price_per_hour}",
-                    court_type=court.surface_type,
-                )
-            )
+            await container.mount(CourtCard(court=court))
 
         self.selected_court = self.courts[0]
 
@@ -65,3 +58,7 @@ class HubScreen(AuthScreen):
 
             yield CourtView()
         yield Footer()
+
+    @on(CourtCard.Pressed)
+    def on_court_card_pressed(self, event: CourtCard.Pressed) -> None:
+        self.selected_court = event.court_card.court

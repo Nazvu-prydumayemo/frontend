@@ -1,9 +1,14 @@
 """Court card widget for displaying tennis court summary information."""
 
+from textual import on
 from textual.app import ComposeResult
 from textual.containers import Vertical
+from textual.events import Click
+from textual.message import Message
 from textual.widget import Widget
 from textual.widgets import Static
+
+from tuiapp.api.court.schema import Court
 
 MAX_LENGTH = 24
 
@@ -20,22 +25,36 @@ class CourtCard(Widget):
 
     DEFAULT_CLASSES = "court-card"
 
+    class Pressed(Message):
+        """Posted when the court card is clicked."""
+
+        def __init__(self, court_card: "CourtCard") -> None:
+            super().__init__()
+            self.court_card = court_card
+
     def __init__(
         self,
-        name: str,
-        location: str,
-        price: str,
-        court_type: str,
+        court: Court,
         **kwargs,
     ) -> None:
         super().__init__(**kwargs)
-        self._name = truncate(name)
-        self._location = truncate(location)
-        self._price = truncate(price)
-        self._court_type = truncate(court_type)
+        self.court = court
 
     def compose(self) -> ComposeResult:
         with Vertical(classes="court-card-body"):
-            yield Static(f"{self._name} ${self._price}/h", classes="court-card-name")
-            yield Static(self._location, classes="court-card-location")
-            yield Static(self._court_type, classes="court-card-type")
+            yield Static(
+                f"{truncate(self.court.name)} ${self.court.price_per_hour}/h",
+                classes="court-card-name",
+            )
+            yield Static(
+                truncate(self.court.location) if self.court.location else "N/A",
+                classes="court-card-location",
+            )
+            yield Static(
+                f"{'Indoor' if self.court.is_indoor else 'Outdoor'} {self.court.surface_type}",
+                classes="court-card-type",
+            )
+
+    @on(Click)
+    def on_click(self) -> None:
+        self.post_message(self.Pressed(self))
