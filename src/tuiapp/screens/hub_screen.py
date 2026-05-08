@@ -21,16 +21,27 @@ class HubScreen(AuthScreen):
     courts: list[Court] | None = None
     selected_court: reactive[Court | None] = reactive(None)
 
+    PAGE_SIZE = 100
+
+    def __init__(self, **kwargs) -> None:
+        super().__init__(**kwargs)
+        self.page = 0
+
+    def _get_page_offset(self, page: int) -> int:
+        return page * self.PAGE_SIZE
+
     @on(Mount)
     async def _auth_guard(self) -> None:
         await super()._auth_guard()
 
-        result = await self.app.court.get_all_courts()
+        result = await self.app.court.get_all_courts(
+            self._get_page_offset(self.page), self.PAGE_SIZE
+        )
         if result.status != "success":
             self.notify(result.message, title="Courts", severity="error")
             return
 
-        self.courts = result.courts
+        self.courts = result.courts.items if result.courts and result.courts.items else None
 
         container = self.query_one(CardContainer)
         if not self.courts:
@@ -40,6 +51,7 @@ class HubScreen(AuthScreen):
             await container.mount(CourtCard(court=court))
 
         self.selected_court = self.courts[0]
+        self.page += 1
 
     def watch_selected_court(self, new_court: Court) -> None:
         if new_court:
