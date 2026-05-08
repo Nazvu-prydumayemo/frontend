@@ -22,5 +22,12 @@ class CourtResult(Result):
     court: Court | None
 
 
+class CourtsAll(BaseModel):
+    items: list[Court]
+    total: int
+    skip: int
+    limit: int
+
+
 class CourtsAllResult(Result):
-    courts: list[Court] | None
+    courts: CourtsAll | None

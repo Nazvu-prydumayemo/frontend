@@ -1,27 +1,26 @@
 CourtCard {
     height: auto;
     max-height: 8;
-    margin: 0 0 1 0;
-    padding: 1 2;
-    border: round $accent;
     background: $panel;
+    padding-left: 1;
+    padding-right: 1;
 
     .court-card-name {
         text-style: bold;
-        color: $text;
+        color: $accent;
     }
 
     .court-card-location {
-        color: $text-disabled;
+        color: $foreground 50%;
     }
 
     .court-card-price {
         text-style: bold;
-        color: $success;
+        color: $foreground 50%;
     }
 
     .court-card-type {
-        color: $text-disabled;
+        color: $foreground 50%;
     }
 
     .court-card-body {
@@ -35,11 +34,11 @@ CourtCard:hover {
 
 CardContainer {
     dock: left;
-    width: 39;
+    width: 35;
     height: 100%;
     overflow-y: auto;
     border-right: solid $accent;
-    padding: 1;
     align: left top;
     height: 100%;
+    margin-top: 1;
 }

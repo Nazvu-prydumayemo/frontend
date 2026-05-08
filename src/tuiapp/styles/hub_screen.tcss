@@ -1,3 +1,8 @@
+#hub-container {
+    height: 1fr;
+    width: 100%;
+}
+
 CourtView {
     #court-scroll {
         height: 100%;
@@ -5,8 +10,8 @@ CourtView {
     }
 
     #court-header {
-        height: 8;
         width: 100%;
+        min-height: 8;
         background: $primary;
         layout: horizontal;
         margin: 1 2;
@@ -27,12 +32,6 @@ CourtView {
 
     #court-subtitle {
         color: $foreground 80%;
-    }
-
-    #court-diagram {
-        width: 40;
-        color: $foreground;
-        text-style: bold;
     }
 
     #court-body {
@@ -63,10 +62,6 @@ CourtView {
     .info-value {
         color: $foreground;
         text-style: bold;
-    }
-
-    .price-value {
-        color: $success;
     }
 
     #court-orders-card {

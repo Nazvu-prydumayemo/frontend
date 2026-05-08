@@ -1,5 +1,5 @@
 from tuiapp.api.client import APIClient
-from tuiapp.api.court.schema import Court, CourtResult, CourtsAllResult
+from tuiapp.api.court.schema import Court, CourtResult, CourtsAll, CourtsAllResult
 from tuiapp.api.errors import APIError
 
 
@@ -26,9 +26,11 @@ class CourtService:
                 message=f"Server Error: {error.status_code}", status="error", court=None
             )
 
-    async def get_all_courts(self) -> CourtsAllResult:
+    async def get_all_courts(self, skip: int, limit: int = 10) -> CourtsAllResult:
         try:
-            response = await self._client.get("/courts/", response_model=list[Court])
+            response = await self._client.get(
+                f"/courts/?skip={skip}&limit={limit}", response_model=CourtsAll
+            )
             return CourtsAllResult(message="Loaded all courts", status="success", courts=response)
 
         except APIError as error:
