@@ -16,13 +16,13 @@ class CourtView(BaseView):
     DEFAULT_CLASSES = "view-container"
 
     court: reactive[Court | None] = reactive(None)
+    narrow: reactive[bool] = reactive(False)
 
     def compose_view(self) -> ComposeResult:
         with ScrollableContainer(id="court-scroll"):
             with Vertical(id="court-header"):
-                with Vertical(id="court-header-info"):
-                    yield Static("TITLE", id="court-title")
-                    yield Static("SUBTITLE", id="court-subtitle")
+                yield Static("TITLE", id="court-title")
+                yield Static("SUBTITLE", id="court-subtitle")
 
             with Horizontal(id="court-body"):
                 with Vertical(id="court-info-card"):
@@ -54,6 +54,12 @@ class CourtView(BaseView):
             self.query_one(f"#{widget_id}", Static).update(value)
         except NoMatches:
             pass
+
+    def on_resize(self) -> None:
+        self.narrow = self.app.size.width < 80
+
+    def watch_narrow(self, narrow: bool) -> None:
+        self.set_class(narrow, "-narrow")
 
     def watch_court(self, court: Any) -> None:
         self.on_view_activated()

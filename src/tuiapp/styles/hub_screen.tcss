@@ -1,6 +1,7 @@
 #hub-container {
     height: 1fr;
     width: 100%;
+    padding: 1 2;
 }
 
 CourtView {
@@ -11,10 +12,12 @@ CourtView {
 
     #court-header {
         width: 100%;
-        min-height: 8;
+        height: auto;
+        min-height: 5;
         background: $primary;
         layout: horizontal;
-        margin: 1 2;
+        margin-left: 1;
+        margin-bottom: 1;
         padding: 1 2;
         align: left middle;
     }
@@ -37,7 +40,7 @@ CourtView {
     #court-body {
         height: auto;
         width: 100%;
-        padding: 2;
+        margin-left: 1;
     }
 
     #court-info-card {
@@ -45,8 +48,7 @@ CourtView {
         height: auto;
         background: $panel;
         border: round $accent;
-        padding: 2 4;
-        margin-right: 1;
+        padding: 1 2;
     }
 
     #court-info-title {
@@ -57,11 +59,22 @@ CourtView {
     .info-label {
         color: $foreground 50%;
         margin-top: 1;
+        margin-bottom: 1;
     }
 
     .info-value {
         color: $foreground;
         text-style: bold;
+        border: none;
+        background: transparent;
+        padding-left: 1;
+        padding-right: 1;
+        height: auto;
+    }
+
+    .info-value:focus {
+        border: tall $accent;
+        background: $panel-darken-1;
     }
 
     #court-orders-card {
@@ -78,5 +91,21 @@ CourtView {
         color: $foreground;
         width: 100%;
         content-align: center middle;
+    }
+}
+
+CourtView.-narrow {
+    #court-body {
+        layout: vertical;
+    }
+
+    #court-info-card {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 1;
+    }
+
+    #court-orders-card {
+        width: 100%;
     }
 }
