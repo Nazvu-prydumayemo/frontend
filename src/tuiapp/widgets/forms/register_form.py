@@ -1,14 +1,14 @@
 from pydantic import ValidationError
 from textual.app import ComposeResult
 from textual.containers import Container, Vertical
-from textual.widget import Widget
 from textual.widgets import Static
 
 from tuiapp.api.auth.schema import RegisterRequest
+from tuiapp.widgets.forms.base_form import BaseForm
 from tuiapp.widgets.inputs import PasswordInput, PasswordValidator, TextInput
 
 
-class RegisterForm(Widget):
+class RegisterForm(BaseForm):
     """Registration form structured in 3 rows."""
 
     def compose(self) -> ComposeResult:

@@ -1,14 +1,14 @@
 from pydantic import ValidationError
 from textual.app import ComposeResult
 from textual.containers import Vertical
-from textual.widget import Widget
 from textual.widgets import Static
 
 from tuiapp.api.auth.schema import NewPassword
+from tuiapp.widgets.forms.base_form import BaseForm
 from tuiapp.widgets.inputs import PasswordInput, PasswordValidator
 
 
-class NewPasswordForm(Widget):
+class NewPasswordForm(BaseForm):
     def compose(self) -> ComposeResult:
         with Vertical(classes="form-container"):
             with Vertical(classes="field"):
