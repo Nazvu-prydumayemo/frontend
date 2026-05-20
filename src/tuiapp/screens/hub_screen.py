@@ -18,7 +18,7 @@ from tuiapp.widgets.views.court_view import CourtView
 class HubScreen(AuthScreen):
     """Main dashboard screen displayed after successful authentication."""
 
-    courts: list[Court] | None = None
+    courts: reactive[list[Court] | None] = reactive(None)
     selected_court: reactive[Court | None] = reactive(None)
 
     PAGE_SIZE = 100
@@ -33,7 +33,9 @@ class HubScreen(AuthScreen):
     @on(Mount)
     async def _auth_guard(self) -> None:
         await super()._auth_guard()
+        await self._load_courts()
 
+    async def _load_courts(self) -> None:
         result = await self.app.court.get_all_courts(
             self._get_page_offset(self.page), self.PAGE_SIZE
         )
@@ -42,25 +44,34 @@ class HubScreen(AuthScreen):
             return
 
         self.courts = result.courts.items if result.courts and result.courts.items else None
-
-        container = self.query_one(CardContainer)
-        if not self.courts:
-            return
-
-        for court in self.courts:
-            await container.mount(CourtCard(court=court))
-
-        self.selected_court = self.courts[0]
+        self.selected_court = self.courts[0] if self.courts else None
         self.page += 1
 
-    def watch_selected_court(self, new_court: Court) -> None:
-        if new_court:
-            try:
-                view = self.query_one(CourtView)
-                view.court = new_court
+    def watch_selected_court(self, new_court: Court | None = None) -> None:
+        try:
+            for card in self.query(CourtCard):
+                card.selected = card.court == new_court
 
-            except NoMatches:
-                pass
+            view = self.query_one(CourtView)
+            view.court = new_court
+        except NoMatches:
+            pass
+
+    def watch_courts(self, new_courts: list[Court] | None = None) -> None:
+        try:
+            container = self.query_one(CardContainer)
+            container.remove_children()
+
+            if not new_courts:
+                return
+
+            for court in new_courts:
+                card = CourtCard(court=court)
+                card.selected = court == self.selected_court
+                container.mount(card)
+
+        except NoMatches:
+            pass
 
     def compose(self) -> ComposeResult:
         yield Header()
@@ -69,6 +80,7 @@ class HubScreen(AuthScreen):
                 pass
 
             yield CourtView()
+
         yield Footer()
 
     @on(CourtCard.Pressed)

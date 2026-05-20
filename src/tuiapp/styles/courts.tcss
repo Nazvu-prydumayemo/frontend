@@ -26,19 +26,26 @@ CourtCard {
     .court-card-body {
         height: auto;
     }
+    
+    .court-card-compact {
+        display: none;
+        color: $accent;
+        text-style: bold italic;
+    }
 }
-
 CourtCard:hover {
     background: $surface;
+}
+CourtCard.selected {
+    outline: $accent vkey;
 }
 
 CardContainer {
     dock: left;
-    width: 35;
+    width: 25%;
+    min-width: 8;
+    max-width: 45;
     height: 100%;
     overflow-y: auto;
-    border-right: solid $accent;
     align: left top;
-    height: 100%;
-    margin-top: 1;
 }
