@@ -1,10 +1,10 @@
 from typing import Any
 
 from textual.app import ComposeResult
-from textual.containers import Horizontal, ScrollableContainer, Vertical
+from textual.containers import ScrollableContainer, Vertical
 from textual.css.query import NoMatches
 from textual.reactive import reactive
-from textual.widgets import Static
+from textual.widgets import Static, TabbedContent, TabPane
 
 from tuiapp.api.court.schema import Court
 from tuiapp.widgets.views.base_view import BaseView
@@ -24,7 +24,7 @@ class CourtView(BaseView):
                 yield Static("TITLE", id="court-title")
                 yield Static("SUBTITLE", id="court-subtitle")
 
-            with Horizontal(id="court-body"):
+            with Vertical(id="court-body"):
                 with Vertical(id="court-info-card"):
                     yield Static("COURT INFORMATION", id="court-info-title")
 
@@ -46,8 +46,10 @@ class CourtView(BaseView):
                     yield Static("Operating Hours", classes="info-label")
                     yield Static("", id="court-hours", classes="info-value")
 
-                with Vertical(id="court-orders-card"):
-                    yield Static("WIP ORDERS", id="wip-orders")
+                with Vertical(id="court-schedules"):
+                    with TabbedContent(id="tabs"):
+                        with TabPane("No days"):
+                            yield Static("No available days")
 
     def _set(self, widget_id: str, value: str) -> None:
         try:
@@ -78,5 +80,45 @@ class CourtView(BaseView):
         self._set("court-facility", "Indoor" if court.is_indoor else "Outdoor")
         self._set("court-hours", court.working_hours or "N/A")
 
+        # Fetch and display court schedules
+        self.app.call_later(self._load_schedules)
+
     def on_view_closed(self) -> None:
         pass
+
+    async def _load_schedules(self) -> None:
+        """Fetch court schedules and populate TabPanes."""
+        court = self.court
+        if court is None:
+            return
+
+        response = await self.app.court.get_court_schedule(court.id)
+
+        if response.status != "success":
+            self.notify(f"Error loading schedule for {court.name}")
+            return
+
+        try:
+            tabs = self.query_one("#tabs", TabbedContent)
+        except NoMatches:
+            return
+
+        if response.schedule is None:
+            return
+
+        tabs.clear_panes()
+
+        for schedule in response.schedule:
+            name = schedule.day_of_week.name
+
+            opening_str = schedule.opening_time.strftime("%I:%M %p")
+            closing_str = schedule.closing_time.strftime("%I:%M %p")
+
+            pane = TabPane(name)
+            pane.compose_add_child(
+                Static(
+                    f"{opening_str} - {closing_str}" if opening_str else "Closed",
+                    classes="schedule-content",
+                )
+            )
+            tabs.add_pane(pane)

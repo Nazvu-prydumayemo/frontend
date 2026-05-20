@@ -1,5 +1,12 @@
 from tuiapp.api.client import APIClient
-from tuiapp.api.court.schema import Court, CourtResult, CourtsAll, CourtsAllResult
+from tuiapp.api.court.schema import (
+    Court,
+    CourtResult,
+    CourtsAll,
+    CourtsAllResult,
+    CourtSchedule,
+    CourtScheduleResult,
+)
 from tuiapp.api.errors import APIError
 
 
@@ -24,6 +31,35 @@ class CourtService:
 
             return CourtResult(
                 message=f"Server Error: {error.status_code}", status="error", court=None
+            )
+
+    async def get_court_schedule(self, id: int) -> CourtScheduleResult:
+        try:
+            response = await self._client.get(
+                f"/courts/{id}/schedule", response_model=list[CourtSchedule]
+            )
+            return CourtScheduleResult(
+                message=f"Loaded schedule for court: {id}", status="success", schedule=response
+            )
+
+        except APIError as error:
+            if error.status_code == 401:
+                return CourtScheduleResult(
+                    message="Not authenticated", status="invalid", schedule=None
+                )
+
+            if error.status_code == 404:
+                return CourtScheduleResult(
+                    message=f"Court {id} does not exist", status="error", schedule=None
+                )
+
+            if error.status_code == 422:
+                return CourtScheduleResult(
+                    message="Invalid data provided", status="error", schedule=None
+                )
+
+            return CourtScheduleResult(
+                message=f"Server Error: {error.status_code}", status="error", schedule=None
             )
 
     async def get_all_courts(self, skip: int, limit: int = 10) -> CourtsAllResult:

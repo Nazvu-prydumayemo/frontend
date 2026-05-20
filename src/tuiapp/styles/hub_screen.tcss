@@ -44,7 +44,7 @@ CourtView {
     }
 
     #court-info-card {
-        width: 2fr;
+        width: 1fr;
         height: auto;
         background: $panel;
         border: round $accent;
@@ -77,20 +77,12 @@ CourtView {
         background: $panel-darken-1;
     }
 
-    #court-orders-card {
+    #court-schedules {
         width: 1fr;
         height: auto;
         background: $panel;
         border: round $accent;
-        padding: 2 3;
-        content-align: center middle;
-    }
-
-    #wip-orders {
-        text-style: bold;
-        color: $foreground;
-        width: 100%;
-        content-align: center middle;
+        padding: 1 2;
     }
 }
 
