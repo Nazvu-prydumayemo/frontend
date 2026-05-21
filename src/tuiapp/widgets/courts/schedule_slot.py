@@ -28,12 +28,14 @@ class ScheduleSlot(Static):
         self.set_class(not self.slot.is_available, "-unavailable")
         self.set_class(self.pressed, "-pressed")
 
+    def watch_pressed(self, pressed: bool) -> None:
+        self._sync_classes()
+
     def on_click(self) -> None:
         if not self.slot.is_available:
             return
 
         self.pressed = not self.pressed
-        self._sync_classes()
 
         if self.pressed:
             self.post_message(ScheduleSlot.Selected(self, self.slot.id))

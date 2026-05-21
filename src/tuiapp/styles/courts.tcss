@@ -95,3 +95,9 @@ ScheduleSlot.-unavailable:hover {
     border: tall $surface-lighten-1;
     color: $text-disabled;
 }
+
+#order-button {
+    dock: bottom;
+    width: 100%;
+    margin: 1 0;
+}

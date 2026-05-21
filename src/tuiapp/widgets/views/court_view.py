@@ -6,10 +6,13 @@ from textual.app import ComposeResult
 from textual.containers import ScrollableContainer, Vertical
 from textual.css.query import NoMatches
 from textual.reactive import reactive
-from textual.widgets import Static, TabbedContent, TabPane
+from textual.widgets import Button, Static, TabbedContent, TabPane
 
 from tuiapp.api.court.schema import Court
+from tuiapp.api.order.schema import OrderRequest
+from tuiapp.widgets.buttons import PrimaryButton
 from tuiapp.widgets.courts.schedule_slot import ScheduleSlot
+from tuiapp.widgets.modals.confirmation_modal import ConfirmationModal
 from tuiapp.widgets.views.base_view import BaseView
 
 
@@ -20,6 +23,10 @@ class CourtView(BaseView):
 
     court: reactive[Court | None] = reactive(None)
     narrow: reactive[bool] = reactive(False)
+
+    def __init__(self, **kwargs) -> None:
+        super().__init__(**kwargs)
+        self.selected_slot_ids: set[int] = set()
 
     def compose_view(self) -> ComposeResult:
         with ScrollableContainer(id="court-scroll"):
@@ -56,6 +63,10 @@ class CourtView(BaseView):
                         with TabPane("No days"):
                             yield Static("No available days")
 
+                    yield PrimaryButton(
+                        "Order Selected Slots", variant="primary", id="order-button"
+                    )
+
     def _set(self, widget_id: str, value: str) -> None:
         try:
             self.query_one(f"#{widget_id}", Static).update(value)
@@ -89,7 +100,7 @@ class CourtView(BaseView):
         self.app.call_later(self._load_slots)
 
     def on_view_closed(self) -> None:
-        pass
+        self.selected_slot_ids.clear()
 
     async def _load_schedules(self) -> None:
         """Fetch court schedules and populate TabPanes."""
@@ -136,6 +147,8 @@ class CourtView(BaseView):
         if court is None:
             return
 
+        self.selected_slot_ids.clear()
+
         try:
             slot_tabs = self.query_one("#slot-tabs", TabbedContent)
         except NoMatches:
@@ -169,6 +182,51 @@ class CourtView(BaseView):
             slot_tabs.add_pane(pane)
 
     @on(ScheduleSlot.Selected)
-    def on_schedule_slot_pressed(self, event: ScheduleSlot.Selected) -> None:
+    def on_schedule_slot_selected(self, event: ScheduleSlot.Selected) -> None:
         event.stop()
-        self.notify(f"Selected Slot ID: {event.slot_id}")
+        self.selected_slot_ids.add(event.slot_id)
+
+    @on(ScheduleSlot.Deselected)
+    def on_schedule_slot_deselected(self, event: ScheduleSlot.Deselected) -> None:
+        event.stop()
+        self.selected_slot_ids.discard(event.slot_id)
+
+    @on(Button.Pressed, "#order-button")
+    def on_order_button_pressed(self) -> None:
+        if not self.selected_slot_ids:
+            self.notify("No slots selected", title="Order")
+            return
+
+        self.app.push_screen(
+            ConfirmationModal("book the selected slots"),
+            self._handle_order_confirmation,
+        )
+
+    async def _handle_order_confirmation(self, confirmed: bool | None) -> None:
+        if not confirmed or self.court is None:
+            return
+
+        if not self.selected_slot_ids:
+            self.notify("No slots selected", title="Order", severity="warning")
+            return
+
+        request = OrderRequest(
+            court_id=self.court.id,
+            booking_slot_ids=list(self.selected_slot_ids),
+        )
+
+        result = await self.app.order.create_order(request)
+
+        if result.status == "success" and result.order is not None:
+            self.selected_slot_ids.clear()
+            self.notify("Thank you for the order!", title="Order")
+            await self._load_slots()
+
+        else:
+            self.notify(result.message, title="Order", severity="error")
+
+    @on(TabbedContent.TabActivated, "#slot-tabs")
+    def on_slot_tab_changed(self) -> None:
+        self.selected_slot_ids.clear()
+        for slot in self.query(ScheduleSlot):
+            slot.pressed = False
