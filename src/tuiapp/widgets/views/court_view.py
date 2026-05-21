@@ -1,5 +1,7 @@
+from datetime import date
 from typing import Any
 
+from textual import on
 from textual.app import ComposeResult
 from textual.containers import ScrollableContainer, Vertical
 from textual.css.query import NoMatches
@@ -7,6 +9,7 @@ from textual.reactive import reactive
 from textual.widgets import Static, TabbedContent, TabPane
 
 from tuiapp.api.court.schema import Court
+from tuiapp.widgets.courts.schedule_slot import ScheduleSlot
 from tuiapp.widgets.views.base_view import BaseView
 
 
@@ -44,10 +47,12 @@ class CourtView(BaseView):
                     yield Static("", id="court-facility", classes="info-value")
 
                     yield Static("Operating Hours", classes="info-label")
-                    yield Static("", id="court-hours", classes="info-value")
+                    with TabbedContent(id="schedule-tabs"):
+                        with TabPane("No days"):
+                            yield Static("No available days")
 
                 with Vertical(id="court-schedules"):
-                    with TabbedContent(id="tabs"):
+                    with TabbedContent(id="slot-tabs"):
                         with TabPane("No days"):
                             yield Static("No available days")
 
@@ -78,10 +83,10 @@ class CourtView(BaseView):
         self._set("court-surface", court.surface_type)
         self._set("court-price", f"${court.price_per_hour:.2f} / hour")
         self._set("court-facility", "Indoor" if court.is_indoor else "Outdoor")
-        self._set("court-hours", court.working_hours or "N/A")
 
         # Fetch and display court schedules
         self.app.call_later(self._load_schedules)
+        self.app.call_later(self._load_slots)
 
     def on_view_closed(self) -> None:
         pass
@@ -99,7 +104,7 @@ class CourtView(BaseView):
             return
 
         try:
-            tabs = self.query_one("#tabs", TabbedContent)
+            tabs = self.query_one("#schedule-tabs", TabbedContent)
         except NoMatches:
             return
 
@@ -111,8 +116,11 @@ class CourtView(BaseView):
         for schedule in response.schedule:
             name = schedule.day_of_week.name
 
-            opening_str = schedule.opening_time.strftime("%I:%M %p")
-            closing_str = schedule.closing_time.strftime("%I:%M %p")
+            if schedule.opening_time is None or schedule.closing_time is None:
+                continue
+
+            opening_str = schedule.opening_time.strftime("%H:%M")
+            closing_str = schedule.closing_time.strftime("%H:%M")
 
             pane = TabPane(name)
             pane.compose_add_child(
@@ -122,3 +130,45 @@ class CourtView(BaseView):
                 )
             )
             tabs.add_pane(pane)
+
+    async def _load_slots(self) -> None:
+        court = self.court
+        if court is None:
+            return
+
+        try:
+            slot_tabs = self.query_one("#slot-tabs", TabbedContent)
+        except NoMatches:
+            return
+
+        slot_tabs.clear_panes()
+
+        today = date.today()
+
+        for day_offset in range(7):
+            query_date = (
+                date(today.year, today.month, today.day + day_offset)
+                if False
+                else date.fromordinal(today.toordinal() + day_offset)
+            )
+
+            response = await self.app.court.get_court_available_slots(court.id, query_date)
+
+            if response.status != "success" or response.slots is None:
+                continue
+
+            if response.slots.total_slots == 0:
+                continue
+
+            tab_label = query_date.strftime("%a %b %d")
+            pane = TabPane(tab_label)
+
+            for slot in response.slots.available_slots:
+                pane.compose_add_child(ScheduleSlot(slot))
+
+            slot_tabs.add_pane(pane)
+
+    @on(ScheduleSlot.Selected)
+    def on_schedule_slot_pressed(self, event: ScheduleSlot.Selected) -> None:
+        event.stop()
+        self.notify(f"Selected Slot ID: {event.slot_id}")

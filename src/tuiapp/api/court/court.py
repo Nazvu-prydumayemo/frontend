@@ -1,3 +1,5 @@
+from datetime import date
+
 from tuiapp.api.client import APIClient
 from tuiapp.api.court.schema import (
     Court,
@@ -6,6 +8,8 @@ from tuiapp.api.court.schema import (
     CourtsAllResult,
     CourtSchedule,
     CourtScheduleResult,
+    CourtScheduleSlotsAll,
+    CourtScheduleSlotsAllResult,
 )
 from tuiapp.api.errors import APIError
 
@@ -60,6 +64,41 @@ class CourtService:
 
             return CourtScheduleResult(
                 message=f"Server Error: {error.status_code}", status="error", schedule=None
+            )
+
+    async def get_court_available_slots(self, id: int, date: date) -> CourtScheduleSlotsAllResult:
+        try:
+            response = await self._client.get(
+                f"/courts/{id}/available-slots?slot_date={date.strftime('%Y-%m-%d')}",
+                response_model=CourtScheduleSlotsAll,
+            )
+            return CourtScheduleSlotsAllResult(
+                message=f"Loaded schedule for court: {id}", status="success", slots=response
+            )
+
+        except APIError as error:
+            if error.status_code == 400:
+                return CourtScheduleSlotsAllResult(
+                    message=f"Can only query 7 days from {date}", status="invalid", slots=None
+                )
+
+            if error.status_code == 401:
+                return CourtScheduleSlotsAllResult(
+                    message="Not authenticated", status="invalid", slots=None
+                )
+
+            if error.status_code == 404:
+                return CourtScheduleSlotsAllResult(
+                    message=f"Court {id} does not exist", status="error", slots=None
+                )
+
+            if error.status_code == 422:
+                return CourtScheduleSlotsAllResult(
+                    message="Invalid data provided", status="error", slots=None
+                )
+
+            return CourtScheduleSlotsAllResult(
+                message=f"Server Error: {error.status_code}", status="error", slots=None
             )
 
     async def get_all_courts(self, skip: int, limit: int = 10) -> CourtsAllResult:

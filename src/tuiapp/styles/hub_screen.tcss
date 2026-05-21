@@ -84,6 +84,28 @@ CourtView {
         border: round $accent;
         padding: 1 2;
     }
+
+    #schedule-tabs TabPane {
+        padding-top: 1;
+        padding-bottom: 0;
+        padding-left: 2;
+        padding-right: 2;
+    }
+
+    #slot-tabs {
+        height: auto;
+    }
+
+    #slot-tabs TabPane {
+        layout: grid;
+        grid-size: 4;          
+        grid-gutter: 1 2;
+        padding: 1 2;
+    }
+}
+
+.day-tab {
+    padding: 1 2;
 }
 
 CourtView.-narrow {
@@ -99,5 +121,15 @@ CourtView.-narrow {
 
     #court-orders-card {
         width: 100%;
+    }
+
+    #schedule-tabs TabPane {
+        padding: 1 1;
+    }
+
+    #slot-tabs TabPane {
+        grid-size: 2;
+        grid-gutter: 1 1;
+        padding: 1 1;
     }
 }

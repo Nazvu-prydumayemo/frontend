@@ -1,4 +1,4 @@
-from datetime import time
+from datetime import date, time
 from enum import Enum
 
 from pydantic import BaseModel
@@ -33,11 +33,33 @@ class Court(BaseModel):
 
 class CourtSchedule(BaseModel):
     day_of_week: Day
-    opening_time: time
-    closing_time: time
+    opening_time: time | None
+    closing_time: time | None
     id: int
     court_id: int
     created_at: str
+
+
+class CourtScheduleSlot(BaseModel):
+    start_time: time
+    end_time: time
+    id: int
+    court_id: int
+    slot_date: date
+    is_available: bool
+    order_id: int | None
+    created_at: str
+
+
+class CourtScheduleSlotsAll(BaseModel):
+    court_id: int
+    slot_date: date
+    available_slots: list[CourtScheduleSlot]
+    total_slots: int
+
+
+class CourtScheduleSlotsAllResult(Result):
+    slots: CourtScheduleSlotsAll | None
 
 
 class CourtScheduleResult(Result):
