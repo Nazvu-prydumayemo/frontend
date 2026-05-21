@@ -1,6 +1,19 @@
+from datetime import date, time
+from enum import Enum
+
 from pydantic import BaseModel
 
 from tuiapp.api.schema import Result
+
+
+class Day(Enum):
+    MONDAY = 0
+    TUESDAY = 1
+    WEDNESDAY = 2
+    THURSDAY = 3
+    FRIDAY = 4
+    SATURDAY = 5
+    SUNDAY = 6
 
 
 class Court(BaseModel):
@@ -16,6 +29,41 @@ class Court(BaseModel):
     location: str | None = None
     price_per_hour: float
     working_hours: str | None = None
+
+
+class CourtSchedule(BaseModel):
+    day_of_week: Day
+    opening_time: time | None
+    closing_time: time | None
+    id: int
+    court_id: int
+    created_at: str
+
+
+class CourtScheduleSlot(BaseModel):
+    start_time: time
+    end_time: time
+    id: int
+    court_id: int
+    slot_date: date
+    is_available: bool
+    order_id: int | None = None
+    created_at: str
+
+
+class CourtScheduleSlotsAll(BaseModel):
+    court_id: int
+    slot_date: date
+    available_slots: list[CourtScheduleSlot]
+    total_slots: int
+
+
+class CourtScheduleSlotsAllResult(Result):
+    slots: CourtScheduleSlotsAll | None
+
+
+class CourtScheduleResult(Result):
+    schedule: list[CourtSchedule] | None
 
 
 class CourtResult(Result):

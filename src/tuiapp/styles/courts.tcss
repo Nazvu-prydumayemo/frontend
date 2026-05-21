@@ -40,6 +40,38 @@ CourtCard.selected {
     outline: $accent vkey;
 }
 
+OrderCard {
+    height: auto;
+    max-height: 8;
+    background: $panel;
+    padding-left: 1;
+    padding-right: 1;
+
+    .order-card-id {
+        text-style: bold;
+        color: $accent;
+    }
+
+    .order-card-total {
+        text-style: bold;
+        color: $foreground 50%;
+    }
+
+    .order-card-date {
+        color: $foreground 50%;
+    }
+
+    .order-card-body {
+        height: auto;
+    }
+}
+OrderCard:hover {
+    background: $surface;
+}
+OrderCard.selected {
+    outline: $accent vkey;
+}
+
 CardContainer {
     dock: left;
     width: 25%;
@@ -48,4 +80,56 @@ CardContainer {
     height: 100%;
     overflow-y: auto;
     align: left top;
+}
+
+
+ScheduleSlot {
+    width: 1fr;
+    height: 5;
+    content-align: center middle;
+    padding: 0 1;
+
+    background: $surface;
+    color: $text;
+    border: tall $primary 40%;
+    text-style: bold;
+
+}
+
+ScheduleSlot:hover {
+    background: $primary 20%;
+    border: tall $primary;
+    color: $primary;
+}
+
+ScheduleSlot.-pressed {
+    background: $primary;
+    color: $background;
+    border: tall $primary;
+    text-style: bold;
+}
+
+ScheduleSlot.-pressed:hover {
+    background: $primary 80%;
+    border: tall $primary;
+}
+
+ScheduleSlot.-unavailable {
+    background: $surface;
+    color: $text-disabled;
+    border: tall $surface-lighten-1;
+    text-style: strike;
+    opacity: 0.5;
+}
+
+ScheduleSlot.-unavailable:hover {
+    background: $surface;
+    border: tall $surface-lighten-1;
+    color: $text-disabled;
+}
+
+#order-button {
+    dock: bottom;
+    width: 100%;
+    margin: 1 0;
 }
