@@ -1,4 +1,4 @@
-#hub-container {
+#hub-tabs {
     height: 1fr;
     width: 100%;
     padding: 1 2;
@@ -131,5 +131,85 @@ CourtView.-narrow {
         grid-size: 2;
         grid-gutter: 1 1;
         padding: 1 1;
+    }
+}
+
+OrderView {
+    #order-scroll {
+        height: 100%;
+        width: 100%;
+    }
+
+    #order-header {
+        width: 100%;
+        height: auto;
+        min-height: 5;
+        background: $primary;
+        layout: horizontal;
+        margin-left: 1;
+        margin-bottom: 1;
+        padding: 1 2;
+        align: left middle;
+    }
+
+    #order-title {
+        text-style: bold;
+        color: $foreground;
+    }
+
+    #order-subtitle {
+        color: $foreground 80%;
+    }
+
+    #order-body {
+        height: auto;
+        width: 100%;
+        margin-left: 1;
+    }
+
+    #order-info-card {
+        width: 1fr;
+        height: auto;
+        background: $panel;
+        border: round $accent;
+        padding: 1 2;
+    }
+
+    #order-info-title {
+        text-style: bold;
+        margin-bottom: 1;
+    }
+
+    .info-label {
+        color: $foreground 50%;
+        margin-top: 1;
+        margin-bottom: 1;
+    }
+
+    .info-value {
+        color: $foreground;
+        text-style: bold;
+        border: none;
+        background: transparent;
+        padding-left: 1;
+        padding-right: 1;
+        height: auto;
+    }
+
+    .info-value:focus {
+        border: tall $accent;
+        background: $panel-darken-1;
+    }
+}
+
+OrderView.-narrow {
+    #order-body {
+        layout: vertical;
+    }
+
+    #order-info-card {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 1;
     }
 }

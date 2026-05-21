@@ -47,7 +47,7 @@ class CourtScheduleSlot(BaseModel):
     court_id: int
     slot_date: date
     is_available: bool
-    order_id: int | None
+    order_id: int | None = None
     created_at: str
 
 

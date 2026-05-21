@@ -40,6 +40,38 @@ CourtCard.selected {
     outline: $accent vkey;
 }
 
+OrderCard {
+    height: auto;
+    max-height: 8;
+    background: $panel;
+    padding-left: 1;
+    padding-right: 1;
+
+    .order-card-id {
+        text-style: bold;
+        color: $accent;
+    }
+
+    .order-card-total {
+        text-style: bold;
+        color: $foreground 50%;
+    }
+
+    .order-card-date {
+        color: $foreground 50%;
+    }
+
+    .order-card-body {
+        height: auto;
+    }
+}
+OrderCard:hover {
+    background: $surface;
+}
+OrderCard.selected {
+    outline: $accent vkey;
+}
+
 CardContainer {
     dock: left;
     width: 25%;
