@@ -11,6 +11,7 @@ from textual.widgets import Footer, Header, TabbedContent, TabPane
 from tuiapp.api.court.schema import Court
 from tuiapp.api.order.schema import OrderDetail
 from tuiapp.screens.base_screen import AuthScreen
+from tuiapp.time_utils import utc_to_local
 from tuiapp.widgets.courts.card_container import CardContainer
 from tuiapp.widgets.courts.court_card import CourtCard
 from tuiapp.widgets.order.order_card import OrderCard
@@ -105,7 +106,7 @@ class HubScreen(AuthScreen):
         slots = sorted(result.order.booking_slots, key=lambda s: s.start_time)
 
         def fmt(t):
-            return t.strftime("%H:%M")
+            return utc_to_local(t).strftime("%H:%M")
 
         groups = []
         group_start = slots[0].start_time

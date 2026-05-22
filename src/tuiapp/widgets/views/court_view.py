@@ -10,6 +10,7 @@ from textual.widgets import Button, Static, TabbedContent, TabPane
 
 from tuiapp.api.court.schema import Court
 from tuiapp.api.order.schema import OrderRequest
+from tuiapp.time_utils import utc_to_local
 from tuiapp.widgets.buttons import PrimaryButton
 from tuiapp.widgets.courts.schedule_slot import ScheduleSlot
 from tuiapp.widgets.modals.confirmation_modal import ConfirmationModal
@@ -130,8 +131,8 @@ class CourtView(BaseView):
             if schedule.opening_time is None or schedule.closing_time is None:
                 continue
 
-            opening_str = schedule.opening_time.strftime("%H:%M")
-            closing_str = schedule.closing_time.strftime("%H:%M")
+            opening_str = utc_to_local(schedule.opening_time).strftime("%H:%M")
+            closing_str = utc_to_local(schedule.closing_time).strftime("%H:%M")
 
             pane = TabPane(name)
             pane.compose_add_child(
