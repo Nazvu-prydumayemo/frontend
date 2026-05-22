@@ -1,5 +1,7 @@
 """Pydantic schemas for account API requests and responses."""
 
+from datetime import date, time
+
 from pydantic import BaseModel, EmailStr
 
 from tuiapp.api.schema import Result
@@ -81,3 +83,30 @@ class UserResult(Result):
     """
 
     user: User | None
+
+
+class ExportSlot(BaseModel):
+    model_config = {"extra": "ignore"}
+    court_id: int
+    slot_date: date
+    start_time: time
+    end_time: time
+
+
+class DataExportOrder(BaseModel):
+    model_config = {"extra": "ignore"}
+    order_id: int
+    court_id: int
+    booking_date: date | None = None
+    total_price: str | None = None
+    created_at: str | None = None
+    slots: list[ExportSlot] = []
+
+
+class DataExport(BaseModel):
+    profile: User
+    orders: list[DataExportOrder]
+
+
+class DataExportResult(Result):
+    data_export: DataExport | None
