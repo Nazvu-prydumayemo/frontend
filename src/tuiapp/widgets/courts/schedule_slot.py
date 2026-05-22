@@ -4,6 +4,7 @@ from textual.reactive import reactive
 from textual.widgets import Static
 
 from tuiapp.api.court.schema import CourtScheduleSlot
+from tuiapp.time_utils import utc_to_local
 
 
 class ScheduleSlot(Static):
@@ -18,7 +19,7 @@ class ScheduleSlot(Static):
         self.slot = slot
 
     def render(self) -> RenderResult:
-        start = self.slot.start_time.strftime("%H:%M")
+        start = utc_to_local(self.slot.start_time).strftime("%H:%M")
         return f"{start}"
 
     def on_mount(self) -> None:
