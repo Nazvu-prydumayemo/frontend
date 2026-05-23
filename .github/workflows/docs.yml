@@ -1,51 +1,60 @@
 name: Deploy pdoc to GitHub Pages
 
 on:
-    push:
-        branches: ["main"]
+  push:
+    branches: ["main"]
 
-    workflow_dispatch:
+  workflow_dispatch:
 
 permissions:
-    contents: read
-    pages: write
-    id-token: write
+  contents: read
+  pages: write
+  id-token: write
 
 concurrency:
-    group: "pages"
-    cancel-in-progress: false
+  group: "pages"
+  cancel-in-progress: false
 
 jobs:
-    deploy-docs:
-        environment:
-            name: github-pages
-            url: ${{ steps.deployment.outputs.page_url }}
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v6
+  deploy-docs:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
 
-            - name: Set up Python
-              uses: actions/setup-python@v6
-              with:
-                  python-version: "3.x"
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.x"
 
-            - name: Install dependencies
-              run: |
-                  pip install pdoc
-                  pip install -e ".[dev]"
+      - name: Install dependencies
+        run: |
+          pip install pdoc
+          pip install -e ".[dev]"
 
-            - name: Build documentation
-              run: pdoc -o ./gh-pages-docs ./src/tuiapp
+      - name: Write dummy .env file for pdoc
+        shell: bash
+        run: |
+          cat > .env <<EOF
+          SERVICE_NAME="NP-TENNIS"
+          KEY_NAME="NP-TENNIS"
+          API_URL="NP-TENNIS"
+          EOF
 
-            - name: Setup GitHub Pages
-              uses: actions/configure-pages@v6
+      - name: Build documentation
+        run: pdoc -o ./gh-pages-docs ./src/tuiapp
 
-            - name: Upload artifact
-              uses: actions/upload-pages-artifact@v5
-              with:
-                  path: "./gh-pages-docs"
+      - name: Setup GitHub Pages
+        uses: actions/configure-pages@v6
 
-            - name: Deploy to GitHub Pages
-              id: deployment
-              uses: actions/deploy-pages@v5
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: "./gh-pages-docs"
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
