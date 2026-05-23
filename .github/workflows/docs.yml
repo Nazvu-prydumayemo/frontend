@@ -41,7 +41,7 @@ jobs:
           cat > .env <<EOF
           SERVICE_NAME="NP-TENNIS"
           KEY_NAME="NP-TENNIS"
-          API_URL="NP-TENNIS"
+          API_URL="http://localhost"
           EOF
 
       - name: Build documentation
