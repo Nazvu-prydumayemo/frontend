@@ -1,3 +1,5 @@
+"""Form for setting a new password during password reset."""
+
 from pydantic import ValidationError
 from textual.app import ComposeResult
 from textual.containers import Vertical
@@ -9,6 +11,8 @@ from tuiapp.widgets.inputs import PasswordInput, PasswordValidator
 
 
 class NewPasswordForm(BaseForm):
+    """Form for entering and confirming a new password."""
+
     def compose(self) -> ComposeResult:
         with Vertical(classes="form-container"):
             with Vertical(classes="field"):
@@ -19,6 +23,11 @@ class NewPasswordForm(BaseForm):
                 yield PasswordInput(placeholder="Confirm Password", id="confirm")
 
     def get_data(self) -> NewPassword | str:
+        """Get the form data.
+
+        Returns:
+            A pydantic model with new password value or string error if invalid data was provided.
+        """
         password = self.query_one("#password", PasswordInput).value
         confirm = self.query_one("#confirm", PasswordInput).value
 

@@ -103,7 +103,10 @@ class TokenManagerService:
             return False
 
     def logout(self) -> None:
-        """Clears the tokens and logouts the user."""
+        """Log the user out and redirect to the main screen.
+
+        Clears stored tokens and redirects the user to the main screen.
+        """
         self.clear_tokens()
         self._redirect_to_main()
 

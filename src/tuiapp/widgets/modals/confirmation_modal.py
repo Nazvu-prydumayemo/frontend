@@ -1,3 +1,5 @@
+"""Modal dialog for confirming user actions."""
+
 from textual import on
 from textual.app import ComposeResult
 from textual.containers import Container
@@ -8,6 +10,8 @@ from tuiapp.widgets.modals.base_modal import BaseModal
 
 
 class ConfirmationModal(BaseModal):
+    """Modal that asks the user to confirm or cancel an action."""
+
     def __init__(self, action: str, **kwargs) -> None:
         super().__init__(**kwargs)
         self._action = action

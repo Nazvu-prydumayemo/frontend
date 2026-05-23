@@ -86,6 +86,15 @@ class UserResult(Result):
 
 
 class ExportSlot(BaseModel):
+    """A single slot within an exported order.
+
+    Attributes:
+        court_id: The ID of the court.
+        slot_date: The date of the slot.
+        start_time: The starting time of the slot.
+        end_time: The ending time of the slot.
+    """
+
     model_config = {"extra": "ignore"}
     court_id: int
     slot_date: date
@@ -94,6 +103,17 @@ class ExportSlot(BaseModel):
 
 
 class DataExportOrder(BaseModel):
+    """An order within a data export.
+
+    Attributes:
+        order_id: The unique identifier of the order.
+        court_id: The ID of the booked court.
+        booking_date: The date of the booking.
+        total_price: The total price of the order.
+        created_at: The timestamp when the order was created.
+        slots: The list of booked slots for this order.
+    """
+
     model_config = {"extra": "ignore"}
     order_id: int
     court_id: int
@@ -104,9 +124,24 @@ class DataExportOrder(BaseModel):
 
 
 class DataExport(BaseModel):
+    """Response model for user data export.
+
+    Attributes:
+        profile: The user's profile information.
+        orders: The list of orders associated with the user.
+    """
+
     profile: User
     orders: list[DataExportOrder]
 
 
 class DataExportResult(Result):
+    """Result model for data export operations.
+
+    Attributes:
+        data_export: The exported user data on success, None on failure.
+        message: A descriptive message about the result.
+        status: The status of the operation (success, invalid, or error).
+    """
+
     data_export: DataExport | None

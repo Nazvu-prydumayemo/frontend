@@ -80,9 +80,18 @@ class TUIApplication(App):
     }
 
     def go_minimal(self) -> None:
+        """Switch to the minimal theme."""
         self.theme = "np-tennis-minimal"
 
     def get_system_commands(self, screen: Screen) -> Iterable[SystemCommand]:
+        """Extend system commands with app-specific commands.
+
+        Args:
+            screen: The currently active screen.
+
+        Yields:
+            System commands available to the user.
+        """
         yield from super().get_system_commands(screen)
         yield SystemCommand(
             "Minimal", "Activate the, objectively, better theme and go minimal", self.go_minimal

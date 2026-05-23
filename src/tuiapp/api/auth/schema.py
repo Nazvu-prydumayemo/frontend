@@ -58,19 +58,46 @@ class RefreshRequest(BaseModel):
 
 
 class ForgotPasswordRequest(BaseModel):
+    """Request model for initiating a password reset.
+
+    Attributes:
+        email: The email address of the account to reset.
+    """
+
     email: EmailStr
 
 
 class VerifyResetCodeRequest(BaseModel):
+    """Request model for verifying a password reset code.
+
+    Attributes:
+        email: The email address of the account.
+        code: The reset code to verify.
+    """
+
     email: EmailStr
     code: str
 
 
 class NewPassword(BaseModel):
+    """Request model for a new password.
+
+    Attributes:
+        new_password: The new password to set.
+    """
+
     new_password: str
 
 
 class ResetPasswordRequest(BaseModel):
+    """Request model for resetting a password.
+
+    Attributes:
+        email: The email address of the account.
+        code: The verified reset code.
+        new_password: The new password to set.
+    """
+
     email: EmailStr
     code: str
     new_password: str

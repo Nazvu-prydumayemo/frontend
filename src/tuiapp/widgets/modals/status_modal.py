@@ -1,3 +1,5 @@
+"""Modal dialog for confirming a status check action."""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING

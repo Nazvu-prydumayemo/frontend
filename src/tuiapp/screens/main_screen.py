@@ -1,3 +1,5 @@
+"""Main screen with navigation to login and registration screens."""
+
 from typing import ClassVar
 
 from textual import on

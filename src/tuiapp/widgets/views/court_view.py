@@ -1,3 +1,5 @@
+"""View that displays detailed information about a tennis court."""
+
 from datetime import date
 from typing import Any
 
@@ -30,6 +32,7 @@ class CourtView(BaseView):
         self.selected_slot_ids: set[int] = set()
 
     def compose_view(self) -> ComposeResult:
+        """Build the court detail view with header, info card, schedule tabs, and booking controls."""
         with ScrollableContainer(id="court-scroll"):
             with Vertical(id="court-header"):
                 yield Static("TITLE", id="court-title")

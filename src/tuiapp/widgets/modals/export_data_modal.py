@@ -1,3 +1,5 @@
+"""Modal for exporting user account data to a file."""
+
 from __future__ import annotations
 
 import asyncio
@@ -20,6 +22,8 @@ if TYPE_CHECKING:
 
 
 class ExportDataModal(BaseModal):
+    """Modal for exporting user account data to a selected file path."""
+
     small: reactive[bool] = reactive(False)
 
     def __init__(self, **kwargs) -> None:
@@ -36,6 +40,7 @@ class ExportDataModal(BaseModal):
         self.small = self.size.width <= 64
 
     def compose_modal(self) -> ComposeResult:
+        """Build the export UI with directory tree, filename input, and action buttons."""
         yield Static("Export Your Data", id="modal-title")
         yield Static("Select a directory and enter a filename:", id="modal-description")
         yield Static(f"Directory: {self._selected_dir}", id="selected-dir")

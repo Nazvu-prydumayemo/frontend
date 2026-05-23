@@ -1,3 +1,5 @@
+"""Base class for all modal dialogs."""
+
 from abc import abstractmethod
 from typing import ClassVar
 
@@ -34,5 +36,8 @@ class BaseModal(ModalScreen[bool]):
 
     @abstractmethod
     def compose_modal(self) -> ComposeResult:
-        """Each subclass should define the actual content of the modal."""
+        """Build the modal's content to be rendered inside the centered container.
+
+        Subclasses must override this to provide the modal body.
+        """
         pass

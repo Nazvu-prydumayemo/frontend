@@ -1,3 +1,5 @@
+"""Forgot password screen for the password reset flow."""
+
 from typing import ClassVar
 
 from pydantic import EmailStr
@@ -18,6 +20,8 @@ from tuiapp.widgets.modals.password_hints_modal import PasswordHintsModal
 
 
 class ForgotPasswordScreen(BaseScreen):
+    """Screen for resetting forgotten passwords via email verification and code entry."""
+
     sent_code: reactive[bool] = reactive(False)
     code: reactive[str | None] = reactive(None)
     email: EmailStr

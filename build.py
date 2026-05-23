@@ -10,6 +10,7 @@ from pathlib import Path
 
 
 def main():
+    """Run the PyInstaller build for the TUI application."""
     project_root = Path(__file__).parent.absolute()
     dist_dir = project_root / "dist"
     build_dir = project_root / "build"

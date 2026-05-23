@@ -1,3 +1,5 @@
+"""Input widgets including password, code, and text input components."""
+
 import re
 
 from textual import on
@@ -11,6 +13,8 @@ from textual.widgets import Button, Input, MaskedInput
 
 
 class PasswordValidator(Validator):
+    """Validates password strength against common security requirements."""
+
     RE_MIN_LENGTH = r".{8,}"
     RE_LOWERCASE = r"[a-z]"
     RE_UPPERCASE = r"[A-Z]"
@@ -37,12 +41,16 @@ class PasswordValidator(Validator):
 
 
 class DigitInput(MaskedInput):
+    """A single-digit masked input field for code entry."""
+
     def __init__(self, **kwargs):
         super().__init__(template="9", placeholder="0", **kwargs)
         self.add_class("digit-input")
 
 
 class CodeInput(Widget):
+    """Multi-digit code input widget composed of individual DigitInput fields."""
+
     is_complete: reactive[bool] = reactive(False)
 
     def __init__(self, length: int, **kwargs) -> None:
@@ -108,12 +116,14 @@ class CodeInput(Widget):
         return all(inp.value for inp in self.query(DigitInput))
 
     def get_data(self) -> str | None:
+        """Return the concatenated digit values if all fields are filled, or None otherwise."""
         inputs = self.query(DigitInput)
         if not all(inp.value for inp in inputs):
             return None
         return "".join(inp.value for inp in inputs)
 
     def clear(self) -> None:
+        """Clear all digit fields and reset focus to the first input."""
         for inp in self.query(DigitInput):
             inp.value = ""
             inp.remove_class("-filled")

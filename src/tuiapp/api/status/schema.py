@@ -1,3 +1,5 @@
+"""Pydantic schemas for status API responses."""
+
 from datetime import datetime
 
 from pydantic import BaseModel

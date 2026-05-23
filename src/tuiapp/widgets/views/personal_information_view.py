@@ -1,3 +1,5 @@
+"""Personal Info tab view to edit user's personal details."""
+
 from typing import TYPE_CHECKING
 
 from textual import on
@@ -27,6 +29,7 @@ class PersonalInfoView(BaseView):
     small: reactive[bool] = reactive(False)
 
     def compose_view(self) -> ComposeResult:
+        """Build the personal info form with name fields, email, and action buttons."""
         with ScrollableContainer(id="personal-info-container"):
             with Vertical(classes="field"):
                 yield Static("First Name", classes="field-label")

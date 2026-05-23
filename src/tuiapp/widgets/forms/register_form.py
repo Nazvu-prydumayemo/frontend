@@ -1,3 +1,5 @@
+"""Registration form with firstname, lastname, email and password fields."""
+
 from pydantic import ValidationError
 from textual.app import ComposeResult
 from textual.containers import Container, Vertical

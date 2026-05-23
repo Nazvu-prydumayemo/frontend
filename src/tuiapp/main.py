@@ -5,6 +5,7 @@ from tuiapp.settings import settings
 
 
 def main() -> None:
+    """Entry point for the TUI application."""
     client = APIClient(settings.api_url)
     token_manager = TokenManagerService(client)
 

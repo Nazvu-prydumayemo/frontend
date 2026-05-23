@@ -151,6 +151,12 @@ class AccountService:
             return Result(message=f"Server error: {error.status_code}", status="error")
 
     async def export_data(self) -> DataExportResult:
+        """Export all user data including profile and orders.
+
+        Returns:
+            DataExportResult containing the exported data on success,
+            or error status and message on failure.
+        """
         try:
             response = await self._client.get("account/export-data", response_model=DataExport)
             return DataExportResult(
