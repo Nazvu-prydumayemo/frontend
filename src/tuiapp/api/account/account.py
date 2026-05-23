@@ -1,6 +1,8 @@
 """Account service for managing user account operations."""
 
 from tuiapp.api.account.schema import (
+    DataExport,
+    DataExportResult,
     Delete,
     DeleteRequest,
     PasswordRequest,
@@ -133,7 +135,7 @@ class AccountService:
             Result: Contains success message on success, or error status and message on failure.
         """
         try:
-            await self._client.post("account/delete", json=json, response_model=Delete)
+            await self._client.post("/account/delete", json=json, response_model=Delete)
             return Result(message="Account deleted successfully", status="success")
 
         except APIError as error:
@@ -147,3 +149,22 @@ class AccountService:
                 )
 
             return Result(message=f"Server error: {error.status_code}", status="error")
+
+    async def export_data(self) -> DataExportResult:
+        try:
+            response = await self._client.get("account/export-data", response_model=DataExport)
+            return DataExportResult(
+                message="Successfully exported data", status="success", data_export=response
+            )
+
+        except APIError as error:
+            if error.status_code == 401:
+                return DataExportResult(
+                    message="Not Authenticated", status="invalid", data_export=None
+                )
+
+            return DataExportResult(
+                message=f"Server error: {error.status_code}",
+                status="error",
+                data_export=None,
+            )

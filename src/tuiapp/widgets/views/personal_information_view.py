@@ -10,6 +10,7 @@ from textual.widgets import Button, Static
 from tuiapp.api.account.schema import ProfileRequest
 from tuiapp.widgets.buttons import PrimaryButton
 from tuiapp.widgets.inputs import TextInput
+from tuiapp.widgets.modals.export_data_modal import ExportDataModal
 from tuiapp.widgets.views.base_view import BaseView
 
 if TYPE_CHECKING:
@@ -40,13 +41,15 @@ class PersonalInfoView(BaseView):
                 yield TextInput(id="email", disabled=True)
 
             yield PrimaryButton("Save Changes", variant="primary", id="save-changes")
+            yield PrimaryButton("Export Data", variant="primary", id="export-data")
 
     def watch_small(self, is_small: bool) -> None:
         try:
             form = self.query_one("#personal-info-container", ScrollableContainer)
             form.styles.grid_size_columns = 1 if is_small else 2
-            form.styles.grid_size_rows = 4 if is_small else 3
+            form.styles.grid_size_rows = 5 if is_small else 3
             self.query_one("#save-changes", PrimaryButton).styles.width = "100%" if is_small else 32
+            self.query_one("#export-data", PrimaryButton).styles.width = "100%" if is_small else 32
 
         except NoMatches:
             pass
@@ -75,6 +78,10 @@ class PersonalInfoView(BaseView):
 
         self.user = result.user
         self.on_view_activated()
+
+    @on(Button.Pressed, "#export-data")
+    def handle_export_data(self) -> None:
+        self.screen.show_modal(ExportDataModal())
 
     def on_view_activated(self) -> None:
         if self.user is None:

@@ -78,3 +78,59 @@ DeleteAccountModal {
         }
     }
 }
+
+ExportDataModal {
+    #modal-container {
+        width: 60;
+        height: 80%;
+        max-height: 80%;
+        layout: vertical;
+        overflow-y: auto;
+
+        #modal-title {
+            color: $accent;
+            text-align: center;
+            text-style: bold;
+        }
+
+        #modal-description {
+            text-align: center;
+            margin-bottom: 1;
+        }
+
+        #selected-dir {
+            text-style: bold;
+            padding: 0 1;
+            margin-bottom: 1;
+        }
+
+        #directory-tree {
+            height: 2fr;
+            min-height: 12;
+            border: solid $border;
+            margin-bottom: 1;
+        }
+
+        .field {
+            width: 100%;
+            height: auto;
+            margin: 0 0 1 0;
+
+            .field-label {
+                margin-bottom: 1;
+            }
+        }
+
+        #buttons-container {
+            layout: vertical;
+            width: 100%;
+            height: auto;
+            align: center middle;
+            margin-top: 1;
+        }
+
+        #export, #close {
+            width: 100%;
+        }
+    }
+}
