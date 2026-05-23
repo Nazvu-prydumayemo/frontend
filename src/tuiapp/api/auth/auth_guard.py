@@ -1,3 +1,5 @@
+"""Authentication guard mixin for requiring authentication on screens."""
+
 from tuiapp.api.account.schema import User, UserResult
 
 

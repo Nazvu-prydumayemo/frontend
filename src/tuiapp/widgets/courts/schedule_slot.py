@@ -1,3 +1,5 @@
+"""Pressable time slot widget for booking tennis courts."""
+
 from textual.app import RenderResult
 from textual.message import Message
 from textual.reactive import reactive

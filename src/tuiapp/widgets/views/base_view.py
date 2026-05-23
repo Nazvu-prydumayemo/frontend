@@ -1,3 +1,5 @@
+"""Base class for all tab content views."""
+
 from __future__ import annotations
 
 from abc import abstractmethod

@@ -1,3 +1,5 @@
+"""View that displays detailed information about an order."""
+
 from typing import Any
 
 from textual.app import ComposeResult
@@ -21,6 +23,7 @@ class OrderView(BaseView):
     narrow: reactive[bool] = reactive(False)
 
     def compose_view(self) -> ComposeResult:
+        """Build the order detail view with header and order information card."""
         with ScrollableContainer(id="order-scroll"):
             with Vertical(id="order-header"):
                 yield Static("TITLE", id="order-title")

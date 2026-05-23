@@ -1,3 +1,5 @@
+"""Custom header widget with navigation buttons."""
+
 from typing import TYPE_CHECKING, cast
 
 from textual import on

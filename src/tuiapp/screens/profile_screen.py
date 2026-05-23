@@ -1,3 +1,5 @@
+"""Profile screen for viewing and editing user account information."""
+
 from typing import ClassVar
 
 from textual import on

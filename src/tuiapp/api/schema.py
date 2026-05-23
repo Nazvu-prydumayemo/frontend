@@ -21,4 +21,10 @@ class Result(BaseModel):
 
 
 class Message(BaseModel):
+    """Generic message response model.
+
+    Attributes:
+        message: The message content from the server.
+    """
+
     message: str

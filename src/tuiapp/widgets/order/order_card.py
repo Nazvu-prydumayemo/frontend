@@ -15,6 +15,7 @@ MAX_LENGTH = 20
 
 
 def truncate(value: str, max_length: int = MAX_LENGTH) -> str:
+    """Truncate a string with ellipsis if it exceeds max_length."""
     if len(value) <= max_length:
         return value
     return value[:max_length].rstrip() + "..."

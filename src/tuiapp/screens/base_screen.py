@@ -1,3 +1,5 @@
+"""Base screen classes providing shared functionality for all screens."""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, ClassVar
@@ -35,6 +37,8 @@ class BaseScreen(Screen):
 
 
 class AuthScreen(AuthGuard, BaseScreen):  # type: ignore
+    """Authenticated screen with logout, hub navigation, and profile bindings."""
+
     BINDINGS: ClassVar[list[Binding]] = [
         Binding(
             key="ctrl+l",

@@ -1,3 +1,5 @@
+"""Modal for confirming and processing account deletion."""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING

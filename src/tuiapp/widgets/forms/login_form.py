@@ -1,3 +1,5 @@
+"""Login form with email and password input fields."""
+
 from pydantic import ValidationError
 from textual.app import ComposeResult
 from textual.containers import Vertical

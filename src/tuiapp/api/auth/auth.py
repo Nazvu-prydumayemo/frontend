@@ -84,6 +84,14 @@ class AuthService:
                 )
 
     async def forgot_password(self, json: ForgotPasswordRequest) -> Result:
+        """Send a password reset code to the user's email.
+
+        Args:
+            json: The request containing the user's email address.
+
+        Returns:
+            Result indicating success or failure of sending the reset code.
+        """
         try:
             response = await self._client.post(
                 "/auth/forgot-password", json=json, response_model=Message
@@ -97,6 +105,14 @@ class AuthService:
             return Result(message=f"Server error: {error.status_code}", status="error")
 
     async def verify_reset_code(self, json: VerifyResetCodeRequest) -> Result:
+        """Verify a password reset code sent to the user's email.
+
+        Args:
+            json: The request containing the email and reset code.
+
+        Returns:
+            Result indicating whether the reset code is valid.
+        """
         try:
             response = await self._client.post(
                 "/auth/verify-reset-code", json=json, response_model=Message
@@ -116,6 +132,14 @@ class AuthService:
             return Result(message=f"Server error: {error.status_code}", status="error")
 
     async def reset_password(self, json: ResetPasswordRequest) -> Result:
+        """Reset the user's password using a verified reset code.
+
+        Args:
+            json: The request containing the email, reset code, and new password.
+
+        Returns:
+            Result indicating success or failure of the password reset.
+        """
         try:
             response = await self._client.post(
                 "/auth/reset-password", json=json, response_model=Message

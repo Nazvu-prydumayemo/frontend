@@ -1,3 +1,5 @@
+"""Form for requesting a password reset via email."""
+
 from pydantic import ValidationError
 from textual.app import ComposeResult
 from textual.containers import Vertical
@@ -9,6 +11,8 @@ from tuiapp.widgets.inputs import TextInput
 
 
 class ForgotPasswordForm(BaseForm):
+    """Form for requesting a password reset by entering an email address."""
+
     def compose(self) -> ComposeResult:
         with Vertical(classes="form-container"):
             with Vertical(classes="field"):
@@ -16,6 +20,11 @@ class ForgotPasswordForm(BaseForm):
                 yield TextInput(placeholder="example@email.com", id="email")
 
     def get_data(self) -> ForgotPasswordRequest | str:
+        """Get the form data.
+
+        Returns:
+            A pydantic model with email value or string error if invalid data was provided.
+        """
         email = self.query_one("#email", TextInput).value
         if not email:
             return "All fields required"
