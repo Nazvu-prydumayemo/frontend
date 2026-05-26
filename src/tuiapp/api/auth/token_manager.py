@@ -1,5 +1,6 @@
 """Token manager service for handling access and refresh tokens."""
 
+import os
 from typing import TYPE_CHECKING
 
 import keyring
@@ -36,36 +37,47 @@ class TokenManagerService:
         self._app = app
         self.access_token: str | None = None
         self._redirecting = False
+        self._refresh_token: str | None = None
+        self._use_keyring = os.environ.get("TEXTUAL_DRIVER") != "textual.drivers.web_driver:WebDriver"
 
     def set_refresh_token(self, refresh_token: str) -> None:
-        """Store the refresh token securely in the system keyring.
+        """Store the refresh token.
+
+        Uses in-memory storage in web mode (textual-serve) or system keyring otherwise.
 
         Args:
             refresh_token: The refresh token to store.
         """
-        keyring.set_password(settings.service_name, settings.key_name, refresh_token)
+        if self._use_keyring:
+            keyring.set_password(settings.service_name, settings.key_name, refresh_token)
+        else:
+            self._refresh_token = refresh_token
 
     def get_refresh_token(self) -> str | None:
-        """Retrieve the refresh token from the system keyring.
+        """Retrieve the refresh token.
 
         Returns:
             The stored refresh token, or None if not found.
         """
-        return keyring.get_password(settings.service_name, settings.key_name)
+        if self._use_keyring:
+            return keyring.get_password(settings.service_name, settings.key_name)
+        return self._refresh_token
 
     def clear_tokens(self) -> None:
         """Clear all stored tokens.
 
         Removes the access token from memory and deletes the refresh token
-        from the system keyring.
+        from storage.
         """
         self.access_token = None
         self._client.set_access_token(None)
+        self._refresh_token = None
 
-        try:
-            keyring.delete_password(settings.service_name, settings.key_name)
-        except keyring.errors.PasswordDeleteError:
-            pass
+        if self._use_keyring:
+            try:
+                keyring.delete_password(settings.service_name, settings.key_name)
+            except keyring.errors.PasswordDeleteError:
+                pass
 
     async def refresh_access_token(self) -> bool:
         """Attempt to refresh the access token using the stored refresh token.

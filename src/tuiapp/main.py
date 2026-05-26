@@ -4,8 +4,7 @@ from tuiapp.app import TUIApplication
 from tuiapp.settings import settings
 
 
-def main() -> None:
-    """Entry point for the TUI application."""
+def create_app() -> TUIApplication:
     client = APIClient(settings.api_url)
     token_manager = TokenManagerService(client)
 
@@ -13,6 +12,11 @@ def main() -> None:
     token_manager._app = app
     client.set_on_401_callback(token_manager.refresh_access_token)
 
+    return app
+
+
+def main() -> None:
+    app = create_app()
     app.run()
 
 
